@@ -1,0 +1,84 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing vX.Y.Z tag to release"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: oven-sh/setup-bun@v2
+      - name: Verify release tag and package version
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            tag="${{ inputs.tag }}"
+          fi
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            git fetch --tags origin "refs/tags/${tag}:refs/tags/${tag}"
+            git checkout "${tag}"
+          fi
+          version="$(bun -e 'const p = await Bun.file("package.json").json(); console.log(p.version)')"
+          test "$tag" = "v${version}"
+          git fetch origin main
+          git merge-base --is-ancestor HEAD origin/main
+      - run: bun run validate
+      - run: bun run build:dist
+      - run: bun run build:dist:check
+      - run: bun run smoke
+      - run: bun run eval:check
+      - run: bun run install:smoke
+      - run: ./scripts/install.sh --mode local --target /tmp/sts-release-install --harness all --dry-run --skip-external-deps
+      - name: Create release archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then tag="${{ inputs.tag }}"; fi
+          mkdir -p release-artifacts
+          tar --exclude-vcs --exclude='./node_modules' --exclude='./release-artifacts' \
+            -czf "release-artifacts/spec-to-ship-${tag}.tar.gz" .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: spec-to-ship-release
+          path: release-artifacts/*
+
+  github-release:
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: spec-to-ship-release
+          path: release-artifacts
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then tag="${{ inputs.tag }}"; fi
+          gh release create "$tag" release-artifacts/* \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Spec-to-Ship ${tag}" \
+            --generate-notes

@@ -11,7 +11,13 @@ const start = "<!-- spec-to-ship:start -->";
 const end = "<!-- spec-to-ship:end -->";
 const block = `${start}\nSpec-to-Ship (STS) is installed. For non-trivial coding work, read and follow:\n\`${path.join(stsRoot, "SPEC-TO-SHIP.md")}\`\n\nKeep project-specific instructions in this AGENTS.md. Do not duplicate STS lifecycle instructions here.\n${end}`;
 
-const existed = fs.existsSync(agentsPath);
+const existingStat = fs.lstatSync(agentsPath, { throwIfNoEntry: false });
+if (existingStat?.isSymbolicLink()) {
+  console.error(`Refusing to modify symlinked AGENTS.md: ${agentsPath}`);
+  console.error("Replace the symlink with a regular file or edit the target manually, then rerun the installer.");
+  process.exit(1);
+}
+const existed = existingStat !== undefined;
 let content = existed ? fs.readFileSync(agentsPath, "utf8") : "";
 const hasStart = content.includes(start);
 const hasEnd = content.includes(end);

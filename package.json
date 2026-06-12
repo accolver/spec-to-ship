@@ -12,7 +12,11 @@
     "validate:external": "bun run scripts/validate-external-deps.ts",
     "build:dist": "bun run scripts/build-dist.ts",
     "build:dist:check": "bun run scripts/build-dist.ts --check",
-    "smoke": "bun run scripts/smoke-eval.ts"
+    "smoke": "bun run scripts/smoke-eval.ts",
+    "eval": "bun run scripts/eval-skills.ts",
+    "eval:check": "bun run scripts/eval-skills.ts --check --min-with-skill-pass-rate 0.95 --min-skill-with-skill-pass-rate 0.90 --min-delta 0.25",
+    "install:smoke": "bun run scripts/install-smoke.ts",
+    "uninstall": "bun run scripts/uninstall.ts"
   },
   "devDependencies": {}
 }

@@ -4,6 +4,26 @@ import path from "node:path";
 export const approvedSkills = ["spec", "coding-agent", "worktree", "tdd", "debug", "review", "deps", "release", "finish", "ui-ux-gate"] as const;
 export type ApprovedSkill = (typeof approvedSkills)[number];
 
+export const approvedHarnesses = ["agents", "pi", "codex", "claude", "cursor", "opencode", "gemini", "copilot"] as const;
+export type ApprovedHarness = (typeof approvedHarnesses)[number];
+export type HarnessSelection = ApprovedHarness | "all";
+
+export function isApprovedHarness(value: string): value is ApprovedHarness {
+  return approvedHarnesses.includes(value as ApprovedHarness);
+}
+
+export function assertHarnessSelection(value: string): asserts value is HarnessSelection {
+  if (value !== "all" && !isApprovedHarness(value)) {
+    throw new Error(`Invalid harness '${value}'. Expected one of: all, ${approvedHarnesses.join(", ")}`);
+  }
+}
+
+export function assertInstallMode(value: string): asserts value is "local" | "global" | "both" {
+  if (!["local", "global", "both"].includes(value)) {
+    throw new Error("Invalid mode '" + value + "'. Expected one of: local, global, both");
+  }
+}
+
 export function repoRoot(): string {
   return path.resolve(import.meta.dir, "..");
 }

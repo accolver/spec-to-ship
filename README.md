@@ -51,8 +51,30 @@ STS generates install layouts for common Open Agent Skills-compatible locations:
 ```bash
 bun run validate
 bun run build:dist
+bun run build:dist:check
 bun run smoke
+bun run eval:check
+bun run install:smoke
 ```
+
+Eval aggregation is deterministic for v0.1: `bun run eval` reads existing `.spec-to-ship/eval-runs/<iteration>/` grading artifacts and writes aggregate benchmark files.
+
+## Uninstall
+
+Dry-run first, then rerun with `--yes` after reviewing the plan:
+
+```bash
+./scripts/uninstall.sh --mode local --target /path/to/project --harness all --dry-run
+./scripts/uninstall.sh --mode local --target /path/to/project --harness all --yes
+```
+
+See `UNINSTALL.md` for rollback behavior and global uninstall notes.
+
+## Releases
+
+Stable releases are tagged as `vX.Y.Z` and published as GitHub Releases. The npm package is intentionally private; install by cloning the repository or checking out a tag.
+
+See `RELEASE.md` for the release checklist.
 
 ## License
 

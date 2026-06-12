@@ -9,6 +9,32 @@ LINK_MODE="copy"
 DRY_RUN="false"
 SKIP_EXTERNAL="false"
 YES="false"
+HOME_OVERRIDE=""
+
+valid_mode() {
+  case "$1" in local|global|both) return 0 ;; *) return 1 ;; esac
+}
+
+valid_harness() {
+  case "$1" in all|agents|pi|codex|claude|cursor|opencode|gemini|copilot) return 0 ;; *) return 1 ;; esac
+}
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/install.sh [options]
+
+Options:
+  --mode local|global|both       Install scope. Omit for interactive prompt.
+  --target <path>                Local project target (default: current directory).
+  --harness all|agents|pi|codex|claude|cursor|opencode|gemini|copilot
+  --link                         Symlink skills instead of copying.
+  --copy                         Copy skills (default).
+  --dry-run                      Print intended changes without modifying files.
+  --skip-external-deps           Do not install/check external dependencies.
+  --yes                          Non-interactive approval for prompts.
+  --home <path>                  Override HOME, mainly for isolated tests.
+EOF
+}
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -20,9 +46,21 @@ while [[ $# -gt 0 ]]; do
     --dry-run) DRY_RUN="true"; shift ;;
     --skip-external-deps) SKIP_EXTERNAL="true"; shift ;;
     --yes) YES="true"; shift ;;
-    *) echo "Unknown argument: $1" >&2; exit 1 ;;
+    --home) HOME_OVERRIDE="$2"; shift 2 ;;
+    -h|--help) usage; exit 0 ;;
+    *) echo "Unknown argument: $1" >&2; usage >&2; exit 1 ;;
   esac
 done
+
+if [[ -n "$HOME_OVERRIDE" ]]; then
+  export HOME="$HOME_OVERRIDE"
+fi
+
+if ! valid_harness "$HARNESS"; then
+  echo "Invalid harness: $HARNESS" >&2
+  echo "Expected one of: all, agents, pi, codex, claude, cursor, opencode, gemini, copilot" >&2
+  exit 1
+fi
 
 if [[ -z "$MODE" ]]; then
   echo "Install Spec-to-Ship where?"
@@ -40,35 +78,99 @@ if [[ -z "$MODE" ]]; then
   esac
 fi
 
+if ! valid_mode "$MODE"; then
+  echo "Invalid mode: $MODE" >&2
+  echo "Expected one of: local, global, both" >&2
+  exit 1
+fi
+
+if [[ "$DRY_RUN" != "true" && "$YES" != "true" && ( "$MODE" == "global" || "$MODE" == "both" ) && ! -t 0 ]]; then
+  echo "Refusing non-interactive global install without --yes. Re-run with --yes after reviewing target paths, or use --dry-run." >&2
+  exit 1
+fi
+
 cd "$ROOT"
 bun run validate
 bun run build:dist
 
+if [[ "$DRY_RUN" != "true" && ( "$MODE" == "local" || "$MODE" == "both" ) ]]; then
+  # Preflight AGENTS.md before installing skills so symlink/unbalanced-marker failures do not leave a partial local install.
+  bun run scripts/integrate-agents-md.ts --target "$TARGET" --sts-root "$ROOT" --dry-run >/dev/null
+fi
+
+unique_backup_path() {
+  local dest="$1"
+  local stamp
+  stamp="$(date +%Y%m%d%H%M%S)-$$-${RANDOM:-0}"
+  local backup="${dest}.bak-${stamp}"
+  while [[ -e "$backup" || -L "$backup" ]]; do
+    stamp="$(date +%Y%m%d%H%M%S)-$$-${RANDOM:-0}"
+    backup="${dest}.bak-${stamp}"
+  done
+  printf '%s\n' "$backup"
+}
+
 copy_or_link() {
   local src="$1"
   local dest="$2"
+  local parent
+  parent="$(dirname "$dest")"
+
+  if [[ ! -e "$src" ]]; then
+    echo "Missing source: $src" >&2
+    exit 1
+  fi
+
   if [[ "$DRY_RUN" == "true" ]]; then
     echo "Would install $src -> $dest ($LINK_MODE)"
     return
   fi
-  mkdir -p "$(dirname "$dest")"
-  if [[ -L "$dest" ]]; then
+
+  mkdir -p "$parent"
+
+  if [[ "$LINK_MODE" == "link" && -L "$dest" ]]; then
     local current_target
     current_target="$(readlink "$dest")"
-    if [[ "$LINK_MODE" == "link" && "$current_target" == "$src" ]]; then
+    if [[ "$current_target" == "$src" ]]; then
       echo "Already linked $dest"
       return
     fi
   fi
-  if [[ -e "$dest" || -L "$dest" ]]; then
-    local backup="$dest.bak-$(date +%s)"
-    mv "$dest" "$backup"
-    echo "Backed up existing $dest to $backup"
+
+  if [[ "$LINK_MODE" == "copy" && -d "$dest" && ! -L "$dest" ]]; then
+    if diff -qr "$src" "$dest" >/dev/null 2>&1; then
+      echo "Already installed $dest"
+      return
+    fi
   fi
+
+  local staged=""
   if [[ "$LINK_MODE" == "link" ]]; then
-    ln -s "$src" "$dest"
+    staged="$parent/.sts-link-tmp-$(basename "$dest")-$$-${RANDOM:-0}"
+    while [[ -e "$staged" || -L "$staged" ]]; do
+      staged="$parent/.sts-link-tmp-$(basename "$dest")-$$-${RANDOM:-0}"
+    done
+    ln -s "$src" "$staged"
   else
-    cp -R "$src" "$dest"
+    staged="$(mktemp -d "$parent/.sts-copy-tmp-$(basename "$dest").XXXXXX")"
+    cp -R "$src/." "$staged/"
+  fi
+
+  if [[ -e "$dest" || -L "$dest" ]]; then
+    local backup
+    backup="$(unique_backup_path "$dest")"
+    mv "$dest" "$backup"
+    if mv "$staged" "$dest"; then
+      echo "Backed up existing $dest to $backup"
+    else
+      echo "Install failed for $dest; restoring $backup" >&2
+      if [[ -e "$dest" || -L "$dest" ]]; then rm -rf "$dest"; fi
+      mv "$backup" "$dest"
+      if [[ -e "$staged" || -L "$staged" ]]; then rm -rf "$staged"; fi
+      exit 1
+    fi
+  else
+    mv "$staged" "$dest"
   fi
 }
 
@@ -121,7 +223,7 @@ if [[ "$MODE" == "global" || "$MODE" == "both" ]]; then
   install_scope global "$HOME"
 fi
 if [[ "$SKIP_EXTERNAL" != "true" ]]; then
-  external_args=("--mode" "$MODE" "--target" "$TARGET")
+  external_args=("--mode" "$MODE" "--target" "$TARGET" "--harness" "$HARNESS")
   if [[ "$DRY_RUN" == "true" ]]; then external_args+=("--dry-run"); fi
   if [[ "$YES" == "true" ]]; then external_args+=("--yes"); fi
   bun run scripts/install-external-deps.ts "${external_args[@]}"
