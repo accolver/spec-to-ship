@@ -3,35 +3,40 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal spec workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "vague-ui-impeccable",
+      "prompt": "Add a settings dashboard where admins can manage notification preferences. We need it to feel polished but I have not decided exact fields.",
+      "expected_output": "Creates namespaced spec, routes through ui-ux-gate/Impeccable before final spec, asks/records only blocking questions, stops before implementation.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "mentions ui-ux-gate or Impeccable",
+        "includes UI/UX requirements before implementation",
+        "uses .spec-to-ship/features namespace",
+        "approval status is not silently approved"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern spec request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "risky-migration-approval",
+      "prompt": "We need to change account IDs from integers to UUIDs across the API and database. Start by writing the spec.",
+      "expected_output": "Documents risk, interfaces, non-goals, verification plan, and approval gate without coding.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "records migration/data risks",
+        "lists interfaces touched",
+        "includes acceptance criteria",
+        "stops for approval before implementation"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger spec.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "approved-spec-near-miss",
+      "prompt": "The approved spec is at .spec-to-ship/features/20260612-auth/spec.md. Break it into tasks.",
+      "expected_output": "Does not rewrite spec; routes to coding-agent.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "routes to coding-agent",
+        "does not create a new shared SPEC.md",
+        "reuses existing namespace"
       ]
     }
   ]

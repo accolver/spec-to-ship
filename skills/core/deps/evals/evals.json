@@ -3,35 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal deps workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "convenience-package",
+      "prompt": "Add left-pad-like npm package for a simple string helper.",
+      "expected_output": "Considers no-dependency alternative and likely rejects or escalates.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "considers standard library/no-dependency alternative",
+        "checks license/maintenance",
+        "records decision"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern deps request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "lockfile-upgrade",
+      "prompt": "Upgrade a transitive image library and update the lockfile after a CVE.",
+      "expected_output": "Assesses vulnerability, lockfile behavior, transitive risk, and validation.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "mentions CVE/vulnerability evidence",
+        "documents lockfile behavior",
+        "records validation"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger deps.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "package-manager-near-miss",
+      "prompt": "Should this repo use bun or npm commands for tests?",
+      "expected_output": "Does not treat general tool choice as dependency governance unless package changes are involved.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "avoids over-triggering dependency review",
+        "asks/records tool preference",
+        "does not add package risk analysis unnecessarily"
       ]
     }
   ]

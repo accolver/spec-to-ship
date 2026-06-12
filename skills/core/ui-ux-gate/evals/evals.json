@@ -3,35 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal ui-ux-gate workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "missing-impeccable",
+      "prompt": "Spec a new onboarding screen, but Impeccable is not installed.",
+      "expected_output": "Checks install state, asks before install, blocks or records degraded mode.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "checks Impeccable install state",
+        "does not run npx without approval",
+        "records blocker or degraded risk"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern ui-ux-gate request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "backend-near-miss",
+      "prompt": "Add an internal API endpoint with no user-facing changes.",
+      "expected_output": "Does not trigger UI/UX gate.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "identifies backend-only near miss",
+        "does not require Impeccable",
+        "routes to spec/tdd as appropriate"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger ui-ux-gate.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "ui-pr-missing-qa",
+      "prompt": "Review a settings page PR with no keyboard, responsive, or copy evidence.",
+      "expected_output": "Requires Impeccable-informed critique/audit/polish evidence.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "requires design QA evidence",
+        "mentions accessibility/responsive/copy",
+        "records review evidence"
       ]
     }
   ]

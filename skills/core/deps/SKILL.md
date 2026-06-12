@@ -41,6 +41,7 @@ Govern dependency additions, upgrades, removals, licenses, maintenance, vulnerab
 ## References
 
 - [references/license-and-supply-chain.md](references/license-and-supply-chain.md)
+- [templates/deps.md](templates/deps.md)
 
 ## Common rationalizations to reject
 

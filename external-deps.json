@@ -26,7 +26,23 @@
         "~/.config/opencode/skills/impeccable",
         "~/.gemini/skills/impeccable",
         "~/.copilot/skills/impeccable"
-      ]
+      ],
+      "initCommand": "/impeccable init",
+      "verifySkillName": "impeccable",
+      "requiredBySkills": [
+        "ui-ux-gate",
+        "spec",
+        "review",
+        "release"
+      ],
+      "requiredFor": [
+        "UI/UX requirements",
+        "frontend implementation planning",
+        "design critique",
+        "accessibility and responsive QA",
+        "visual polish review"
+      ],
+      "fallbackPolicy": "If Impeccable is missing or blocked, pause for user decision or proceed only in explicitly documented degraded UI/UX mode."
     }
   }
 }

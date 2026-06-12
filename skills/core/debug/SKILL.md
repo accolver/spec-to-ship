@@ -24,6 +24,12 @@ Find and prove root cause through reproduction, hypotheses, evidence, minimal fi
 - Do not test multiple hypotheses at once.
 - Do not claim fixed without regression evidence.
 
+## Boundary rules
+
+- Use `debug` when the cause is unknown or symptoms are misleading.
+- Once root cause is proven and behavior is known, route the fix through `tdd` for regression coverage.
+- Do not quarantine flaky tests or loosen assertions without approval and follow-up risk.
+
 ## Process
 
 1. Capture the symptom and reproduction command or steps.

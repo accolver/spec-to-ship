@@ -1,6 +1,6 @@
 ---
 name: ui-ux-gate
-description: Routes UI/UX work through external Impeccable and requires design requirements, critique, audit, and polish evidence without vendoring Impeccable. Use when requests involve UI, UX, frontend flows, forms, components, dashboards, screens, visual design, accessibility, or product experience.
+description: Routes UI/UX work through external Impeccable and requires design requirements, install-state handling, critique, audit, and polish evidence without vendoring Impeccable. Use when requests involve UI, UX, screens, routes, frontend flows, forms, components, dashboards, visual design, accessibility, responsive behavior, user-facing copy, or product experience.
 license: MIT
 metadata:
   package: spec-to-ship
@@ -22,6 +22,12 @@ Route UI/UX work through external Impeccable during spec, planning, review, and 
 - Do not duplicate Impeccable design laws.
 - Do not continue UI spec work when Impeccable is missing without documenting the install blocker.
 - Do not treat design as final polish only.
+
+## Boundary rules
+
+- Backend/API/database/CLI-only work should not use this skill unless it changes a user-facing surface or product experience.
+- Missing Impeccable blocks UI/UX workflows unless the user explicitly accepts documented degraded mode.
+- Ask before running external install commands.
 
 ## Process
 

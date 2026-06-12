@@ -3,35 +3,39 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal worktree workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "two-writer-setup",
+      "prompt": "Set up parallel worktrees for API and UI slices. API owns src/api/**, UI owns src/ui/**, both might touch package lockfile.",
+      "expected_output": "Creates/records worktree plan and resolves lockfile ownership before writers start.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "records owner and branch",
+        "identifies lockfile conflict",
+        "requires shared-file owner",
+        "writes worktrees.md"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern worktree request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "dirty-checkout",
+      "prompt": "Primary checkout has uncommitted changes. Create a worktree for a risky refactor.",
+      "expected_output": "Checks dirty status and avoids unsafe setup until state is addressed.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "checks dirty status",
+        "does not overwrite current work",
+        "records stop/approval gate"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger worktree.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "read-only-near-miss",
+      "prompt": "Investigate where auth routes live; no edits yet.",
+      "expected_output": "Does not create worktree for read-only research.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "avoids worktree creation",
+        "explains read-only scope",
+        "routes to research/context rather than writer setup"
       ]
     }
   ]

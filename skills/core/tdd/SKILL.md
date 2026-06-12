@@ -29,7 +29,7 @@ Require failing-first evidence, minimal implementation, passing proof, and safe 
 
 1. State the behavior under test.
 2. Add or update the smallest failing test or reproduction.
-3. Run the focused command and capture the failing output.
+3. Run the focused command and confirm it fails for the expected reason; if it passes unexpectedly, stop and revise the test or assumptions.
 4. Implement the smallest change that can pass.
 5. Run focused tests, then broader relevant checks.
 6. Record failing and passing evidence in `test-report.md`.
@@ -42,6 +42,7 @@ Require failing-first evidence, minimal implementation, passing proof, and safe 
 
 - [references/test-levels.md](references/test-levels.md)
 - [references/testing-anti-patterns.md](references/testing-anti-patterns.md)
+- [templates/test-report.md](templates/test-report.md)
 
 ## Common rationalizations to reject
 

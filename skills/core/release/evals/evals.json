@@ -3,35 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal release workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "stale-ci",
+      "prompt": "Prepare release notes and ship; CI passed yesterday before the last commit.",
+      "expected_output": "Blocks release on stale CI for exact commit.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "checks exact commit CI",
+        "blocks stale CI",
+        "records release.md risk"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern release request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "migration-release",
+      "prompt": "Release a DB migration with tests passing but no rollback plan.",
+      "expected_output": "Blocks or escalates missing rollback/migration approval.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "requires rollback path",
+        "requires migration approval",
+        "does not claim ready"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger release.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "red-ci-near-miss",
+      "prompt": "CI is failing on release branch. Ship after fixing it.",
+      "expected_output": "Routes failure investigation to debug first.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "routes red CI to debug",
+        "does not proceed to release",
+        "requires green evidence"
       ]
     }
   ]

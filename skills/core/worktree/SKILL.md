@@ -1,6 +1,6 @@
 ---
 name: worktree
-description: Creates and manages isolated git worktrees for safe parallel or risky implementation, recording branches, ownership, and merge targets. Use when work needs parallel writers, branch isolation, separate workspaces, git worktree setup, or conflict-safe coordination.
+description: Creates and manages isolated git worktrees for safe parallel, concurrent, experimental, or risky implementation, recording branches, ownership, and merge targets. Use when work needs parallel writers, multiple agents, branch isolation, separate checkouts, git worktree setup, or conflict-safe coordination.
 license: MIT
 metadata:
   package: spec-to-ship
@@ -24,6 +24,12 @@ Create and track isolated workspaces for parallel or risky implementation withou
 - Do not create overlapping writer assignments without escalation.
 - Do not delete dirty or unmerged worktrees.
 - Do not ignore harness-native isolation if it exists.
+
+## Boundary rules
+
+- Do not create worktrees for read-only research or a single small edit.
+- Do not start parallel writers until file ownership and shared-file ownership are explicit.
+- Do not remove dirty or unmerged worktrees; cleanup belongs to `finish`.
 
 ## Process
 

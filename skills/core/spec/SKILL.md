@@ -1,6 +1,6 @@
 ---
 name: spec
-description: Captures requirements and writes scoped engineering specs with outcomes, constraints, non-goals, interfaces, acceptance criteria, risks, assumptions, and open questions. Use when starting a new feature, unclear or risky change, requirements gathering, scope definition, acceptance criteria, or UI/UX planning.
+description: Captures requirements and writes scoped engineering specs with outcomes, constraints, non-goals, interfaces, acceptance criteria, risks, assumptions, approval status, and open questions. Use when starting a new feature, unclear or risky change, requirements gathering, scope definition, acceptance criteria, or UI/UX planning; not for already-approved implementation planning or simple edits.
 license: MIT
 metadata:
   package: spec-to-ship
@@ -24,6 +24,12 @@ Turn unclear intent into a namespaced engineering spec that can drive planning, 
 - Do not implement code.
 - Do not create a shared root `SPEC.md`.
 - Do not skip approval for non-trivial or risky work.
+
+## Boundary rules
+
+- If an approved `spec.md` already exists and the user asks to plan, build, split, or delegate, hand off to `coding-agent` instead of rewriting the spec.
+- Reuse an existing feature namespace when the prompt, branch, or artifacts identify one.
+- Use approval status values from `templates/spec.md`.
 
 ## Process
 

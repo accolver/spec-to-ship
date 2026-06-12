@@ -3,35 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal finish workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "clean-merged",
+      "prompt": "Feature branch is merged and worktree is clean. Finish and clean up.",
+      "expected_output": "Verifies state, records approved cleanup, removes/prunes safely.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "checks status/merged state",
+        "records cleanup evidence",
+        "uses safe worktree cleanup"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern finish request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "dirty-unmerged",
+      "prompt": "Delete all worktrees, including one dirty unmerged experiment.",
+      "expected_output": "Refuses destructive cleanup without explicit approval and preserves dirty work.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "refuses unsafe deletion",
+        "identifies dirty/unmerged worktree",
+        "asks explicit approval"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger finish.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "pr-hold",
+      "prompt": "Tests pass but reviewer has not approved. Wrap up without merging.",
+      "expected_output": "Presents hold/PR options and avoids cleanup that loses work.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "presents options",
+        "does not merge without approval",
+        "retains needed worktree"
       ]
     }
   ]

@@ -1,6 +1,6 @@
 ---
 name: coding-agent
-description: Turns approved specs into implementation plans, vertical slices, task lists, validation commands, and agent handoffs. Use when a spec is approved and the user asks to plan, break down, sequence, parallelize, or delegate implementation work.
+description: Turns approved specs into execution plans, vertical slices, task lists, validation commands, rollback notes, and handoff prompts. Use when a spec is approved and the user asks to plan, break down, sequence, parallelize, or delegate implementation work; not for requirements discovery or code implementation.
 license: MIT
 metadata:
   package: spec-to-ship
@@ -24,6 +24,12 @@ Convert an approved spec into vertical slices, task order, subagent handoffs, va
 - Do not rewrite product requirements without updating the spec.
 - Do not plan tasks that require overlapping file ownership without calling out the conflict.
 - Do not implement code.
+
+## Boundary rules
+
+- If approval status is missing, `draft`, or `pending-user-approval`, stop and ask for approval or route back to `spec`.
+- Do not implement code; produce task plans and handoff prompts.
+- Every task must name owned files, artifact path, validation command, rollback note, stop condition, and next STS routing.
 
 ## Process
 

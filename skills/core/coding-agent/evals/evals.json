@@ -3,35 +3,39 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal coding-agent workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "approved-spec-plan",
+      "prompt": "Given an approved spec for password reset in .spec-to-ship/features/20260612-auth/spec.md, create an implementation plan.",
+      "expected_output": "Produces dependency graph, vertical slices, file ownership, validation, rollback, and next skill routing.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "includes dependency graph",
+        "assigns owned files",
+        "includes validation commands",
+        "includes rollback notes"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern coding-agent request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "parallel-slices",
+      "prompt": "Plan implementation for API, email template, and UI reset flow. Backend and UI can be parallel but share generated types.",
+      "expected_output": "Identifies parallel slices and names one owner/integration step for shared generated files.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "identifies parallelizable tasks",
+        "names shared-file owner",
+        "uses worktree when parallel writers are needed"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger coding-agent.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "unapproved-spec-boundary",
+      "prompt": "Here is a draft spec with approval status pending-user-approval. Build a task list.",
+      "expected_output": "Stops and asks for approval or routes back to spec.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "does not plan implementation as approved",
+        "mentions approval blocker",
+        "routes back to spec or asks user"
       ]
     }
   ]

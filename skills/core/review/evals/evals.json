@@ -3,35 +3,38 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal review workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "missing-tests",
+      "prompt": "Review a PR that satisfies the UI spec visually but has no tests for changed behavior.",
+      "expected_output": "Blocks or should-fixes missing tests with evidence.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "explicit verdict",
+        "missing tests finding",
+        "evidence-backed severity"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern review request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "ui-review",
+      "prompt": "Review a dashboard UI PR with no accessibility or responsive evidence.",
+      "expected_output": "Requires Impeccable-informed UI/UX review evidence.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "mentions ui-ux-gate or Impeccable",
+        "flags missing accessibility/responsive evidence",
+        "classifies finding"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger review.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "debug-near-miss",
+      "prompt": "CI is red on this branch; find why.",
+      "expected_output": "Routes to debug rather than performing release/review readiness.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "routes to debug",
+        "does not claim readiness",
+        "requires failure investigation"
       ]
     }
   ]

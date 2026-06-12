@@ -24,6 +24,11 @@ Prepare final validation, CI and deploy readiness, changelog, release notes, and
 - Do not assume CI passed without checking evidence.
 - Do not run production deploy commands without explicit approval.
 
+## Boundary rules
+
+- Red CI routes to `debug`; `release` verifies readiness for the exact commit.
+- Block release on unresolved review blockers, unresolved dependency risk, stale/missing CI, dirty worktree, unapproved migrations, missing rollback path, or missing production approval.
+
 ## Process
 
 1. Read spec, plan, review, test report, dependency report, and current status.

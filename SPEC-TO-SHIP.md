@@ -20,6 +20,14 @@ request
 
 ## Skill routing
 
+Routing collision rules:
+
+- If an approved spec already exists and the user asks to plan, split, delegate, or build, route to `coding-agent`, not `spec`.
+- If intended behavior is known and a test can be written, route to `tdd`; if the cause is unknown, symptoms are misleading, or CI/test failure is unexplained, route to `debug`.
+- If CI is red, route to `debug`; if CI is green or needs final confirmation for a release candidate, route to `release`.
+- If review discovers dependency risk, route to `deps` before `release`.
+- If UI/UX is involved, route through `ui-ux-gate` during `spec`, before implementation planning is finalized.
+
 | Situation | Skill |
 |---|---|
 | New feature, unclear requirements, risky change | `spec` |
@@ -35,7 +43,9 @@ request
 
 ## Artifact namespace contract
 
-Never create one shared root `SPEC.md`, `tasks.md`, or mutable artifact file for active work. Every feature gets a unique namespace:
+Never create one shared root `SPEC.md`, `tasks.md`, or mutable artifact file for active work. Every feature gets a unique namespace. To create one, sanitize the slug, include date/time and owner or agent label, create the directory exclusively, and add a suffix if it already exists. Reject path traversal and ensure the resolved path stays under `.spec-to-ship/features/`.
+
+Every feature gets a unique namespace:
 
 ```text
 .spec-to-ship/features/<YYYYMMDD-HHMM>-<owner-or-agent>-<slug>/
@@ -65,7 +75,9 @@ Use parallel subagents when slices are independently testable and file ownership
 
 ## UI/UX policy
 
-If a task touches UI, UX, frontend routes, components, forms, dashboards, onboarding, empty states, visual design, accessibility, responsive behavior, copy, or product experience, load `ui-ux-gate` and use the externally installed `impeccable` skill during the spec phase. Design requirements must shape the spec before implementation begins.
+If a task touches UI, UX, frontend routes, pages, components, forms, dashboards, onboarding, empty/loading/error states, layout, navigation, visual design, accessibility, responsive behavior, user-facing copy, or product experience, load `ui-ux-gate` and use the externally installed `impeccable` skill during the spec phase. Design requirements must shape the spec before implementation begins.
+
+Impeccable is optional at STS install time but required for UI/UX workflows unless the user explicitly accepts a documented degraded mode. Never vendor or restate Impeccable design laws inside STS.
 
 ## Tool preference policy
 

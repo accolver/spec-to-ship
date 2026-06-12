@@ -3,35 +3,39 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "A normal tdd workflow request in an existing repo.",
-      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "name": "bug-regression",
+      "prompt": "Fix a bug where expired reset tokens are accepted. Use tests first.",
+      "expected_output": "Adds failing regression for expected reason, implements minimal fix, records red and green evidence.",
       "files": [],
       "assertions": [
-        "Mentions .spec-to-ship/features/<feature-id>",
-        "Does not claim completion without evidence",
-        "Stays within the skill boundary"
+        "red evidence before implementation",
+        "expected failure reason",
+        "green evidence after fix",
+        "test-report.md"
       ]
     },
     {
       "id": 2,
-      "prompt": "A multi-concern tdd request involving parallel work, risk, or UI/UX where applicable.",
-      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "name": "unexpected-pass",
+      "prompt": "I added a new test for invoice rounding but it already passes before code changes. Continue with implementation.",
+      "expected_output": "Stops and revises assumptions/test instead of implementing.",
       "files": [],
       "assertions": [
-        "Identifies stop or approval gates",
-        "Names adjacent skills only when needed",
-        "Preserves namespaced artifacts"
+        "detects unexpected pass",
+        "does not implement blindly",
+        "updates assumptions or test plan"
       ]
     },
     {
       "id": 3,
-      "prompt": "A near-miss request that should not over-trigger tdd.",
-      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "name": "no-test-exception",
+      "prompt": "Change a generated screenshot artifact where automated tests are technically impossible.",
+      "expected_output": "Records no-test exception with alternate proof, risk, and follow-up.",
       "files": [],
       "assertions": [
-        "Avoids over-triggering",
-        "Explains boundary",
-        "Does not perform unrelated tool-wrapper behavior"
+        "documents no-test exception",
+        "provides alternate proof",
+        "records residual risk"
       ]
     }
   ]
