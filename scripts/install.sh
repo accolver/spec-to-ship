@@ -137,8 +137,14 @@ copy_or_link() {
     fi
   fi
 
-  if [[ "$LINK_MODE" == "copy" && -d "$dest" && ! -L "$dest" ]]; then
+  if [[ "$LINK_MODE" == "copy" && -d "$src" && -d "$dest" && ! -L "$dest" ]]; then
     if diff -qr "$src" "$dest" >/dev/null 2>&1; then
+      echo "Already installed $dest"
+      return
+    fi
+  fi
+  if [[ "$LINK_MODE" == "copy" && -f "$src" && -f "$dest" && ! -L "$dest" ]]; then
+    if cmp -s "$src" "$dest"; then
       echo "Already installed $dest"
       return
     fi
@@ -152,8 +158,13 @@ copy_or_link() {
     done
     ln -s "$src" "$staged"
   else
-    staged="$(mktemp -d "$parent/.sts-copy-tmp-$(basename "$dest").XXXXXX")"
-    cp -R "$src/." "$staged/"
+    if [[ -d "$src" ]]; then
+      staged="$(mktemp -d "$parent/.sts-copy-tmp-$(basename "$dest").XXXXXX")"
+      cp -R "$src/." "$staged/"
+    else
+      staged="$(mktemp "$parent/.sts-copy-tmp-$(basename "$dest").XXXXXX")"
+      cp "$src" "$staged"
+    fi
   fi
 
   if [[ -e "$dest" || -L "$dest" ]]; then
@@ -213,14 +224,66 @@ install_scope() {
   done
 }
 
+install_command_tree() {
+  local src_root="$1"
+  local dest_root="$2"
+  if [[ ! -d "$src_root" ]]; then
+    return
+  fi
+  while IFS= read -r -d '' file; do
+    local rel="${file#$src_root/}"
+    copy_or_link "$file" "$dest_root/$rel"
+  done < <(find "$src_root" -type f -print0 | sort -z)
+}
+
+install_commands_scope() {
+  local scope="$1"
+  local base="$2"
+  local entries=()
+  if [[ "$scope" == "local" ]]; then
+    entries=(
+      "agents|$ROOT/dist/agents/.agents/commands|$base/.agents/commands"
+      "pi|$ROOT/dist/pi/.pi/prompts|$base/.pi/prompts"
+      "claude|$ROOT/dist/claude/.claude/commands|$base/.claude/commands"
+      "cursor|$ROOT/dist/cursor/.cursor/commands|$base/.cursor/commands"
+      "opencode|$ROOT/dist/opencode/.opencode/commands|$base/.opencode/commands"
+      "gemini|$ROOT/dist/gemini/.gemini/commands|$base/.gemini/commands"
+      "copilot|$ROOT/dist/copilot/.github/prompts|$base/.github/prompts"
+    )
+  else
+    entries=(
+      "agents|$ROOT/dist/agents/.agents/commands|$HOME/.agents/commands"
+      "pi|$ROOT/dist/pi/.pi/prompts|$HOME/.pi/agent/prompts"
+      "codex|$ROOT/dist/codex/.codex/prompts|$HOME/.codex/prompts"
+      "claude|$ROOT/dist/claude/.claude/commands|$HOME/.claude/commands"
+      "cursor|$ROOT/dist/cursor/.cursor/commands|$HOME/.cursor/commands"
+      "opencode|$ROOT/dist/opencode/.opencode/commands|$HOME/.config/opencode/commands"
+      "gemini|$ROOT/dist/gemini/.gemini/commands|$HOME/.gemini/commands"
+      "copilot|$ROOT/dist/copilot/.github/prompts|$HOME/.copilot/prompts"
+    )
+  fi
+  for entry in "${entries[@]}"; do
+    local key="${entry%%|*}"
+    local rest="${entry#*|}"
+    local src="${rest%%|*}"
+    local dest="${rest#*|}"
+    if [[ "$HARNESS" != "all" && "$HARNESS" != "$key" ]]; then
+      continue
+    fi
+    install_command_tree "$src" "$dest"
+  done
+}
+
 if [[ "$MODE" == "local" || "$MODE" == "both" ]]; then
   install_scope local "$TARGET"
+  install_commands_scope local "$TARGET"
   integrate_args=("--target" "$TARGET" "--sts-root" "$ROOT")
   if [[ "$DRY_RUN" == "true" ]]; then integrate_args+=("--dry-run"); fi
   bun run scripts/integrate-agents-md.ts "${integrate_args[@]}"
 fi
 if [[ "$MODE" == "global" || "$MODE" == "both" ]]; then
   install_scope global "$HOME"
+  install_commands_scope global "$HOME"
 fi
 if [[ "$SKIP_EXTERNAL" != "true" ]]; then
   external_args=("--mode" "$MODE" "--target" "$TARGET" "--harness" "$HARNESS")

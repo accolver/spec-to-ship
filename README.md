@@ -17,6 +17,7 @@ The installer asks whether to install locally, globally, both, or dry-run. It ad
 ## What gets installed
 
 - Core Open Agent Skills under selected harness skill directories.
+- STS slash command / prompt files such as `/sts`, `/sts:spec` where namespacing is supported, and dash aliases such as `/sts-spec` elsewhere.
 - A tiny `AGENTS.md` managed block pointing to `SPEC-TO-SHIP.md`.
 - Optional external Impeccable setup via `npx impeccable skills install`.
 
@@ -32,6 +33,18 @@ The installer asks whether to install locally, globally, both, or dry-run. It ad
 - `release` — CI, changelog, deploy readiness
 - `finish` — merge/PR decisions and worktree cleanup
 - `ui-ux-gate` — external Impeccable routing
+
+## Slash commands
+
+The only command most users need is:
+
+```text
+/sts
+```
+
+It continues the current STS workflow or asks what to work on. STS also ships step commands such as `/sts:spec`, `/sts:code`, `/sts:debug`, `/sts:review`, `/sts:release`, and `/sts:finish` for harnesses with namespaced slash command support. Harnesses without namespaces get dash aliases such as `/sts-spec`.
+
+See `SLASH_COMMANDS.md` for the compatibility matrix.
 
 ## Supported harness targets
 

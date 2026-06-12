@@ -35,11 +35,14 @@ HOME=/tmp/sts-home ./scripts/uninstall.sh --mode global --harness agents --dry-r
 
 - The STS managed block in local `AGENTS.md`.
 - STS-owned core skill directories or symlinks for the selected harnesses.
+- STS-owned slash command / prompt files such as `sts.md`, `sts-spec.md`, `sts/spec.md`, or `sts.toml` depending on harness.
 
 A skill path is removed only when ownership can be proven by either:
 
 - a symlink target under this repo's `skills/core/<skill>` directory, or
 - `SKILL.md` frontmatter/name plus `metadata.package: spec-to-ship` content.
+
+A command file is removed only when it matches an STS command filename and contains STS ownership metadata or generated STS markers.
 
 ## Backups and rollback
 

@@ -24,6 +24,19 @@ export function assertInstallMode(value: string): asserts value is "local" | "gl
   }
 }
 
+export type CommandLayoutKind = "markdown-namespaced" | "markdown-flat" | "gemini-toml" | "copilot-prompt";
+
+export const commandLayouts: Record<ApprovedHarness, { local?: string; global?: string; kind: CommandLayoutKind }> = {
+  agents: { local: ".agents/commands", global: "~/.agents/commands", kind: "markdown-flat" },
+  pi: { local: ".pi/prompts", global: "~/.pi/agent/prompts", kind: "markdown-flat" },
+  codex: { global: "~/.codex/prompts", kind: "markdown-flat" },
+  claude: { local: ".claude/commands", global: "~/.claude/commands", kind: "markdown-namespaced" },
+  cursor: { local: ".cursor/commands", global: "~/.cursor/commands", kind: "markdown-namespaced" },
+  opencode: { local: ".opencode/commands", global: "~/.config/opencode/commands", kind: "markdown-flat" },
+  gemini: { local: ".gemini/commands", global: "~/.gemini/commands", kind: "gemini-toml" },
+  copilot: { local: ".github/prompts", global: "~/.copilot/prompts", kind: "copilot-prompt" },
+};
+
 export function repoRoot(): string {
   return path.resolve(import.meta.dir, "..");
 }

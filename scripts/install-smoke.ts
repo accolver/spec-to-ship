@@ -42,6 +42,19 @@ function localSkillDir(target: string, harness: string): string {
   return path.join(target, dirs[harness]);
 }
 
+function localCommandDir(target: string, harness: string): string | null {
+  const dirs: Record<string, string> = {
+    agents: ".agents/commands",
+    pi: ".pi/prompts",
+    claude: ".claude/commands",
+    cursor: ".cursor/commands",
+    opencode: ".opencode/commands",
+    gemini: ".gemini/commands",
+    copilot: ".github/prompts",
+  };
+  return dirs[harness] ? path.join(target, dirs[harness]) : null;
+}
+
 function globalSkillDir(home: string, harness: string): string {
   const dirs: Record<string, string> = {
     agents: ".agents/skills",
@@ -56,12 +69,40 @@ function globalSkillDir(home: string, harness: string): string {
   return path.join(home, dirs[harness]);
 }
 
+function globalCommandDir(home: string, harness: string): string | null {
+  const dirs: Record<string, string> = {
+    agents: ".agents/commands",
+    pi: ".pi/agent/prompts",
+    codex: ".codex/prompts",
+    claude: ".claude/commands",
+    cursor: ".cursor/commands",
+    opencode: ".config/opencode/commands",
+    gemini: ".gemini/commands",
+    copilot: ".copilot/prompts",
+  };
+  return dirs[harness] ? path.join(home, dirs[harness]) : null;
+}
+
 function assertSkillSet(dir: string): void {
   for (const skill of approvedSkills) {
     const skillFile = path.join(dir, skill, "SKILL.md");
     if (!fs.existsSync(skillFile)) {
       throw new Error(`Missing installed skill file: ${skillFile}`);
     }
+  }
+}
+
+function assertCommandSet(dir: string, harness: string): void {
+  const files = harness === "gemini"
+    ? ["sts.toml", "sts/spec.toml", "sts/code.toml"]
+    : harness === "claude" || harness === "cursor"
+      ? ["sts.md", "sts/spec.md", "sts/code.md"]
+      : harness === "copilot"
+        ? ["sts.prompt.md", "sts-spec.prompt.md", "sts-code.prompt.md"]
+        : ["sts.md", "sts-spec.md", "sts-code.md"];
+  for (const file of files) {
+    const commandFile = path.join(dir, file);
+    if (!fs.existsSync(commandFile)) throw new Error(`Missing installed command file: ${commandFile}`);
   }
 }
 
@@ -85,6 +126,10 @@ fs.writeFileSync(path.join(localTarget, "AGENTS.md"), "# Existing instructions\n
 const localHome = path.join(runRoot, "home-local");
 run("local all copy", ["--mode", "local", "--target", localTarget, "--harness", "all", "--copy", "--skip-external-deps"], { home: localHome });
 for (const harness of approvedHarnesses) assertSkillSet(localSkillDir(localTarget, harness));
+for (const harness of approvedHarnesses) {
+  const commandDir = localCommandDir(localTarget, harness);
+  if (commandDir) assertCommandSet(commandDir, harness);
+}
 const agentsContent = fs.readFileSync(path.join(localTarget, "AGENTS.md"), "utf8");
 if (!agentsContent.includes("Keep me.") || (agentsContent.match(/spec-to-ship:start/g) ?? []).length !== 1) {
   throw new Error("AGENTS.md managed block was not inserted idempotently while preserving existing content.");
@@ -100,13 +145,19 @@ const focusedTarget = path.join(runRoot, "focused-agents");
 const focusedHome = path.join(runRoot, "home-focused");
 run("harness agents focused", ["--mode", "local", "--target", focusedTarget, "--harness", "agents", "--copy", "--skip-external-deps"], { home: focusedHome });
 assertSkillSet(localSkillDir(focusedTarget, "agents"));
+const focusedCommands = localCommandDir(focusedTarget, "agents");
+if (!focusedCommands) throw new Error("Missing agents command directory mapping");
+assertCommandSet(focusedCommands, "agents");
 if (fs.existsSync(localSkillDir(focusedTarget, "pi"))) throw new Error("Focused harness install created pi skills unexpectedly.");
+if (localCommandDir(focusedTarget, "pi") && fs.existsSync(localCommandDir(focusedTarget, "pi")!)) throw new Error("Focused harness install created pi commands unexpectedly.");
 
 const bothTarget = path.join(runRoot, "both-agents");
 const bothHome = path.join(runRoot, "home-both");
 run("mode both temp HOME", ["--mode", "both", "--target", bothTarget, "--harness", "agents", "--copy", "--skip-external-deps", "--yes"], { home: bothHome });
 assertSkillSet(localSkillDir(bothTarget, "agents"));
 assertSkillSet(globalSkillDir(bothHome, "agents"));
+assertCommandSet(localCommandDir(bothTarget, "agents")!, "agents");
+assertCommandSet(globalCommandDir(bothHome, "agents")!, "agents");
 
 const invalidTarget = path.join(runRoot, "invalid");
 run("invalid mode fails", ["--mode", "gloabl", "--target", invalidTarget, "--harness", "agents", "--skip-external-deps"], { home: path.join(runRoot, "home-invalid"), expectFailure: true });
