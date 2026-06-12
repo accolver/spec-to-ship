@@ -1,0 +1,41 @@
+{
+  "name": "release",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "release",
+    "ship",
+    "deploy",
+    "tag",
+    "publish",
+    "CI status",
+    "changelog",
+    "go live"
+  ],
+  "antiTriggers": [
+    "pre-implementation planning",
+    "mid-task debugging",
+    "review without release intent"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/release.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Validation and CI evidence are fresh",
+    "Release notes are scoped",
+    "Deploy approvals are explicit"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

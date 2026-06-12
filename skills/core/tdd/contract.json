@@ -1,0 +1,38 @@
+{
+  "name": "tdd",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "TDD",
+    "tests first",
+    "red green",
+    "regression test",
+    "behavior change"
+  ],
+  "antiTriggers": [
+    "review-only task",
+    "pure documentation edit",
+    "release notes only"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/test-report.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Failing evidence exists before implementation",
+    "Passing evidence is fresh",
+    "No-test exception is justified"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

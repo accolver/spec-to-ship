@@ -1,0 +1,43 @@
+{
+  "name": "ui-ux-gate",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "UI",
+    "UX",
+    "frontend",
+    "component",
+    "form",
+    "dashboard",
+    "accessibility",
+    "visual design",
+    "product experience"
+  ],
+  "antiTriggers": [
+    "backend-only change",
+    "CLI-only behavior",
+    "data migration without user-facing surface"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/spec.md",
+    ".spec-to-ship/features/<feature-id>/review.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Impeccable install state is known",
+    "Design requirements are in the spec",
+    "Review includes design QA evidence"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

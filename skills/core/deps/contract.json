@@ -1,0 +1,40 @@
+{
+  "name": "deps",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "dependency",
+    "package",
+    "library",
+    "upgrade",
+    "lockfile",
+    "license",
+    "supply chain"
+  ],
+  "antiTriggers": [
+    "no package changes",
+    "tool preference selection only",
+    "pure code review without deps"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/deps.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Alternatives are considered",
+    "License and maintenance are checked",
+    "Lockfile behavior is documented"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

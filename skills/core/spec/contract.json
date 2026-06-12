@@ -1,0 +1,38 @@
+{
+  "name": "spec",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "new feature",
+    "unclear requirements",
+    "risky change",
+    "acceptance criteria",
+    "UI/UX planning"
+  ],
+  "antiTriggers": [
+    "typo-only edit",
+    "already approved task list",
+    "pure release execution"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/spec.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Spec has explicit acceptance criteria",
+    "Non-goals and risks are documented",
+    "UI/UX work includes Impeccable routing evidence"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

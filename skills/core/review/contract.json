@@ -1,0 +1,39 @@
+{
+  "name": "review",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "review diff",
+    "PR review",
+    "pre-merge",
+    "code quality",
+    "acceptance criteria review",
+    "ready to merge"
+  ],
+  "antiTriggers": [
+    "initial requirements gathering",
+    "implementation before tests",
+    "release checklist only"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/review.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Findings have evidence",
+    "Spec compliance is checked",
+    "UI changes include Impeccable-informed review"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

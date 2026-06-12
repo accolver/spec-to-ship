@@ -1,0 +1,32 @@
+{
+  "version": "0.1.0",
+  "dependencies": {
+    "impeccable": {
+      "type": "agent-skill",
+      "source": "https://github.com/pbakaus/impeccable",
+      "installCommand": "npx impeccable skills install",
+      "postInstallInstruction": "Run /impeccable init inside your AI coding tool.",
+      "expectedSkillName": "impeccable",
+      "expectedLocalLocations": [
+        ".agents/skills/impeccable",
+        ".pi/skills/impeccable",
+        ".claude/skills/impeccable",
+        ".codex/skills/impeccable",
+        ".cursor/skills/impeccable",
+        ".opencode/skills/impeccable",
+        ".gemini/skills/impeccable",
+        ".github/skills/impeccable"
+      ],
+      "expectedGlobalLocations": [
+        "~/.agents/skills/impeccable",
+        "~/.pi/agent/skills/impeccable",
+        "~/.claude/skills/impeccable",
+        "~/.codex/skills/impeccable",
+        "~/.cursor/skills/impeccable",
+        "~/.config/opencode/skills/impeccable",
+        "~/.gemini/skills/impeccable",
+        "~/.copilot/skills/impeccable"
+      ]
+    }
+  }
+}

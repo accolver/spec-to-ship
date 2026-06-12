@@ -1,0 +1,38 @@
+{
+  "skill_name": "worktree",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "A normal worktree workflow request in an existing repo.",
+      "expected_output": "Uses the STS feature namespace, follows the skill process, and records required evidence.",
+      "files": [],
+      "assertions": [
+        "Mentions .spec-to-ship/features/<feature-id>",
+        "Does not claim completion without evidence",
+        "Stays within the skill boundary"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "A multi-concern worktree request involving parallel work, risk, or UI/UX where applicable.",
+      "expected_output": "Identifies risks and routes to adjacent STS skills only when appropriate.",
+      "files": [],
+      "assertions": [
+        "Identifies stop or approval gates",
+        "Names adjacent skills only when needed",
+        "Preserves namespaced artifacts"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "A near-miss request that should not over-trigger worktree.",
+      "expected_output": "Explains why another STS skill or no STS skill is more appropriate.",
+      "files": [],
+      "assertions": [
+        "Avoids over-triggering",
+        "Explains boundary",
+        "Does not perform unrelated tool-wrapper behavior"
+      ]
+    }
+  ]
+}

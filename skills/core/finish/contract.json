@@ -1,0 +1,41 @@
+{
+  "name": "finish",
+  "version": "0.1.0",
+  "category": "core",
+  "triggers": [
+    "finish",
+    "merge",
+    "open PR",
+    "update PR",
+    "abandon",
+    "clean up worktree",
+    "prune",
+    "wrap up"
+  ],
+  "antiTriggers": [
+    "work not verified",
+    "active implementation",
+    "unapproved destructive cleanup"
+  ],
+  "inputs": [
+    "user request",
+    "SPEC-TO-SHIP.md",
+    "project instructions",
+    "feature namespace artifacts"
+  ],
+  "outputs": [
+    ".spec-to-ship/features/<feature-id>/finish.md"
+  ],
+  "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
+  "verification": [
+    "Final status is checked",
+    "Approved option is recorded",
+    "Worktree cleanup is safe and evidenced"
+  ],
+  "stopRules": [
+    "Stop on unapproved scope change.",
+    "Stop on destructive operation without approval.",
+    "Stop when required evidence cannot be produced."
+  ],
+  "toolPolicy": "Use existing user/project tools and preferences; do not require bundled tool-wrapper skills."
+}

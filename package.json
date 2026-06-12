@@ -1,0 +1,18 @@
+{
+  "name": "spec-to-ship",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portable Open Agent Skills backbone for spec-to-ship AI coding workflows.",
+  "license": "MIT",
+  "scripts": {
+    "validate": "bun run scripts/validate-skills.ts && bun run scripts/validate-contracts.ts && bun run scripts/validate-external-deps.ts && bun run scripts/detect-overlap.ts",
+    "validate:skills": "bun run scripts/validate-skills.ts",
+    "validate:contracts": "bun run scripts/validate-contracts.ts",
+    "validate:external": "bun run scripts/validate-external-deps.ts",
+    "build:dist": "bun run scripts/build-dist.ts",
+    "build:dist:check": "bun run scripts/build-dist.ts --check",
+    "smoke": "bun run scripts/smoke-eval.ts"
+  },
+  "devDependencies": {}
+}
