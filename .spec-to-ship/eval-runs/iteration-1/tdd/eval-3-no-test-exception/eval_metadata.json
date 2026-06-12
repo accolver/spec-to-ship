@@ -1,0 +1,17 @@
+{
+  "id": 3,
+  "name": "no-test-exception",
+  "prompt": "Change a generated screenshot artifact where automated tests are technically impossible.",
+  "expected_output": "Records no-test exception with alternate proof, risk, and follow-up.",
+  "files": [],
+  "assertions": [
+    "documents no-test exception",
+    "provides alternate proof",
+    "records residual risk"
+  ],
+  "skill_name": "tdd",
+  "configurations": [
+    "without_skill",
+    "with_skill"
+  ]
+}

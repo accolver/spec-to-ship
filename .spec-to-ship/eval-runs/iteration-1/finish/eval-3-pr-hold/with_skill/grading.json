@@ -1,0 +1,26 @@
+{
+  "eval_id": 3,
+  "eval_name": "pr-hold",
+  "configuration": "with_skill",
+  "output_path": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "presents options",
+      "passed": true,
+      "evidence": "Lists hold for review, update PR only, and abandon options, recommending hold."
+    },
+    {
+      "assertion": "does not merge without approval",
+      "passed": true,
+      "evidence": "States it will not merge because reviewer approval is missing."
+    },
+    {
+      "assertion": "retains needed worktree",
+      "passed": true,
+      "evidence": "States branch/worktree are retained intentionally and no cleanup happens until approval or another explicit decision."
+    }
+  ],
+  "passed_assertions": 3,
+  "total_assertions": 3,
+  "pass_rate": 1
+}

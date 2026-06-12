@@ -1,0 +1,82 @@
+{
+  "skill_name": "spec",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/spec",
+  "generated_at": "2026-06-12",
+  "summary": {
+    "with_skill": {
+      "passed_assertions": 11,
+      "total_assertions": 11,
+      "failed_assertions": 0,
+      "pass_rate": 1.0
+    },
+    "without_skill": {
+      "passed_assertions": 7,
+      "total_assertions": 11,
+      "failed_assertions": 4,
+      "pass_rate": 0.6364
+    },
+    "delta_pass_rate": 0.3636,
+    "delta_percentage_points": 36.36
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "vague-ui-impeccable",
+      "assertions": 4,
+      "without_skill": {
+        "passed_assertions": 1,
+        "failed_assertions": 3,
+        "total_assertions": 4,
+        "pass_rate": 0.25
+      },
+      "with_skill": {
+        "passed_assertions": 4,
+        "failed_assertions": 0,
+        "total_assertions": 4,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.75
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "risky-migration-approval",
+      "assertions": 4,
+      "without_skill": {
+        "passed_assertions": 4,
+        "failed_assertions": 0,
+        "total_assertions": 4,
+        "pass_rate": 1.0
+      },
+      "with_skill": {
+        "passed_assertions": 4,
+        "failed_assertions": 0,
+        "total_assertions": 4,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.0
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "approved-spec-near-miss",
+      "assertions": 3,
+      "without_skill": {
+        "passed_assertions": 2,
+        "failed_assertions": 1,
+        "total_assertions": 3,
+        "pass_rate": 0.6667
+      },
+      "with_skill": {
+        "passed_assertions": 3,
+        "failed_assertions": 0,
+        "total_assertions": 3,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.3333
+    }
+  ],
+  "notes": [
+    "With-skill passed all assertions in iteration 1.",
+    "The risky migration eval was non-discriminating in this run because the baseline also passed all assertions; future evals should add STS-specific namespace, approval-status, verification-plan, and interface-inventory expectations."
+  ]
+}

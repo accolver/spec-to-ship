@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "misleading-ci",
+  "configuration": "without_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 4,
+  "passed_assertions": 2,
+  "failed_assertions": 2,
+  "pass_rate": 0.5,
+  "assertions": [
+    {
+      "assertion": "records environment/timing evidence",
+      "pass": true,
+      "evidence": "Mentions Monday-only timing and proposes comparing CI image/cache/browser versions plus timestamps and auth response timing."
+    },
+    {
+      "assertion": "ranked hypotheses",
+      "pass": true,
+      "evidence": "Lists likely root causes in priority order: test account reset/lockout, date weekly boundary, CI cache/dependency refresh, external auth slowness."
+    },
+    {
+      "assertion": "disconfirmed leads",
+      "pass": false,
+      "evidence": "No lead is ruled out or explicitly disconfirmed; the response only lists possible causes and next steps."
+    },
+    {
+      "assertion": "root cause evidence",
+      "pass": false,
+      "evidence": "Does not identify a proven root cause or cite file, line, config, data, log, timing, or environment evidence."
+    }
+  ]
+}

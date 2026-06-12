@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "approved-spec-plan",
+  "configuration": "with_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 4,
+  "passed": 4,
+  "failed": 0,
+  "pass_rate": 1,
+  "results": [
+    {
+      "assertion": "includes dependency graph",
+      "status": "PASS",
+      "evidence": "Response contains a Dependency graph section with an explicit text graph from approved spec through slices and shared constraints."
+    },
+    {
+      "assertion": "assigns owned files",
+      "status": "PASS",
+      "evidence": "Parallelization summary and each task list owned files/globs and assign ownership such as Backend owner, UI owner, and Integration owner."
+    },
+    {
+      "assertion": "includes validation commands",
+      "status": "PASS",
+      "evidence": "Each task includes validation commands and the plan includes a minimum validation contract."
+    },
+    {
+      "assertion": "includes rollback notes",
+      "status": "PASS",
+      "evidence": "Each task includes a rollback note and the plan ends with cross-slice rollback notes."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "two-writer-setup",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 4,
+  "total": 4,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "records owner and branch",
+      "passed": true,
+      "evidence": "The worktrees.md table maps `API writer`, `UI writer`, and `Integration owner` to branches such as `<feature-id>-api`, `<feature-id>-ui`, and `<feature-id>-integration`."
+    },
+    {
+      "assertion": "identifies lockfile conflict",
+      "passed": true,
+      "evidence": "Calls out `package-lock.json`, `bun.lock`, `pnpm-lock.yaml`, `yarn.lock`, and package manifests as shared-file risks."
+    },
+    {
+      "assertion": "requires shared-file owner",
+      "passed": true,
+      "evidence": "States: `Assign exactly one owner before either writer starts` and recommends a separate integration/lockfile owner."
+    },
+    {
+      "assertion": "writes worktrees.md",
+      "passed": true,
+      "evidence": "Includes an artifact section: `Write .spec-to-ship/features/<feature-id>/worktrees.md before launching writers`."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "approved-spec-plan",
+  "prompt": "Given an approved spec for password reset in .spec-to-ship/features/20260612-auth/spec.md, create an implementation plan.",
+  "expected_output": "Produces dependency graph, vertical slices, file ownership, validation, rollback, and next skill routing.",
+  "assertions": [
+    "includes dependency graph",
+    "assigns owned files",
+    "includes validation commands",
+    "includes rollback notes"
+  ]
+}

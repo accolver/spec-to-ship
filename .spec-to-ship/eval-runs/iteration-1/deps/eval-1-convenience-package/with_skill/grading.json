@@ -1,0 +1,25 @@
+{
+  "eval_id": 1,
+  "eval_name": "convenience-package",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "considers standard library/no-dependency alternative",
+      "status": "PASS",
+      "evidence": "Response recommends String.prototype.padStart/padEnd or a tiny local helper and rejects automatic dependency addition."
+    },
+    {
+      "assertion": "checks license/maintenance",
+      "status": "PASS",
+      "evidence": "Response includes License result and Maintenance evidence sections, including license policy, registry activity, maintainer cadence, bus factor, provenance, postinstall scripts, and transitive dependencies."
+    },
+    {
+      "assertion": "records decision",
+      "status": "PASS",
+      "evidence": "Response provides a proposed deps.md record and a Decision section saying to reject/escalate the new dependency request."
+    }
+  ]
+}

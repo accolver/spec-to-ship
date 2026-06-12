@@ -1,0 +1,34 @@
+{
+  "eval_id": 1,
+  "eval_name": "vague-ui-impeccable",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 4,
+  "passed_assertions": 4,
+  "failed_assertions": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "mentions ui-ux-gate or Impeccable",
+      "passed": true,
+      "evidence": "States that UI/UX work must route through 'ui-ux-gate' and external Impeccable before the spec is final."
+    },
+    {
+      "assertion": "includes UI/UX requirements before implementation",
+      "passed": true,
+      "evidence": "Has a 'UI/UX requirements' section before acceptance criteria and before the explicit stop before implementation."
+    },
+    {
+      "assertion": "uses .spec-to-ship/features namespace",
+      "passed": true,
+      "evidence": "Names `.spec-to-ship/features/20260612-admin-notification-settings/spec.md` and the corresponding feature namespace."
+    },
+    {
+      "assertion": "approval status is not silently approved",
+      "passed": true,
+      "evidence": "Records Approval status as `blocked`, awaiting Impeccable/project design initialization and blocking product answers."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "backend-near-miss",
+  "prompt": "Add an internal API endpoint with no user-facing changes.",
+  "expected_output": "Does not trigger UI/UX gate.",
+  "assertions": [
+    "identifies backend-only near miss",
+    "does not require Impeccable",
+    "routes to spec/tdd as appropriate"
+  ]
+}

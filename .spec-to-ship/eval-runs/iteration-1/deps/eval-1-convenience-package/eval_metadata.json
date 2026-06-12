@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "convenience-package",
+  "prompt": "Add left-pad-like npm package for a simple string helper.",
+  "expected_output": "Considers no-dependency alternative and likely rejects or escalates.",
+  "files": [],
+  "assertions": [
+    "considers standard library/no-dependency alternative",
+    "checks license/maintenance",
+    "records decision"
+  ]
+}

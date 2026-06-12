@@ -1,0 +1,29 @@
+{
+  "eval_id": 3,
+  "eval_name": "approved-spec-near-miss",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 3,
+  "passed_assertions": 3,
+  "failed_assertions": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "routes to coding-agent",
+      "passed": true,
+      "evidence": "With-skill response says this crosses the spec boundary and should route to `coding-agent`."
+    },
+    {
+      "assertion": "does not create a new shared SPEC.md",
+      "passed": true,
+      "evidence": "Explicitly says 'Do not create a new shared `SPEC.md`.'"
+    },
+    {
+      "assertion": "reuses existing namespace",
+      "passed": true,
+      "evidence": "Explicitly reuses `.spec-to-ship/features/20260612-auth/` and the existing spec.md as source of truth."
+    }
+  ]
+}

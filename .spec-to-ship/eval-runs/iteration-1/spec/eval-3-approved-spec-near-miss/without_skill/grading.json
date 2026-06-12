@@ -1,0 +1,29 @@
+{
+  "eval_id": 3,
+  "eval_name": "approved-spec-near-miss",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 3,
+  "passed_assertions": 2,
+  "failed_assertions": 1,
+  "pass_rate": 0.6667,
+  "results": [
+    {
+      "assertion": "routes to coding-agent",
+      "passed": false,
+      "evidence": "Baseline breaks the spec into tasks itself and does not mention routing or handing off to coding-agent."
+    },
+    {
+      "assertion": "does not create a new shared SPEC.md",
+      "passed": true,
+      "evidence": "Baseline does not create or reference a new shared root SPEC.md; it uses the provided approved spec path."
+    },
+    {
+      "assertion": "reuses existing namespace",
+      "passed": true,
+      "evidence": "Baseline says it will use `.spec-to-ship/features/20260612-auth/spec.md` as the source of truth."
+    }
+  ]
+}

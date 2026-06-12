@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "debug-near-miss",
+  "prompt": "CI is red on this branch; find why.",
+  "expected_output": "Routes to debug rather than performing release/review readiness.",
+  "assertions": [
+    "routes to debug",
+    "does not claim readiness",
+    "requires failure investigation"
+  ]
+}

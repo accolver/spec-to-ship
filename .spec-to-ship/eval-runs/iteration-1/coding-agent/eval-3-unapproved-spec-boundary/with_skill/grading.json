@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "unapproved-spec-boundary",
+  "configuration": "with_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate": 1,
+  "results": [
+    {
+      "assertion": "does not plan implementation as approved",
+      "status": "PASS",
+      "evidence": "Response explicitly states no implementation planning as approved, no file ownership assignments, and no coding handoff prompts."
+    },
+    {
+      "assertion": "mentions approval blocker",
+      "status": "PASS",
+      "evidence": "Response title and body identify Approval Blocker and pending-user-approval status."
+    },
+    {
+      "assertion": "routes back to spec or asks user",
+      "status": "PASS",
+      "evidence": "Response says to route back to spec or ask the user to approve, and includes a suggested approval question."
+    }
+  ]
+}

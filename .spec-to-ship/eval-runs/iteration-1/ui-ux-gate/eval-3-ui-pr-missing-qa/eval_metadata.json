@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "ui-pr-missing-qa",
+  "prompt": "Review a settings page PR with no keyboard, responsive, or copy evidence.",
+  "expected_output": "Requires Impeccable-informed critique/audit/polish evidence.",
+  "assertions": [
+    "requires design QA evidence",
+    "mentions accessibility/responsive/copy",
+    "records review evidence"
+  ]
+}

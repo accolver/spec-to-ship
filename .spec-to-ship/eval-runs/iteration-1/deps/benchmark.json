@@ -1,0 +1,78 @@
+{
+  "skill_name": "deps",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/deps",
+  "summary": {
+    "without_skill": {
+      "passed": 5,
+      "total": 9,
+      "pass_rate": 0.5556
+    },
+    "with_skill": {
+      "passed": 9,
+      "total": 9,
+      "pass_rate": 1.0
+    },
+    "delta": {
+      "pass_rate": 0.4444,
+      "percentage_points": 44.44
+    }
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "convenience-package",
+      "without_skill": {
+        "passed": 1,
+        "total": 3,
+        "pass_rate": 0.3333
+      },
+      "with_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": 0.6667
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "lockfile-upgrade",
+      "without_skill": {
+        "passed": 1,
+        "total": 3,
+        "pass_rate": 0.3333
+      },
+      "with_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": 0.6667
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "package-manager-near-miss",
+      "without_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "with_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": 0.0
+    }
+  ],
+  "timing": {
+    "exact_timing_available": false,
+    "note": "Placeholder timing.json files were written for each run because exact subagent timing was unavailable in this inline eval."
+  },
+  "top_fixes": [
+    "Generic baseline missed explicit license/maintenance checks for convenience packages; keep dependency-health checks prominent.",
+    "Generic baseline missed a recorded dependency decision/deps.md artifact; keep artifact recording mandatory for triggered dependency changes.",
+    "Generic baseline mentioned lockfile refresh but not lockfile behavior provenance; keep direct-upgrade vs override/resolution vs lockfile-only documentation explicit.",
+    "Package-manager near-miss passed both configs; future evals could make this more discriminating or retain it only as an over-trigger guard."
+  ]
+}

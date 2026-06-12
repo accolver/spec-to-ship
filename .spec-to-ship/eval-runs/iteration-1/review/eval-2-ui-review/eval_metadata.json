@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "ui-review",
+  "prompt": "Review a dashboard UI PR with no accessibility or responsive evidence.",
+  "expected_output": "Requires Impeccable-informed UI/UX review evidence.",
+  "assertions": [
+    "mentions ui-ux-gate or Impeccable",
+    "flags missing accessibility/responsive evidence",
+    "classifies finding"
+  ]
+}

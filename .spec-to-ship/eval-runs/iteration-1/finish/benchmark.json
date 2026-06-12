@@ -1,0 +1,77 @@
+{
+  "skill_name": "finish",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/finish",
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "clean-merged",
+      "configurations": {
+        "without_skill": {
+          "passed_assertions": 0,
+          "total_assertions": 3,
+          "pass_rate": 0
+        },
+        "with_skill": {
+          "passed_assertions": 3,
+          "total_assertions": 3,
+          "pass_rate": 1
+        }
+      },
+      "delta": 1
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "dirty-unmerged",
+      "configurations": {
+        "without_skill": {
+          "passed_assertions": 0,
+          "total_assertions": 3,
+          "pass_rate": 0
+        },
+        "with_skill": {
+          "passed_assertions": 3,
+          "total_assertions": 3,
+          "pass_rate": 1
+        }
+      },
+      "delta": 1
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "pr-hold",
+      "configurations": {
+        "without_skill": {
+          "passed_assertions": 1,
+          "total_assertions": 3,
+          "pass_rate": 0.3333333333333333
+        },
+        "with_skill": {
+          "passed_assertions": 3,
+          "total_assertions": 3,
+          "pass_rate": 1
+        }
+      },
+      "delta": 0.6666666666666667
+    }
+  ],
+  "aggregate": {
+    "without_skill": {
+      "passed_assertions": 1,
+      "total_assertions": 9,
+      "pass_rate": 0.1111111111111111
+    },
+    "with_skill": {
+      "passed_assertions": 9,
+      "total_assertions": 9,
+      "pass_rate": 1
+    },
+    "delta": 0.8888888888888888
+  },
+  "top_fixes": [
+    "Skill outputs passed all current assertions; no urgent finish skill change required from iteration 1.",
+    "Consider adding a compact finish.md template so agents consistently record verification, decision, commands, and final state.",
+    "Consider adding explicit example commands for merged-state checks (`git branch --merged` or merge-base) and exact-path worktree removal.",
+    "Consider strengthening refusal wording around dirty/unmerged worktrees and `--force` deletion."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "eval_id": 3,
+  "eval_name": "no-test-exception",
+  "configuration": "without_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "documents no-test exception",
+      "passed": false,
+      "evidence": "Response says tests are not practical but does not record a formal no-test exception artifact."
+    },
+    {
+      "assertion": "provides alternate proof",
+      "passed": true,
+      "evidence": "Response proposes manual before/after inspection and artifact diff/path review."
+    },
+    {
+      "assertion": "records residual risk",
+      "passed": false,
+      "evidence": "Response does not identify residual risk or follow-up debt."
+    }
+  ],
+  "passed": 1,
+  "total": 3,
+  "pass_rate": 0.3333333333333333
+}

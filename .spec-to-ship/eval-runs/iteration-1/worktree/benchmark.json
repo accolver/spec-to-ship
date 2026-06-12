@@ -1,0 +1,91 @@
+{
+  "skill_name": "worktree",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/worktree",
+  "generated_at": "2026-06-12",
+  "grading_method": "manual assertion check with evidence in per-run grading.json files",
+  "timing": {
+    "exact_timing_available": false,
+    "note": "timing.json files contain placeholders because exact subagent timing was unavailable"
+  },
+  "summary": {
+    "assertion_weighted": {
+      "with_skill": {
+        "passed": 10,
+        "total": 10,
+        "pass_rate": 1.0
+      },
+      "without_skill": {
+        "passed": 5,
+        "total": 10,
+        "pass_rate": 0.5
+      },
+      "delta": 0.5,
+      "delta_percentage_points": 50.0
+    },
+    "eval_mean": {
+      "with_skill_pass_rate": 1.0,
+      "without_skill_pass_rate": 0.5277777778,
+      "delta": 0.4722222222,
+      "delta_percentage_points": 47.22222222
+    }
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "two-writer-setup",
+      "assertions": 4,
+      "with_skill": {
+        "passed": 4,
+        "total": 4,
+        "pass_rate": 1.0
+      },
+      "without_skill": {
+        "passed": 1,
+        "total": 4,
+        "pass_rate": 0.25
+      },
+      "delta": 0.75,
+      "notes": "Skill adds explicit worktrees.md artifact and shared lockfile owner before writers start."
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "dirty-checkout",
+      "assertions": 3,
+      "with_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "without_skill": {
+        "passed": 1,
+        "total": 3,
+        "pass_rate": 0.3333333333
+      },
+      "delta": 0.6666666667,
+      "notes": "Skill adds dirty-status preflight and a blocked approval gate before setup."
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "read-only-near-miss",
+      "assertions": 3,
+      "with_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "without_skill": {
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": 0.0,
+      "notes": "Non-discriminating eval: generic baseline already avoids worktree creation for read-only investigation."
+    }
+  ],
+  "top_fixes": [
+    "No immediate SKILL.md fix is indicated by this iteration because with-skill passed all assertions.",
+    "Eval 3 is non-discriminating; make it harder or add assertions that test STS-specific routing/artifact discipline if the goal is measuring skill lift.",
+    "If refining the skill, consider emphasizing dirty-primary stop conditions and shared-file ownership near the top because these drove the largest baseline failures."
+  ]
+}

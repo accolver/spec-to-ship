@@ -1,0 +1,43 @@
+{
+  "skill_name": "release",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/release",
+  "summary": {
+    "without_skill": {
+      "passed": 6,
+      "total": 9,
+      "pass_rate": 0.6667
+    },
+    "with_skill": {
+      "passed": 9,
+      "total": 9,
+      "pass_rate": 1.0
+    },
+    "delta": 0.3333,
+    "delta_percentage_points": 33.33
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "stale-ci",
+      "without_skill": { "passed": 2, "total": 3, "pass_rate": 0.6667 },
+      "with_skill": { "passed": 3, "total": 3, "pass_rate": 1.0 },
+      "delta": 0.3333
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "migration-release",
+      "without_skill": { "passed": 2, "total": 3, "pass_rate": 0.6667 },
+      "with_skill": { "passed": 3, "total": 3, "pass_rate": 1.0 },
+      "delta": 0.3333
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "red-ci-near-miss",
+      "without_skill": { "passed": 2, "total": 3, "pass_rate": 0.6667 },
+      "with_skill": { "passed": 3, "total": 3, "pass_rate": 1.0 },
+      "delta": 0.3333
+    }
+  ],
+  "timing_note": "Exact subagent timing was unavailable because this was run inline; timing.json placeholders were written for each run."
+}

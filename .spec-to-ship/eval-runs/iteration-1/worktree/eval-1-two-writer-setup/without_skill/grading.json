@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "two-writer-setup",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 1,
+  "total": 4,
+  "pass_rate": 0.25,
+  "assertions": [
+    {
+      "assertion": "records owner and branch",
+      "passed": false,
+      "evidence": "Response lists branch names (`feature/api-slice`, `feature/ui-slice`) but does not record named owner-to-branch assignments or an artifact."
+    },
+    {
+      "assertion": "identifies lockfile conflict",
+      "passed": true,
+      "evidence": "States: `expect the package lockfile to conflict and resolve it during integration.`"
+    },
+    {
+      "assertion": "requires shared-file owner",
+      "passed": false,
+      "evidence": "Response defers lockfile resolution to integration but does not require one named owner before writers start."
+    },
+    {
+      "assertion": "writes worktrees.md",
+      "passed": false,
+      "evidence": "No `worktrees.md` artifact is mentioned or written."
+    }
+  ]
+}

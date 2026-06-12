@@ -1,0 +1,17 @@
+{
+  "id": 2,
+  "name": "unexpected-pass",
+  "prompt": "I added a new test for invoice rounding but it already passes before code changes. Continue with implementation.",
+  "expected_output": "Stops and revises assumptions/test instead of implementing.",
+  "files": [],
+  "assertions": [
+    "detects unexpected pass",
+    "does not implement blindly",
+    "updates assumptions or test plan"
+  ],
+  "skill_name": "tdd",
+  "configurations": [
+    "without_skill",
+    "with_skill"
+  ]
+}

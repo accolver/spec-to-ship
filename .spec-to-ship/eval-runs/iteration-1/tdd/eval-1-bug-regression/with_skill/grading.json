@@ -1,0 +1,31 @@
+{
+  "eval_id": 1,
+  "eval_name": "bug-regression",
+  "configuration": "with_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "red evidence before implementation",
+      "passed": true,
+      "evidence": "Includes a focused red command and failing output excerpt before implementation."
+    },
+    {
+      "assertion": "expected failure reason",
+      "passed": true,
+      "evidence": "States the expected failure reason: expired token was accepted/success instead of rejected with RESET_TOKEN_EXPIRED."
+    },
+    {
+      "assertion": "green evidence after fix",
+      "passed": true,
+      "evidence": "Includes focused and broader green commands with passing output excerpt after the minimal fix."
+    },
+    {
+      "assertion": "test-report.md",
+      "passed": true,
+      "evidence": "Provides the `.spec-to-ship/features/<feature-id>/test-report.md` artifact content."
+    }
+  ],
+  "passed": 4,
+  "total": 4,
+  "pass_rate": 1.0
+}

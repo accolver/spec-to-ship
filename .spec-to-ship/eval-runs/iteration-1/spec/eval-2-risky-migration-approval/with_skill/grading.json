@@ -1,0 +1,34 @@
+{
+  "eval_id": 2,
+  "eval_name": "risky-migration-approval",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 4,
+  "passed_assertions": 4,
+  "failed_assertions": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "records migration/data risks",
+      "passed": true,
+      "evidence": "With-skill response records data, API, authorization, operational, rollback risks and migration assumptions."
+    },
+    {
+      "assertion": "lists interfaces touched",
+      "passed": true,
+      "evidence": "Includes an explicit '### Interfaces touched' section covering DB, API, SDK/docs, webhooks, jobs, auth, caches, analytics, logs, tooling, and tests."
+    },
+    {
+      "assertion": "includes acceptance criteria",
+      "passed": true,
+      "evidence": "Includes an '### Acceptance criteria' checklist with seven observable criteria."
+    },
+    {
+      "assertion": "stops for approval before implementation",
+      "passed": true,
+      "evidence": "States approval status `pending-user-approval` and says not to implement until spec, compatibility policy, runbook, and verification plan are approved."
+    }
+  ]
+}

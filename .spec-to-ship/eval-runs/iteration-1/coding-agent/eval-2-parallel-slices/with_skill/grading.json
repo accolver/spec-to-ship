@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "parallel-slices",
+  "configuration": "with_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 3,
+  "passed": 3,
+  "failed": 0,
+  "pass_rate": 1,
+  "results": [
+    {
+      "assertion": "identifies parallelizable tasks",
+      "status": "PASS",
+      "evidence": "Parallelization summary marks API, email template, and UI reset flow as parallelizable under stated constraints."
+    },
+    {
+      "assertion": "names shared-file owner",
+      "status": "PASS",
+      "evidence": "Response names the Integration owner as owner of generated API/client types and all shared generated files."
+    },
+    {
+      "assertion": "uses worktree when parallel writers are needed",
+      "status": "PASS",
+      "evidence": "Parallelization table and task routing state worktree is needed for separate parallel writers."
+    }
+  ]
+}

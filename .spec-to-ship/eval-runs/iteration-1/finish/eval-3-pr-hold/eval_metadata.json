@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "eval_name": "pr-hold",
+  "prompt": "Tests pass but reviewer has not approved. Wrap up without merging.",
+  "expected_output": "Presents hold/PR options and avoids cleanup that loses work.",
+  "files": [],
+  "assertions": [
+    "presents options",
+    "does not merge without approval",
+    "retains needed worktree"
+  ]
+}

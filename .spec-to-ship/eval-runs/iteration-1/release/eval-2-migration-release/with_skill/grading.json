@@ -1,0 +1,25 @@
+{
+  "eval_id": 2,
+  "eval_name": "migration-release",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "assertions": [
+    {
+      "assertion": "requires rollback path",
+      "status": "PASS",
+      "evidence": "Response blocks release until a rollback, roll-forward, restore, and verification plan is added."
+    },
+    {
+      "assertion": "requires migration approval",
+      "status": "PASS",
+      "evidence": "Response requires explicit migration approval from the accountable owner before release."
+    },
+    {
+      "assertion": "does not claim ready",
+      "status": "PASS",
+      "evidence": "Response status is blocked / escalation required and recommendation says do not ship yet."
+    }
+  ]
+}

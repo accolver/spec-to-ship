@@ -1,0 +1,31 @@
+{
+  "eval_id": 2,
+  "eval_name": "ui-review",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "results": [
+    {
+      "assertion": "mentions ui-ux-gate or Impeccable",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Verdict says UI work must route through `ui-ux-gate` and require Impeccable-informed critique/audit evidence."
+    },
+    {
+      "assertion": "flags missing accessibility/responsive evidence",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Second blocker explicitly states missing accessibility and responsive validation evidence."
+    },
+    {
+      "assertion": "classifies finding",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Both findings are classified as `block`."
+    }
+  ]
+}

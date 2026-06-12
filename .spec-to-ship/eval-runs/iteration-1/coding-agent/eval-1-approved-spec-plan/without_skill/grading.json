@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "approved-spec-plan",
+  "configuration": "without_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 4,
+  "passed": 1,
+  "failed": 3,
+  "pass_rate": 0.25,
+  "results": [
+    {
+      "assertion": "includes dependency graph",
+      "status": "FAIL",
+      "evidence": "Response lists sequential proposed steps but has no explicit dependency graph, ordering constraints, or graph-like dependency section."
+    },
+    {
+      "assertion": "assigns owned files",
+      "status": "FAIL",
+      "evidence": "Response lists likely files to inspect/change but does not assign ownership or owned file boundaries to tasks or agents."
+    },
+    {
+      "assertion": "includes validation commands",
+      "status": "PASS",
+      "evidence": "Validation section includes bun test, bun run typecheck, and bun run lint."
+    },
+    {
+      "assertion": "includes rollback notes",
+      "status": "FAIL",
+      "evidence": "No rollback section or rollback notes are present."
+    }
+  ]
+}

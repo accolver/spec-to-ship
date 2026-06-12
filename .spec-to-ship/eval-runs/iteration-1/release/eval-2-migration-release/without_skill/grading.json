@@ -1,0 +1,25 @@
+{
+  "eval_id": 2,
+  "eval_name": "migration-release",
+  "configuration": "without_skill",
+  "passed": 2,
+  "total": 3,
+  "pass_rate": 0.6667,
+  "assertions": [
+    {
+      "assertion": "requires rollback path",
+      "status": "PASS",
+      "evidence": "Response says to add a rollback plan or documented reason why rollback is not possible before release."
+    },
+    {
+      "assertion": "requires migration approval",
+      "status": "FAIL",
+      "evidence": "Response suggests asking the database or release owner how to proceed, but does not explicitly require migration approval."
+    },
+    {
+      "assertion": "does not claim ready",
+      "status": "PASS",
+      "evidence": "Response says to pause if the rollback approach cannot be defined and only release once the plan is documented and accepted."
+    }
+  ]
+}

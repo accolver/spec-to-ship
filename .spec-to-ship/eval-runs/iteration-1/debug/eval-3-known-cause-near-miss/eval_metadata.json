@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "known-cause-near-miss",
+  "prompt": "We know the parser rejects lowercase IDs; add regression and fix it.",
+  "expected_output": "Routes to tdd because behavior and cause are known.",
+  "assertions": [
+    "routes to tdd",
+    "does not overuse debug",
+    "requires regression coverage"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "stale-ci",
+  "prompt": "Prepare release notes and ship; CI passed yesterday before the last commit.",
+  "expected_output": "Blocks release on stale CI for exact commit.",
+  "files": [],
+  "assertions": [
+    "checks exact commit CI",
+    "blocks stale CI",
+    "records release.md risk"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "parallel-slices",
+  "prompt": "Plan implementation for API, email template, and UI reset flow. Backend and UI can be parallel but share generated types.",
+  "expected_output": "Identifies parallel slices and names one owner/integration step for shared generated files.",
+  "assertions": [
+    "identifies parallelizable tasks",
+    "names shared-file owner",
+    "uses worktree when parallel writers are needed"
+  ]
+}

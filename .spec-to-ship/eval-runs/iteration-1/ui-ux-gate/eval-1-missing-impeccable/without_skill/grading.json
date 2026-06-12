@@ -1,0 +1,28 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-impeccable",
+  "configuration": "without_skill",
+  "summary": {
+    "passed": 1,
+    "failed": 2,
+    "total": 3,
+    "pass_rate": 0.333333
+  },
+  "assertions": [
+    {
+      "assertion": "checks Impeccable install state",
+      "status": "FAIL",
+      "evidence": "The response states 'Impeccable is not installed in this environment' but does not describe checking installed skill locations or verifying the install/init state."
+    },
+    {
+      "assertion": "does not run npx without approval",
+      "status": "PASS",
+      "evidence": "The response does not run or propose running an npx install command automatically."
+    },
+    {
+      "assertion": "records blocker or degraded risk",
+      "status": "FAIL",
+      "evidence": "The response says it would 'proceed using standard product and accessibility heuristics' and 'mark the design for later review'; it does not block the workflow or record a clear degraded-mode risk."
+    }
+  ]
+}

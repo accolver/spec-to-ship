@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "read-only-near-miss",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "avoids worktree creation",
+      "passed": true,
+      "evidence": "States: `Do not create a worktree for this request.`"
+    },
+    {
+      "assertion": "explains read-only scope",
+      "passed": true,
+      "evidence": "Explains the scope is explicitly read-only and worktree setup would add overhead without reducing writer risk."
+    },
+    {
+      "assertion": "routes to research/context rather than writer setup",
+      "passed": true,
+      "evidence": "Says to route this as `research/context gathering instead of writer setup` and gives read-only search commands."
+    }
+  ]
+}

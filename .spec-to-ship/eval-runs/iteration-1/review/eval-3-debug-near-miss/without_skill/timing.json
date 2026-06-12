@@ -1,0 +1,7 @@
+{
+  "placeholder": true,
+  "note": "Exact timing unavailable for inline eval generation; placeholder recorded per task instruction.",
+  "total_tokens": null,
+  "duration_ms": null,
+  "total_duration_seconds": null
+}

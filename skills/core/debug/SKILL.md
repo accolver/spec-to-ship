@@ -29,13 +29,14 @@ Find and prove root cause through reproduction, hypotheses, evidence, minimal fi
 - Use `debug` when the cause is unknown or symptoms are misleading.
 - Once root cause is proven and behavior is known, route the fix through `tdd` for regression coverage.
 - Do not quarantine flaky tests or loosen assertions without approval and follow-up risk.
+- If the prompt lacks logs, code, reproduction steps, or a runnable environment, produce a debug-report skeleton and mark root cause as unproven instead of inventing certainty.
 
 ## Process
 
 1. Capture the symptom and reproduction command or steps.
 2. List ranked hypotheses and choose one to test first.
 3. Gather evidence with the smallest useful command or instrumentation.
-4. Identify root cause with file, line, config, data, or environment evidence.
+4. Identify root cause with file, line, config, data, or environment evidence; if evidence is insufficient, explicitly state that root cause is unproven.
 5. Add regression coverage before or with the fix.
 6. Record the report in `debug-report.md` or `test-report.md`.
 

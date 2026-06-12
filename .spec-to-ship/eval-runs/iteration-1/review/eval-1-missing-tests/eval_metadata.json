@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-tests",
+  "prompt": "Review a PR that satisfies the UI spec visually but has no tests for changed behavior.",
+  "expected_output": "Blocks or should-fixes missing tests with evidence.",
+  "assertions": [
+    "explicit verdict",
+    "missing tests finding",
+    "evidence-backed severity"
+  ]
+}

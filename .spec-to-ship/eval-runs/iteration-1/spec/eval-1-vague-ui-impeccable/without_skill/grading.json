@@ -1,0 +1,34 @@
+{
+  "eval_id": 1,
+  "eval_name": "vague-ui-impeccable",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 4,
+  "passed_assertions": 1,
+  "failed_assertions": 3,
+  "pass_rate": 0.25,
+  "results": [
+    {
+      "assertion": "mentions ui-ux-gate or Impeccable",
+      "passed": false,
+      "evidence": "No mention of ui-ux-gate or Impeccable appears in the baseline response."
+    },
+    {
+      "assertion": "includes UI/UX requirements before implementation",
+      "passed": true,
+      "evidence": "Includes a '## UX requirements' section before '## Implementation notes' and says implementation happens after fields are decided."
+    },
+    {
+      "assertion": "uses .spec-to-ship/features namespace",
+      "passed": false,
+      "evidence": "No '.spec-to-ship/features/...' namespace or feature path is named."
+    },
+    {
+      "assertion": "approval status is not silently approved",
+      "passed": false,
+      "evidence": "No explicit Approval status is recorded; the draft only moves to implementation notes after fields are decided."
+    }
+  ]
+}

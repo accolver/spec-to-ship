@@ -1,0 +1,28 @@
+{
+  "eval_id": 2,
+  "eval_name": "backend-near-miss",
+  "configuration": "without_skill",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "assertions": [
+    {
+      "assertion": "identifies backend-only near miss",
+      "status": "PASS",
+      "evidence": "The response starts by classifying the work as a 'backend-only change' with no user-facing behavior, page, component, copy, navigation, or layout changes."
+    },
+    {
+      "assertion": "does not require Impeccable",
+      "status": "PASS",
+      "evidence": "The response says 'No UI design review is needed unless the endpoint later affects a user-facing screen or workflow.'"
+    },
+    {
+      "assertion": "routes to spec/tdd as appropriate",
+      "status": "PASS",
+      "evidence": "The response recommends writing/updating the endpoint contract/spec and adding tests first for success, auth, validation, and errors."
+    }
+  ]
+}

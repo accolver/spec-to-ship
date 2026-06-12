@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "vague-ui-impeccable",
+  "prompt": "Add a settings dashboard where admins can manage notification preferences. We need it to feel polished but I have not decided exact fields.",
+  "expected_output": "Creates namespaced spec, routes through ui-ux-gate/Impeccable before final spec, asks/records only blocking questions, stops before implementation.",
+  "assertions": [
+    "mentions ui-ux-gate or Impeccable",
+    "includes UI/UX requirements before implementation",
+    "uses .spec-to-ship/features namespace",
+    "approval status is not silently approved"
+  ]
+}

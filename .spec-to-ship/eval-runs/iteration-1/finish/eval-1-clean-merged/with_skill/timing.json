@@ -1,0 +1,7 @@
+{
+  "total_tokens": null,
+  "duration_ms": null,
+  "total_duration_seconds": null,
+  "exact_timing_unavailable": true,
+  "note": "Placeholder timing; run executed inline in parent session, no per-eval timing captured."
+}

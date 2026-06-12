@@ -1,0 +1,25 @@
+{
+  "eval_id": 3,
+  "eval_name": "red-ci-near-miss",
+  "configuration": "without_skill",
+  "passed": 2,
+  "total": 3,
+  "pass_rate": 0.6667,
+  "assertions": [
+    {
+      "assertion": "routes red CI to debug",
+      "status": "FAIL",
+      "evidence": "Response says to inspect logs and fix CI, but does not route the failing CI through the debug workflow."
+    },
+    {
+      "assertion": "does not proceed to release",
+      "status": "PASS",
+      "evidence": "Response says not to ship while CI is failing and marks release blocked."
+    },
+    {
+      "assertion": "requires green evidence",
+      "status": "PASS",
+      "evidence": "Response requires rerunning the full CI pipeline and confirming the branch is green after the fix."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "eval_id": 3,
+  "eval_name": "package-manager-near-miss",
+  "configuration": "without_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "avoids over-triggering dependency review",
+      "status": "PASS",
+      "evidence": "Response treats the prompt as a package-manager convention question and checks lockfiles/scripts rather than starting a dependency review."
+    },
+    {
+      "assertion": "asks/records tool preference",
+      "status": "PASS",
+      "evidence": "Response says to ask the maintainer if both package managers are present or unclear, and to record the choice in local project instructions."
+    },
+    {
+      "assertion": "does not add package risk analysis unnecessarily",
+      "status": "PASS",
+      "evidence": "Response does not include license, vulnerability, transitive dependency, or package-size analysis."
+    }
+  ]
+}

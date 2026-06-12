@@ -1,0 +1,18 @@
+{
+  "id": 1,
+  "name": "bug-regression",
+  "prompt": "Fix a bug where expired reset tokens are accepted. Use tests first.",
+  "expected_output": "Adds failing regression for expected reason, implements minimal fix, records red and green evidence.",
+  "files": [],
+  "assertions": [
+    "red evidence before implementation",
+    "expected failure reason",
+    "green evidence after fix",
+    "test-report.md"
+  ],
+  "skill_name": "tdd",
+  "configurations": [
+    "without_skill",
+    "with_skill"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "known-cause-near-miss",
+  "configuration": "with_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 3,
+  "passed_assertions": 3,
+  "failed_assertions": 0,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "routes to tdd",
+      "pass": true,
+      "evidence": "Explicitly states the task should route to `tdd`, not `debug`."
+    },
+    {
+      "assertion": "does not overuse debug",
+      "pass": true,
+      "evidence": "Explains debug is for unknown/misleading failures and no debug report is needed unless the regression reveals an unexplained failure."
+    },
+    {
+      "assertion": "requires regression coverage",
+      "pass": true,
+      "evidence": "Requires a failing lowercase regression, uppercase coverage, negative malformed-ID coverage, and validation before claiming fixed."
+    }
+  ]
+}

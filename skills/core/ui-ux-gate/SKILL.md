@@ -42,11 +42,13 @@ Route UI/UX work through external Impeccable during spec, planning, review, and 
 
 - `.spec-to-ship/features/<feature-id>/spec.md`
 - `.spec-to-ship/features/<feature-id>/review.md`
+- `.spec-to-ship/features/<feature-id>/ui-ux-evidence.md` when UI/UX risk is material
 
 ## References
 
 - [references/impeccable-routing.md](references/impeccable-routing.md)
 - [references/external-impeccable-install.md](references/external-impeccable-install.md)
+- [templates/ui-ux-evidence.md](templates/ui-ux-evidence.md)
 
 ## Common rationalizations to reject
 

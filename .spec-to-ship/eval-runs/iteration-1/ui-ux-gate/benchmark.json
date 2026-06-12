@@ -1,0 +1,95 @@
+{
+  "skill_name": "ui-ux-gate",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/ui-ux-gate",
+  "generated_at": "2026-06-12",
+  "summary": {
+    "without_skill": {
+      "passed": 7,
+      "failed": 2,
+      "total": 9,
+      "pass_rate": 0.777778
+    },
+    "with_skill": {
+      "passed": 9,
+      "failed": 0,
+      "total": 9,
+      "pass_rate": 1.0
+    },
+    "delta": {
+      "pass_rate": 0.222222,
+      "percentage_points": 22.2222,
+      "passed_assertions": 2
+    }
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "missing-impeccable",
+      "without_skill": {
+        "passed": 1,
+        "failed": 2,
+        "total": 3,
+        "pass_rate": 0.333333
+      },
+      "with_skill": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.666667
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "backend-near-miss",
+      "without_skill": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "with_skill": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.0
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "ui-pr-missing-qa",
+      "without_skill": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "with_skill": {
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta_pass_rate": 0.0
+    }
+  ],
+  "timing": {
+    "note": "timing.json files are placeholders because exact task timings were unavailable",
+    "without_skill_total_duration_seconds": 0,
+    "with_skill_total_duration_seconds": 0
+  },
+  "analysis": {
+    "top_skill_gain": "Eval 1: with-skill enforced install-state checking, approval before external install, and blocker/degraded-risk recording.",
+    "non_discriminating_assertions": [
+      "Eval 2 assertions pass for both configurations because the backend-only classification is straightforward.",
+      "Eval 3 assertions pass for both configurations because the prompt itself names keyboard, responsive, and copy evidence."
+    ],
+    "recommended_fixes": [
+      "Strengthen eval 3 assertions to require an Impeccable-informed critique/audit/polish touchpoint and a `.spec-to-ship/features/<feature-id>/review.md` evidence record, not merely generic PR QA notes.",
+      "Strengthen eval 1 to require explicit pause/degraded-mode acceptance before proceeding and possibly distinguish installed vs initialized states.",
+      "Add a more subtle UI near-miss eval where backend/API work indirectly changes product experience, forcing boundary reasoning."
+    ]
+  }
+}

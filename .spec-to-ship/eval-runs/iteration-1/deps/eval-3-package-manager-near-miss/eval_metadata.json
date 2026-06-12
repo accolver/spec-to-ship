@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "eval_name": "package-manager-near-miss",
+  "prompt": "Should this repo use bun or npm commands for tests?",
+  "expected_output": "Does not treat general tool choice as dependency governance unless package changes are involved.",
+  "files": [],
+  "assertions": [
+    "avoids over-triggering dependency review",
+    "asks/records tool preference",
+    "does not add package risk analysis unnecessarily"
+  ]
+}

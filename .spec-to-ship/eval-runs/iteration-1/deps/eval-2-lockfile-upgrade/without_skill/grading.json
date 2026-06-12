@@ -1,0 +1,25 @@
+{
+  "eval_id": 2,
+  "eval_name": "lockfile-upgrade",
+  "configuration": "without_skill",
+  "passed": 1,
+  "total": 3,
+  "pass_rate": 0.3333,
+  "results": [
+    {
+      "assertion": "mentions CVE/vulnerability evidence",
+      "status": "PASS",
+      "evidence": "Response references the vulnerable transitive image library, updating after a CVE, and a PR describing the CVE and before/after package versions."
+    },
+    {
+      "assertion": "documents lockfile behavior",
+      "status": "FAIL",
+      "evidence": "Response says to regenerate/refresh the lockfile, but does not document whether the lockfile change came from a direct dependency upgrade, override/resolution, or lockfile-only refresh."
+    },
+    {
+      "assertion": "records validation",
+      "status": "FAIL",
+      "evidence": "Response says to run tests, but does not require recording exact validation commands/results or fresh evidence."
+    }
+  ]
+}

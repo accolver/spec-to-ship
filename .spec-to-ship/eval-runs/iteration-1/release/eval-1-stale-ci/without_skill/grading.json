@@ -1,0 +1,25 @@
+{
+  "eval_id": 1,
+  "eval_name": "stale-ci",
+  "configuration": "without_skill",
+  "passed": 2,
+  "total": 3,
+  "pass_rate": 0.6667,
+  "assertions": [
+    {
+      "assertion": "checks exact commit CI",
+      "status": "PASS",
+      "evidence": "Response says to identify the exact commit/SHA and confirm CI passed for that same SHA, not an earlier commit."
+    },
+    {
+      "assertion": "blocks stale CI",
+      "status": "PASS",
+      "evidence": "Response status says to hold the release until CI passes for the exact final commit."
+    },
+    {
+      "assertion": "records release.md risk",
+      "status": "FAIL",
+      "evidence": "Response does not mention a release.md artifact or record a structured release risk there."
+    }
+  ]
+}

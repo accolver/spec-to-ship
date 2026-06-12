@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "unapproved-spec-boundary",
+  "configuration": "without_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 3,
+  "passed": 1,
+  "failed": 2,
+  "pass_rate": 0.3333333333,
+  "results": [
+    {
+      "assertion": "does not plan implementation as approved",
+      "status": "FAIL",
+      "evidence": "Response creates a preliminary implementation task list with backend, migration, frontend, and test tasks instead of stopping at the approval boundary."
+    },
+    {
+      "assertion": "mentions approval blocker",
+      "status": "PASS",
+      "evidence": "Response mentions approval status is pending-user-approval and says not to merge or release until approved."
+    },
+    {
+      "assertion": "routes back to spec or asks user",
+      "status": "FAIL",
+      "evidence": "Response does not route back to spec or ask the user for approval; it proceeds with tasks."
+    }
+  ]
+}

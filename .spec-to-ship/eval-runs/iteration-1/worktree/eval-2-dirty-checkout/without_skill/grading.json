@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "dirty-checkout",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 1,
+  "total": 3,
+  "pass_rate": 0.3333333333,
+  "assertions": [
+    {
+      "assertion": "checks dirty status",
+      "passed": false,
+      "evidence": "Response immediately suggests `git worktree add`; it does not run or require `git status --short` before setup."
+    },
+    {
+      "assertion": "does not overwrite current work",
+      "passed": true,
+      "evidence": "States it would `leave them alone and avoid editing in the primary directory` if uncommitted changes exist."
+    },
+    {
+      "assertion": "records stop/approval gate",
+      "passed": false,
+      "evidence": "No blocked state, owner decision, approval gate, or worktree artifact is recorded before setup."
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "skill_name": "review",
+  "iteration": 1,
+  "workspace": "/Users/alancolver/dev/ai/ai-coding/.spec-to-ship/eval-runs/iteration-1/review",
+  "configs": {
+    "without_skill": {
+      "passed": 5,
+      "total": 9,
+      "pass_rate": 0.5556,
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "missing-tests",
+          "passed": 2,
+          "total": 3,
+          "pass_rate": 0.6667
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "ui-review",
+          "passed": 1,
+          "total": 3,
+          "pass_rate": 0.3333
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "debug-near-miss",
+          "passed": 2,
+          "total": 3,
+          "pass_rate": 0.6667
+        }
+      ],
+      "timing": {
+        "placeholder": true,
+        "note": "Exact timing unavailable; see run-level timing.json placeholders."
+      }
+    },
+    "with_skill": {
+      "passed": 9,
+      "total": 9,
+      "pass_rate": 1.0,
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "missing-tests",
+          "passed": 3,
+          "total": 3,
+          "pass_rate": 1.0
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "ui-review",
+          "passed": 3,
+          "total": 3,
+          "pass_rate": 1.0
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "debug-near-miss",
+          "passed": 3,
+          "total": 3,
+          "pass_rate": 1.0
+        }
+      ],
+      "timing": {
+        "placeholder": true,
+        "note": "Exact timing unavailable; see run-level timing.json placeholders."
+      }
+    }
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "missing-tests",
+      "without_skill": {
+        "eval_id": 1,
+        "eval_name": "missing-tests",
+        "passed": 2,
+        "total": 3,
+        "pass_rate": 0.6667
+      },
+      "with_skill": {
+        "eval_id": 1,
+        "eval_name": "missing-tests",
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": {
+        "absolute": 0.3333,
+        "percentage_points": 33.33
+      }
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "ui-review",
+      "without_skill": {
+        "eval_id": 2,
+        "eval_name": "ui-review",
+        "passed": 1,
+        "total": 3,
+        "pass_rate": 0.3333
+      },
+      "with_skill": {
+        "eval_id": 2,
+        "eval_name": "ui-review",
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": {
+        "absolute": 0.6667,
+        "percentage_points": 66.67
+      }
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "debug-near-miss",
+      "without_skill": {
+        "eval_id": 3,
+        "eval_name": "debug-near-miss",
+        "passed": 2,
+        "total": 3,
+        "pass_rate": 0.6667
+      },
+      "with_skill": {
+        "eval_id": 3,
+        "eval_name": "debug-near-miss",
+        "passed": 3,
+        "total": 3,
+        "pass_rate": 1.0
+      },
+      "delta": {
+        "absolute": 0.3333,
+        "percentage_points": 33.33
+      }
+    }
+  ],
+  "delta": {
+    "absolute": 0.4444,
+    "percentage_points": 44.44
+  },
+  "top_fixes": [
+    "Make the review skill more explicit that missing tests for changed behavior should be classified as `block`, not only changes requested.",
+    "Keep UI review routing tied to `ui-ux-gate`/Impeccable and require accessibility plus responsive evidence before merge.",
+    "Keep CI-red prompts routed to `debug` before review/release readiness checks."
+  ]
+}

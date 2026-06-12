@@ -1,0 +1,28 @@
+{
+  "eval_id": 2,
+  "eval_name": "backend-near-miss",
+  "configuration": "with_skill",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "assertions": [
+    {
+      "assertion": "identifies backend-only near miss",
+      "status": "PASS",
+      "evidence": "The response explicitly labels the request as a 'backend-only near miss.'"
+    },
+    {
+      "assertion": "does not require Impeccable",
+      "status": "PASS",
+      "evidence": "The response says 'do not require Impeccable' because no user-facing surface is changing."
+    },
+    {
+      "assertion": "routes to spec/tdd as appropriate",
+      "status": "PASS",
+      "evidence": "The response routes to `spec` if clarification is needed, `tdd` for implementation, and `review` before merge."
+    }
+  ]
+}

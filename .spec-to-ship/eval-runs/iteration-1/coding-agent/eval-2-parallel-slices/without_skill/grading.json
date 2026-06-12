@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "parallel-slices",
+  "configuration": "without_skill",
+  "output_path": "outputs/response.md",
+  "total_assertions": 3,
+  "passed": 1,
+  "failed": 2,
+  "pass_rate": 0.3333333333,
+  "results": [
+    {
+      "assertion": "identifies parallelizable tasks",
+      "status": "PASS",
+      "evidence": "Response states backend and UI can proceed mostly in parallel / start independently."
+    },
+    {
+      "assertion": "names shared-file owner",
+      "status": "FAIL",
+      "evidence": "Response notes generated types should be refreshed but does not name a single owner for shared generated files."
+    },
+    {
+      "assertion": "uses worktree when parallel writers are needed",
+      "status": "FAIL",
+      "evidence": "Response does not mention worktrees or isolated writer workspaces for parallel backend/UI/email work."
+    }
+  ]
+}

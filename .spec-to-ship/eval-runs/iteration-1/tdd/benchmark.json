@@ -1,0 +1,77 @@
+{
+  "skill_name": "tdd",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/tdd",
+  "summary": {
+    "without_skill": {
+      "passed": 2,
+      "total": 10,
+      "pass_rate": 0.2
+    },
+    "with_skill": {
+      "passed": 10,
+      "total": 10,
+      "pass_rate": 1.0
+    },
+    "delta": 0.8
+  },
+  "per_eval": [
+    {
+      "eval_id": 1,
+      "eval_name": "bug-regression",
+      "configurations": {
+        "without_skill": {
+          "passed": 0,
+          "total": 4,
+          "pass_rate": 0.0
+        },
+        "with_skill": {
+          "passed": 4,
+          "total": 4,
+          "pass_rate": 1.0
+        }
+      },
+      "delta": 1.0
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "unexpected-pass",
+      "configurations": {
+        "without_skill": {
+          "passed": 1,
+          "total": 3,
+          "pass_rate": 0.3333333333333333
+        },
+        "with_skill": {
+          "passed": 3,
+          "total": 3,
+          "pass_rate": 1.0
+        }
+      },
+      "delta": 0.6666666666666667
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "no-test-exception",
+      "configurations": {
+        "without_skill": {
+          "passed": 1,
+          "total": 3,
+          "pass_rate": 0.3333333333333333
+        },
+        "with_skill": {
+          "passed": 3,
+          "total": 3,
+          "pass_rate": 1.0
+        }
+      },
+      "delta": 0.6666666666666667
+    }
+  ],
+  "timing_note": "Timing values are placeholders because exact timing was unavailable for this inline manual eval run.",
+  "top_fixes": [
+    "Baseline does not capture red/green command evidence or write test-report.md; keep emphasizing artifacted proof.",
+    "Unexpected-pass scenario needs an explicit stop condition and revised failing test/assumption before implementation.",
+    "No-test exception should require alternate proof, residual risk, and follow-up debt, not just 'tests not run'."
+  ]
+}

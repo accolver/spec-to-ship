@@ -1,0 +1,26 @@
+{
+  "eval_id": 2,
+  "eval_name": "unexpected-pass",
+  "configuration": "without_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "detects unexpected pass",
+      "passed": true,
+      "evidence": "Response acknowledges the invoice rounding test already passes before code changes."
+    },
+    {
+      "assertion": "does not implement blindly",
+      "passed": false,
+      "evidence": "Response says it would continue with the requested implementation despite the test already passing."
+    },
+    {
+      "assertion": "updates assumptions or test plan",
+      "passed": false,
+      "evidence": "Response suggests optional edge-case tests but does not stop to revise assumptions or make the test fail for the expected reason."
+    }
+  ],
+  "passed": 1,
+  "total": 3,
+  "pass_rate": 0.3333333333333333
+}

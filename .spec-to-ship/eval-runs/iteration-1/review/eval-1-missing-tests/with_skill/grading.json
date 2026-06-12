@@ -1,0 +1,31 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-tests",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "results": [
+    {
+      "assertion": "explicit verdict",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response says \"Block merge\" in the Verdict section."
+    },
+    {
+      "assertion": "missing tests finding",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Blocker states \"Missing tests for changed behavior\" and required fix is to add automated tests."
+    },
+    {
+      "assertion": "evidence-backed severity",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Finding is classified as `block` and cites prompt evidence plus review taxonomy."
+    }
+  ]
+}

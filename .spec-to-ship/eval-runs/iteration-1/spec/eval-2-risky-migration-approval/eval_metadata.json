@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "risky-migration-approval",
+  "prompt": "We need to change account IDs from integers to UUIDs across the API and database. Start by writing the spec.",
+  "expected_output": "Documents risk, interfaces, non-goals, verification plan, and approval gate without coding.",
+  "assertions": [
+    "records migration/data risks",
+    "lists interfaces touched",
+    "includes acceptance criteria",
+    "stops for approval before implementation"
+  ]
+}

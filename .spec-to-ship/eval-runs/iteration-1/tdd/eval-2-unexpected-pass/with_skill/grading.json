@@ -1,0 +1,26 @@
+{
+  "eval_id": 2,
+  "eval_name": "unexpected-pass",
+  "configuration": "with_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "detects unexpected pass",
+      "passed": true,
+      "evidence": "Explicitly states the red step passed unexpectedly before code changes."
+    },
+    {
+      "assertion": "does not implement blindly",
+      "passed": true,
+      "evidence": "Says to stop before implementation and not continue until valid red evidence exists."
+    },
+    {
+      "assertion": "updates assumptions or test plan",
+      "passed": true,
+      "evidence": "Lists a revised assumptions/test plan covering rounding contract, existing behavior, fixture revision, and red evidence requirement."
+    }
+  ],
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0
+}

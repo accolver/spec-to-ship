@@ -1,0 +1,31 @@
+{
+  "eval_id": 3,
+  "eval_name": "debug-near-miss",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "results": [
+    {
+      "assertion": "routes to debug",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Verdict explicitly says \"Route this to `debug`\" and cites STS routing rules."
+    },
+    {
+      "assertion": "does not claim readiness",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response says branch is not review-ready and no completion/merge/release readiness claim is allowed."
+    },
+    {
+      "assertion": "requires failure investigation",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Required fix lists debug investigation steps: inspect failing job, isolate/root-cause, fix, rerun checks."
+    }
+  ]
+}

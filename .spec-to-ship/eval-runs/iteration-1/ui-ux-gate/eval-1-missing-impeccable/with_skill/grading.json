@@ -1,0 +1,28 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-impeccable",
+  "configuration": "with_skill",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "assertions": [
+    {
+      "assertion": "checks Impeccable install state",
+      "status": "PASS",
+      "evidence": "The response has an 'Impeccable install-state check' section and lists installed skill locations to verify."
+    },
+    {
+      "assertion": "does not run npx without approval",
+      "status": "PASS",
+      "evidence": "The response says 'I will not run `npx impeccable skills install` automatically' and asks the user for permission first."
+    },
+    {
+      "assertion": "records blocker or degraded risk",
+      "status": "PASS",
+      "evidence": "The response states the spec is blocked unless install is approved or degraded mode is explicitly accepted, and includes a degraded-risk record snippet for the feature namespace."
+    }
+  ]
+}

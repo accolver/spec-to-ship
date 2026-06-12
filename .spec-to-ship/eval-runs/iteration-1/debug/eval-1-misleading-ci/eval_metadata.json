@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "misleading-ci",
+  "prompt": "CI says login test timed out, but only on Mondays. Find root cause.",
+  "expected_output": "Reproduces or captures evidence, ranks timing/timezone hypotheses, tests one variable, proves cause.",
+  "assertions": [
+    "records environment/timing evidence",
+    "ranked hypotheses",
+    "disconfirmed leads",
+    "root cause evidence"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "flaky-test",
+  "configuration": "without_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 3,
+  "passed_assertions": 0,
+  "failed_assertions": 3,
+  "pass_rate": 0,
+  "assertions": [
+    {
+      "assertion": "does not quarantine blindly",
+      "pass": false,
+      "evidence": "Says it would quarantine by marking the test skipped to get CI green quickly."
+    },
+    {
+      "assertion": "asks approval for quarantine",
+      "pass": false,
+      "evidence": "Does not ask for explicit approval before quarantine."
+    },
+    {
+      "assertion": "captures flake evidence",
+      "pass": false,
+      "evidence": "Only suggests a follow-up issue with the test name; no seed, timing, run IDs, parallelism, or failure evidence is captured."
+    }
+  ]
+}

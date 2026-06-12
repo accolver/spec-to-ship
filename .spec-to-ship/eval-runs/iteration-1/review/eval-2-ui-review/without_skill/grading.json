@@ -1,0 +1,31 @@
+{
+  "eval_id": 2,
+  "eval_name": "ui-review",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 1,
+    "total": 3,
+    "pass_rate": 0.3333
+  },
+  "results": [
+    {
+      "assertion": "mentions ui-ux-gate or Impeccable",
+      "status": "FAIL",
+      "passed": false,
+      "evidence": "Response discusses accessibility/responsiveness but does not mention `ui-ux-gate` or Impeccable."
+    },
+    {
+      "assertion": "flags missing accessibility/responsive evidence",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Findings explicitly state accessibility evidence is missing and responsive behavior evidence is missing."
+    },
+    {
+      "assertion": "classifies finding",
+      "status": "FAIL",
+      "passed": false,
+      "evidence": "Response lists generic findings but does not classify them as block/should-fix/follow-up or equivalent severity."
+    }
+  ]
+}

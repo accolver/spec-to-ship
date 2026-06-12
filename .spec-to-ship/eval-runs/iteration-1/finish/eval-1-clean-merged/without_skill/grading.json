@@ -1,0 +1,26 @@
+{
+  "eval_id": 1,
+  "eval_name": "clean-merged",
+  "configuration": "without_skill",
+  "output_path": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "checks status/merged state",
+      "passed": false,
+      "evidence": "Mentions `git status`, but assumes the branch is merged and does not verify merged state with `git branch --merged`, merge-base, or equivalent."
+    },
+    {
+      "assertion": "records cleanup evidence",
+      "passed": false,
+      "evidence": "Only says it would report completion; no finish artifact or cleanup evidence is recorded."
+    },
+    {
+      "assertion": "uses safe worktree cleanup",
+      "passed": false,
+      "evidence": "Mentions deleting the worktree but gives no exact-path `git worktree remove` after dirty/merged checks; only runs prune."
+    }
+  ],
+  "passed_assertions": 0,
+  "total_assertions": 3,
+  "pass_rate": 0
+}

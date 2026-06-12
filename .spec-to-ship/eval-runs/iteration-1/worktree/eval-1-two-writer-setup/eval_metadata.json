@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "two-writer-setup",
+  "prompt": "Set up parallel worktrees for API and UI slices. API owns src/api/**, UI owns src/ui/**, both might touch package lockfile.",
+  "expected_output": "Creates/records worktree plan and resolves lockfile ownership before writers start.",
+  "assertions": [
+    "records owner and branch",
+    "identifies lockfile conflict",
+    "requires shared-file owner",
+    "writes worktrees.md"
+  ]
+}

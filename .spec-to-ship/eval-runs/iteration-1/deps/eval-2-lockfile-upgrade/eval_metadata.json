@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "lockfile-upgrade",
+  "prompt": "Upgrade a transitive image library and update the lockfile after a CVE.",
+  "expected_output": "Assesses vulnerability, lockfile behavior, transitive risk, and validation.",
+  "files": [],
+  "assertions": [
+    "mentions CVE/vulnerability evidence",
+    "documents lockfile behavior",
+    "records validation"
+  ]
+}

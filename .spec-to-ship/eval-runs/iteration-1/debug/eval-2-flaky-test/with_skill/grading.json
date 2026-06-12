@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "flaky-test",
+  "configuration": "with_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 3,
+  "passed_assertions": 3,
+  "failed_assertions": 0,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "does not quarantine blindly",
+      "pass": true,
+      "evidence": "Opens by refusing blind quarantine because it hides signal and can ship the regression."
+    },
+    {
+      "assertion": "asks approval for quarantine",
+      "pass": true,
+      "evidence": "States approval is needed and asks the user to confirm risk, follow-up, evidence attachment, and narrow scope."
+    },
+    {
+      "assertion": "captures flake evidence",
+      "pass": true,
+      "evidence": "Lists test name/file, failure message, CI run IDs, SHAs, seed, retries, shard/worker count, runtime versions, and timing histogram to capture."
+    }
+  ]
+}

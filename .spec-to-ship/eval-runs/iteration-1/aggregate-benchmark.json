@@ -1,0 +1,574 @@
+{
+  "iteration": 1,
+  "generated_at": "2026-06-12T19:08:40.659Z",
+  "skills": [
+    {
+      "skill": "coding-agent",
+      "without_skill": {
+        "passed": 3,
+        "total": 10,
+        "pass_rate": 0.3
+      },
+      "with_skill": {
+        "passed": 10,
+        "total": 10,
+        "pass_rate": 1
+      },
+      "delta": 0.7,
+      "evals": [
+        {
+          "eval": "eval-1-approved-spec-plan",
+          "with_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 4,
+            "pass_rate": 0.25
+          }
+        },
+        {
+          "eval": "eval-2-parallel-slices",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-3-unapproved-spec-boundary",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        }
+      ]
+    },
+    {
+      "skill": "debug",
+      "without_skill": {
+        "passed": 4,
+        "total": 10,
+        "pass_rate": 0.4
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 10,
+        "pass_rate": 0.9
+      },
+      "delta": 0.5,
+      "evals": [
+        {
+          "eval": "eval-1-misleading-ci",
+          "with_skill": {
+            "passed": 3,
+            "total": 4,
+            "pass_rate": 0.75
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 4,
+            "pass_rate": 0.5
+          }
+        },
+        {
+          "eval": "eval-2-flaky-test",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 0,
+            "total": 3,
+            "pass_rate": 0
+          }
+        },
+        {
+          "eval": "eval-3-known-cause-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "skill": "deps",
+      "without_skill": {
+        "passed": 5,
+        "total": 9,
+        "pass_rate": 0.5555555555555556
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 9,
+        "pass_rate": 1
+      },
+      "delta": 0.4444444444444444,
+      "evals": [
+        {
+          "eval": "eval-1-convenience-package",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-2-lockfile-upgrade",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-3-package-manager-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          }
+        }
+      ]
+    },
+    {
+      "skill": "finish",
+      "without_skill": {
+        "passed": 1,
+        "total": 9,
+        "pass_rate": 0.1111111111111111
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 9,
+        "pass_rate": 1
+      },
+      "delta": 0.8888888888888888,
+      "evals": [
+        {
+          "eval": "eval-1-clean-merged",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 0,
+            "total": 3,
+            "pass_rate": 0
+          }
+        },
+        {
+          "eval": "eval-2-dirty-unmerged",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 0,
+            "total": 3,
+            "pass_rate": 0
+          }
+        },
+        {
+          "eval": "eval-3-pr-hold",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        }
+      ]
+    },
+    {
+      "skill": "release",
+      "without_skill": {
+        "passed": 6,
+        "total": 9,
+        "pass_rate": 0.6666666666666666
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 9,
+        "pass_rate": 1
+      },
+      "delta": 0.33333333333333337,
+      "evals": [
+        {
+          "eval": "eval-1-stale-ci",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        },
+        {
+          "eval": "eval-2-migration-release",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        },
+        {
+          "eval": "eval-3-red-ci-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "skill": "review",
+      "without_skill": {
+        "passed": 5,
+        "total": 9,
+        "pass_rate": 0.5555555555555556
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 9,
+        "pass_rate": 1
+      },
+      "delta": 0.4444444444444444,
+      "evals": [
+        {
+          "eval": "eval-1-missing-tests",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        },
+        {
+          "eval": "eval-2-ui-review",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-3-debug-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "skill": "spec",
+      "without_skill": {
+        "passed": 7,
+        "total": 11,
+        "pass_rate": 0.6363636363636364
+      },
+      "with_skill": {
+        "passed": 11,
+        "total": 11,
+        "pass_rate": 1
+      },
+      "delta": 0.36363636363636365,
+      "evals": [
+        {
+          "eval": "eval-1-vague-ui-impeccable",
+          "with_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 4,
+            "pass_rate": 0.25
+          }
+        },
+        {
+          "eval": "eval-2-risky-migration-approval",
+          "with_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          }
+        },
+        {
+          "eval": "eval-3-approved-spec-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 2,
+            "total": 3,
+            "pass_rate": 0.6666666666666666
+          }
+        }
+      ]
+    },
+    {
+      "skill": "tdd",
+      "without_skill": {
+        "passed": 2,
+        "total": 10,
+        "pass_rate": 0.2
+      },
+      "with_skill": {
+        "passed": 10,
+        "total": 10,
+        "pass_rate": 1
+      },
+      "delta": 0.8,
+      "evals": [
+        {
+          "eval": "eval-1-bug-regression",
+          "with_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 0,
+            "total": 4,
+            "pass_rate": 0
+          }
+        },
+        {
+          "eval": "eval-2-unexpected-pass",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-3-no-test-exception",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        }
+      ]
+    },
+    {
+      "skill": "ui-ux-gate",
+      "without_skill": {
+        "passed": 7,
+        "total": 9,
+        "pass_rate": 0.7777777777777778
+      },
+      "with_skill": {
+        "passed": 9,
+        "total": 9,
+        "pass_rate": 1
+      },
+      "delta": 0.2222222222222222,
+      "evals": [
+        {
+          "eval": "eval-1-missing-impeccable",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-2-backend-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          }
+        },
+        {
+          "eval": "eval-3-ui-pr-missing-qa",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          }
+        }
+      ]
+    },
+    {
+      "skill": "worktree",
+      "without_skill": {
+        "passed": 5,
+        "total": 10,
+        "pass_rate": 0.5
+      },
+      "with_skill": {
+        "passed": 10,
+        "total": 10,
+        "pass_rate": 1
+      },
+      "delta": 0.5,
+      "evals": [
+        {
+          "eval": "eval-1-two-writer-setup",
+          "with_skill": {
+            "passed": 4,
+            "total": 4,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 4,
+            "pass_rate": 0.25
+          }
+        },
+        {
+          "eval": "eval-2-dirty-checkout",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 1,
+            "total": 3,
+            "pass_rate": 0.3333333333333333
+          }
+        },
+        {
+          "eval": "eval-3-read-only-near-miss",
+          "with_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          },
+          "without_skill": {
+            "passed": 3,
+            "total": 3,
+            "pass_rate": 1
+          }
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "without_skill": {
+      "passed": 45,
+      "total": 96,
+      "pass_rate": 0.46875
+    },
+    "with_skill": {
+      "passed": 95,
+      "total": 96,
+      "pass_rate": 0.9895833333333334
+    },
+    "delta": 0.5208333333333334
+  },
+  "caveats": [
+    "Baseline and with-skill responses were generated by fresh skill-maker subagents per skill, with baselines produced before target SKILL.md was read.",
+    "Grading was manual/semantic by the eval subagents with evidence in grading.json.",
+    "Timing files are placeholders because exact child timing was unavailable."
+  ]
+}

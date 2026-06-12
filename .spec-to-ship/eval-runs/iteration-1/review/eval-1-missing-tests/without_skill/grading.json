@@ -1,0 +1,31 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-tests",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 2,
+    "total": 3,
+    "pass_rate": 0.6667
+  },
+  "results": [
+    {
+      "assertion": "explicit verdict",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response includes \"Verdict\" and says \"Changes requested before merge.\""
+    },
+    {
+      "assertion": "missing tests finding",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response identifies \"Missing behavior tests\" and says changed behavior has no test coverage."
+    },
+    {
+      "assertion": "evidence-backed severity",
+      "status": "FAIL",
+      "passed": false,
+      "evidence": "Response asks for changes but does not classify severity as block/should-fix/follow-up with evidence."
+    }
+  ]
+}

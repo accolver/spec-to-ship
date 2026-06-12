@@ -1,0 +1,25 @@
+{
+  "eval_id": 1,
+  "eval_name": "stale-ci",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "assertions": [
+    {
+      "assertion": "checks exact commit CI",
+      "status": "PASS",
+      "evidence": "Response requires identifying the exact release commit/SHA and verifying CI for that exact SHA."
+    },
+    {
+      "assertion": "blocks stale CI",
+      "status": "PASS",
+      "evidence": "Response states release is blocked because CI passed yesterday but does not cover the latest commit."
+    },
+    {
+      "assertion": "records release.md risk",
+      "status": "PASS",
+      "evidence": "Response includes a release.md entry with Status: BLOCKED and risk that stale CI could release unvalidated changes."
+    }
+  ]
+}

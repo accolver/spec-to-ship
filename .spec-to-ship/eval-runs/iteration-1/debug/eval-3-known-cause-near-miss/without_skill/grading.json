@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "known-cause-near-miss",
+  "configuration": "without_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 3,
+  "passed_assertions": 2,
+  "failed_assertions": 1,
+  "pass_rate": 0.6666666666666666,
+  "assertions": [
+    {
+      "assertion": "routes to tdd",
+      "pass": false,
+      "evidence": "Plans regression and fix directly but never names or routes to the STS `tdd` skill."
+    },
+    {
+      "assertion": "does not overuse debug",
+      "pass": true,
+      "evidence": "Does not start a debug investigation; proceeds directly to known-cause regression/fix steps."
+    },
+    {
+      "assertion": "requires regression coverage",
+      "pass": true,
+      "evidence": "First plan step is to add a regression test for lowercase ID rejection, with additional uppercase/invalid coverage."
+    }
+  ]
+}

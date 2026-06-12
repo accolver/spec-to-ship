@@ -1,0 +1,34 @@
+{
+  "eval_id": 2,
+  "eval_name": "risky-migration-approval",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "graded_by": "manual skill-maker iteration-1 eval",
+  "graded_at": "2026-06-12",
+  "total_assertions": 4,
+  "passed_assertions": 4,
+  "failed_assertions": 0,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "records migration/data risks",
+      "passed": true,
+      "evidence": "Baseline '## Risks' records data migration, client compatibility, caches/logs/analytics/URLs, and rollback risks."
+    },
+    {
+      "assertion": "lists interfaces touched",
+      "passed": true,
+      "evidence": "Baseline scope lists database schema, API payloads, background jobs, webhooks, internal services, and tests/migration tooling."
+    },
+    {
+      "assertion": "includes acceptance criteria",
+      "passed": true,
+      "evidence": "Baseline includes a '## Acceptance criteria' section."
+    },
+    {
+      "assertion": "stops for approval before implementation",
+      "passed": true,
+      "evidence": "Baseline includes an '## Approval gate' that says not to implement until plan, compatibility, and rollback are approved."
+    }
+  ]
+}

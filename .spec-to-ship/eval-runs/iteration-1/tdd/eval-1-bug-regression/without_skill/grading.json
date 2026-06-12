@@ -1,0 +1,31 @@
+{
+  "eval_id": 1,
+  "eval_name": "bug-regression",
+  "configuration": "without_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "red evidence before implementation",
+      "passed": false,
+      "evidence": "Response gives a plan to add tests but no captured failing command/output before implementation."
+    },
+    {
+      "assertion": "expected failure reason",
+      "passed": false,
+      "evidence": "It names the bug generally but does not record the expected red failure reason from a failing test."
+    },
+    {
+      "assertion": "green evidence after fix",
+      "passed": false,
+      "evidence": "It says tests would be rerun but provides no passing command/output evidence after the fix."
+    },
+    {
+      "assertion": "test-report.md",
+      "passed": false,
+      "evidence": "No test-report.md artifact or path is mentioned."
+    }
+  ],
+  "passed": 0,
+  "total": 4,
+  "pass_rate": 0.0
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "read-only-near-miss",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "avoids worktree creation",
+      "passed": true,
+      "evidence": "States: `For a read-only investigation, I would first inspect the repository rather than creating a new branch for edits.`"
+    },
+    {
+      "assertion": "explains read-only scope",
+      "passed": true,
+      "evidence": "Opens with `For a read-only investigation` and describes inspection/search only."
+    },
+    {
+      "assertion": "routes to research/context rather than writer setup",
+      "passed": true,
+      "evidence": "Suggests `rg`, `find`, and summarizing route locations; defers branch/worktree creation until a code change exists."
+    }
+  ]
+}

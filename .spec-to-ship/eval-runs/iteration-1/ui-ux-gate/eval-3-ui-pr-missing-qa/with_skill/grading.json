@@ -1,0 +1,28 @@
+{
+  "eval_id": 3,
+  "eval_name": "ui-pr-missing-qa",
+  "configuration": "with_skill",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "assertions": [
+    {
+      "assertion": "requires design QA evidence",
+      "status": "PASS",
+      "evidence": "The response says not to approve or mark release-ready and lists required UI/UX review evidence."
+    },
+    {
+      "assertion": "mentions accessibility/responsive/copy",
+      "status": "PASS",
+      "evidence": "The response has bullets for accessibility/keyboard, responsive behavior, and copy."
+    },
+    {
+      "assertion": "records review evidence",
+      "status": "PASS",
+      "evidence": "The response instructs adding evidence to `.spec-to-ship/features/<feature-id>/review.md` and includes a review evidence entry."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "unapproved-spec-boundary",
+  "prompt": "Here is a draft spec with approval status pending-user-approval. Build a task list.",
+  "expected_output": "Stops and asks for approval or routes back to spec.",
+  "assertions": [
+    "does not plan implementation as approved",
+    "mentions approval blocker",
+    "routes back to spec or asks user"
+  ]
+}

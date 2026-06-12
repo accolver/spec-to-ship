@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "misleading-ci",
+  "configuration": "with_skill",
+  "response_file": "outputs/response.md",
+  "total_assertions": 4,
+  "passed_assertions": 3,
+  "failed_assertions": 1,
+  "pass_rate": 0.75,
+  "assertions": [
+    {
+      "assertion": "records environment/timing evidence",
+      "pass": true,
+      "evidence": "Debug report requires run IDs, commit SHA, runner image, browser version, cache key, UTC/local timestamps, TZ, seed, shard count, latency, and Monday cron jobs."
+    },
+    {
+      "assertion": "ranked hypotheses",
+      "pass": true,
+      "evidence": "Provides a ranked hypothesis table with date/timezone boundary first, scheduled cleanup second, CI refresh third, external auth slowness fourth."
+    },
+    {
+      "assertion": "disconfirmed leads",
+      "pass": true,
+      "evidence": "Specifies one-variable tests that would disconfirm generic CI slowness, browser-version causes, and external auth slowness before changing timeouts."
+    },
+    {
+      "assertion": "root cause evidence",
+      "pass": false,
+      "evidence": "Correctly refuses to invent a root cause from the prompt alone; it defines required evidence but does not provide an actual proven root cause."
+    }
+  ]
+}

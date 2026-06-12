@@ -1,0 +1,26 @@
+{
+  "eval_id": 3,
+  "eval_name": "pr-hold",
+  "configuration": "without_skill",
+  "output_path": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "presents options",
+      "passed": false,
+      "evidence": "Gives a short wrap-up sequence but does not present explicit finish options such as hold, update PR, or abandon."
+    },
+    {
+      "assertion": "does not merge without approval",
+      "passed": true,
+      "evidence": "States: `For now, I would stop short of merging until the reviewer approves.`"
+    },
+    {
+      "assertion": "retains needed worktree",
+      "passed": false,
+      "evidence": "Does not explicitly retain the branch/worktree while approval is pending; only mentions deleting later."
+    }
+  ],
+  "passed_assertions": 1,
+  "total_assertions": 3,
+  "pass_rate": 0.3333333333333333
+}

@@ -1,0 +1,31 @@
+{
+  "eval_id": 3,
+  "eval_name": "debug-near-miss",
+  "configuration": "without_skill",
+  "response_path": "outputs/response.md",
+  "summary": {
+    "passed": 2,
+    "total": 3,
+    "pass_rate": 0.6667
+  },
+  "results": [
+    {
+      "assertion": "routes to debug",
+      "status": "FAIL",
+      "passed": false,
+      "evidence": "Response proposes generic CI triage but never routes to the STS `debug` skill/workflow."
+    },
+    {
+      "assertion": "does not claim readiness",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response says it would not treat the branch as ready and no approval should be claimed."
+    },
+    {
+      "assertion": "requires failure investigation",
+      "status": "PASS",
+      "passed": true,
+      "evidence": "Response requires opening failing CI, finding first failing command/test, reproducing, and fixing."
+    }
+  ]
+}

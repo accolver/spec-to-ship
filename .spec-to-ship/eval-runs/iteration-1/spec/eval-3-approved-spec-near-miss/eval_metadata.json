@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "approved-spec-near-miss",
+  "prompt": "The approved spec is at .spec-to-ship/features/20260612-auth/spec.md. Break it into tasks.",
+  "expected_output": "Does not rewrite spec; routes to coding-agent.",
+  "assertions": [
+    "routes to coding-agent",
+    "does not create a new shared SPEC.md",
+    "reuses existing namespace"
+  ]
+}

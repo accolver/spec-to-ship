@@ -1,0 +1,89 @@
+{
+  "skill_name": "coding-agent",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/coding-agent/",
+  "generated_at": "2026-06-12",
+  "timing_note": "Timing values are placeholders because exact per-response timings were unavailable.",
+  "aggregate": {
+    "with_skill": {
+      "passed": 10,
+      "failed": 0,
+      "total_assertions": 10,
+      "pass_rate": 1
+    },
+    "without_skill": {
+      "passed": 3,
+      "failed": 7,
+      "total_assertions": 10,
+      "pass_rate": 0.3
+    },
+    "delta": {
+      "pass_rate": 0.7,
+      "percentage_points": 70
+    }
+  },
+  "evals": [
+    {
+      "eval_id": 1,
+      "eval_name": "approved-spec-plan",
+      "assertions": 4,
+      "with_skill": {
+        "passed": 4,
+        "failed": 0,
+        "pass_rate": 1
+      },
+      "without_skill": {
+        "passed": 1,
+        "failed": 3,
+        "pass_rate": 0.25
+      },
+      "delta": {
+        "pass_rate": 0.75,
+        "percentage_points": 75
+      }
+    },
+    {
+      "eval_id": 2,
+      "eval_name": "parallel-slices",
+      "assertions": 3,
+      "with_skill": {
+        "passed": 3,
+        "failed": 0,
+        "pass_rate": 1
+      },
+      "without_skill": {
+        "passed": 1,
+        "failed": 2,
+        "pass_rate": 0.3333333333
+      },
+      "delta": {
+        "pass_rate": 0.6666666667,
+        "percentage_points": 66.7
+      }
+    },
+    {
+      "eval_id": 3,
+      "eval_name": "unapproved-spec-boundary",
+      "assertions": 3,
+      "with_skill": {
+        "passed": 3,
+        "failed": 0,
+        "pass_rate": 1
+      },
+      "without_skill": {
+        "passed": 1,
+        "failed": 2,
+        "pass_rate": 0.3333333333
+      },
+      "delta": {
+        "pass_rate": 0.6666666667,
+        "percentage_points": 66.7
+      }
+    }
+  ],
+  "top_fixes": [
+    "Keep the approval gate prominent: pending-user-approval should stop implementation planning and route to spec or user approval.",
+    "Preserve the shared-file owner requirement for generated clients/types when parallel backend and UI work is planned.",
+    "Ensure plans always include dependency graph, owned files/globs, validation commands, rollback notes, stop conditions, and next STS routing."
+  ]
+}

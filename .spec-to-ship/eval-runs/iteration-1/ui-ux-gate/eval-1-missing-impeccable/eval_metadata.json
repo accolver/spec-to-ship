@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "missing-impeccable",
+  "prompt": "Spec a new onboarding screen, but Impeccable is not installed.",
+  "expected_output": "Checks install state, asks before install, blocks or records degraded mode.",
+  "assertions": [
+    "checks Impeccable install state",
+    "does not run npx without approval",
+    "records blocker or degraded risk"
+  ]
+}

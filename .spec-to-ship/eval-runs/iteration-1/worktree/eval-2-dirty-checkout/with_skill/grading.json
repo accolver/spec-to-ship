@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "dirty-checkout",
+  "configuration": "with_skill",
+  "response_path": "outputs/response.md",
+  "grader": "manual assertion check",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1,
+  "assertions": [
+    {
+      "assertion": "checks dirty status",
+      "passed": true,
+      "evidence": "Preflight includes `git status --short`, `git branch --show-current`, and `git worktree list`."
+    },
+    {
+      "assertion": "does not overwrite current work",
+      "passed": true,
+      "evidence": "States not to create the refactor worktree if dirty and warns editing primary checkout could overwrite user changes."
+    },
+    {
+      "assertion": "records stop/approval gate",
+      "passed": true,
+      "evidence": "Includes `Stop / approval gate` and a blocked `worktrees.md` artifact pending owner decision."
+    }
+  ]
+}

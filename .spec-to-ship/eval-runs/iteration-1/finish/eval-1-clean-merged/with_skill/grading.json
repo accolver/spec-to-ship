@@ -1,0 +1,26 @@
+{
+  "eval_id": 1,
+  "eval_name": "clean-merged",
+  "configuration": "with_skill",
+  "output_path": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "checks status/merged state",
+      "passed": true,
+      "evidence": "Runs `git status --short`, `git branch --show-current`, `git branch --merged`, and `git worktree list --porcelain` before cleanup."
+    },
+    {
+      "assertion": "records cleanup evidence",
+      "passed": true,
+      "evidence": "Instructs updating `.spec-to-ship/features/<feature-id>/finish.md` with verification evidence, approved option, commands, and final status."
+    },
+    {
+      "assertion": "uses safe worktree cleanup",
+      "passed": true,
+      "evidence": "Removes only exact clean worktree path, deletes branch with `git branch -d`, prunes after safe removal, and avoids force deletion."
+    }
+  ],
+  "passed_assertions": 3,
+  "total_assertions": 3,
+  "pass_rate": 1
+}

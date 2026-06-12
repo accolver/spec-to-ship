@@ -1,0 +1,12 @@
+{
+  "eval_id": 1,
+  "eval_name": "clean-merged",
+  "prompt": "Feature branch is merged and worktree is clean. Finish and clean up.",
+  "expected_output": "Verifies state, records approved cleanup, removes/prunes safely.",
+  "files": [],
+  "assertions": [
+    "checks status/merged state",
+    "records cleanup evidence",
+    "uses safe worktree cleanup"
+  ]
+}

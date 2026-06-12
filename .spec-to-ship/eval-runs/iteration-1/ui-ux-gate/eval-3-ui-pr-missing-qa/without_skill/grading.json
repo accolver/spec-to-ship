@@ -1,0 +1,28 @@
+{
+  "eval_id": 3,
+  "eval_name": "ui-pr-missing-qa",
+  "configuration": "without_skill",
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "assertions": [
+    {
+      "assertion": "requires design QA evidence",
+      "status": "PASS",
+      "evidence": "The response requests changes and asks for a QA section with screenshots or notes before approval."
+    },
+    {
+      "assertion": "mentions accessibility/responsive/copy",
+      "status": "PASS",
+      "evidence": "The response mentions keyboard access/focus behavior, responsive mobile/tablet/desktop evidence, and copy labels/helper/error/success messages."
+    },
+    {
+      "assertion": "records review evidence",
+      "status": "PASS",
+      "evidence": "The response asks to add a short QA section to the PR with screenshots or notes, which records review evidence even though it does not require the STS feature namespace."
+    }
+  ]
+}

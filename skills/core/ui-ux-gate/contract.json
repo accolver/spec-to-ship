@@ -26,7 +26,8 @@
   ],
   "outputs": [
     ".spec-to-ship/features/<feature-id>/spec.md",
-    ".spec-to-ship/features/<feature-id>/review.md"
+    ".spec-to-ship/features/<feature-id>/review.md",
+    ".spec-to-ship/features/<feature-id>/ui-ux-evidence.md"
   ],
   "approvalPolicy": "Ask before irreversible operations or before proceeding past non-trivial spec/cleanup/deploy gates.",
   "verification": [

@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "read-only-near-miss",
+  "prompt": "Investigate where auth routes live; no edits yet.",
+  "expected_output": "Does not create worktree for read-only research.",
+  "assertions": [
+    "avoids worktree creation",
+    "explains read-only scope",
+    "routes to research/context rather than writer setup"
+  ]
+}

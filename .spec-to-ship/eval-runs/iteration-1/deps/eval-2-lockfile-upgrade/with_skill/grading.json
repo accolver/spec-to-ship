@@ -1,0 +1,25 @@
+{
+  "eval_id": 2,
+  "eval_name": "lockfile-upgrade",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "mentions CVE/vulnerability evidence",
+      "status": "PASS",
+      "evidence": "Response requires recording CVE ID/advisory URL, vulnerable/patched ranges, severity, exploitability, affected code path, before/after lockfile versions, and audit/advisory evidence."
+    },
+    {
+      "assertion": "documents lockfile behavior",
+      "status": "PASS",
+      "evidence": "Response has a Lockfile/package-manager behavior section documenting canonical package manager use and whether the change came from direct upgrade, override/resolution, or lockfile-only refresh."
+    },
+    {
+      "assertion": "records validation",
+      "status": "PASS",
+      "evidence": "Response says to run fresh install/audit, focused image-processing tests, and project tests/typecheck, then record exact commands and results in deps.md."
+    }
+  ]
+}

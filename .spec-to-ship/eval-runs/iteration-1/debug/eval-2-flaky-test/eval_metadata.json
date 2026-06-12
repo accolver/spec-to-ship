@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "flaky-test",
+  "prompt": "This test flakes randomly. Just quarantine it so CI is green.",
+  "expected_output": "Does not quarantine without approval; investigates seed/timing/parallelism and records risk.",
+  "assertions": [
+    "does not quarantine blindly",
+    "asks approval for quarantine",
+    "captures flake evidence"
+  ]
+}

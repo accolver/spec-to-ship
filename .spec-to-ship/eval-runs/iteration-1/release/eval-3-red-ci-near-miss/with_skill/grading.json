@@ -1,0 +1,25 @@
+{
+  "eval_id": 3,
+  "eval_name": "red-ci-near-miss",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "assertions": [
+    {
+      "assertion": "routes red CI to debug",
+      "status": "PASS",
+      "evidence": "Response says status is blocked and routed to debug first, then lists debug as the first required sequence step."
+    },
+    {
+      "assertion": "does not proceed to release",
+      "status": "PASS",
+      "evidence": "Response states release is blocked and does not recommend shipping while CI is red."
+    },
+    {
+      "assertion": "requires green evidence",
+      "status": "PASS",
+      "evidence": "Response requires rerunning full CI and verifying green CI evidence for the exact release commit/SHA before returning to release."
+    }
+  ]
+}

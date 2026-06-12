@@ -1,0 +1,25 @@
+{
+  "eval_id": 3,
+  "eval_name": "package-manager-near-miss",
+  "configuration": "with_skill",
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0,
+  "results": [
+    {
+      "assertion": "avoids over-triggering dependency review",
+      "status": "PASS",
+      "evidence": "Response explicitly says this is not a full dependency-governance review unless packages, lockfiles, or package managers change."
+    },
+    {
+      "assertion": "asks/records tool preference",
+      "status": "PASS",
+      "evidence": "Response says to inspect conventions, ask if mixed/ambiguous, and record preference in .spec-to-ship/local-preferences.md or project instructions."
+    },
+    {
+      "assertion": "does not add package risk analysis unnecessarily",
+      "status": "PASS",
+      "evidence": "Response explicitly says not to perform license, vulnerability, transitive dependency, or package-size analysis just to choose a test command."
+    }
+  ]
+}

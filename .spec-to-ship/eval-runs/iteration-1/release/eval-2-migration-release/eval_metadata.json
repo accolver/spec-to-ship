@@ -1,0 +1,12 @@
+{
+  "eval_id": 2,
+  "eval_name": "migration-release",
+  "prompt": "Release a DB migration with tests passing but no rollback plan.",
+  "expected_output": "Blocks or escalates missing rollback/migration approval.",
+  "files": [],
+  "assertions": [
+    "requires rollback path",
+    "requires migration approval",
+    "does not claim ready"
+  ]
+}

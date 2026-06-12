@@ -1,0 +1,26 @@
+{
+  "eval_id": 3,
+  "eval_name": "no-test-exception",
+  "configuration": "with_skill",
+  "output_file": "outputs/response.md",
+  "assertions": [
+    {
+      "assertion": "documents no-test exception",
+      "passed": true,
+      "evidence": "Includes an explicit No-test exception section in test-report.md content."
+    },
+    {
+      "assertion": "provides alternate proof",
+      "passed": true,
+      "evidence": "Lists manual before/after comparison, dimensions/path, diff inspection, and intended-file verification."
+    },
+    {
+      "assertion": "records residual risk",
+      "passed": true,
+      "evidence": "Records risk that manual review can miss subtle rendering, metadata, or environment-specific differences."
+    }
+  ],
+  "passed": 3,
+  "total": 3,
+  "pass_rate": 1.0
+}

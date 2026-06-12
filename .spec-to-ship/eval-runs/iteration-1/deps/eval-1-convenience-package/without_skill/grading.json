@@ -1,0 +1,25 @@
+{
+  "eval_id": 1,
+  "eval_name": "convenience-package",
+  "configuration": "without_skill",
+  "passed": 1,
+  "total": 3,
+  "pass_rate": 0.3333,
+  "results": [
+    {
+      "assertion": "considers standard library/no-dependency alternative",
+      "status": "PASS",
+      "evidence": "Response says JavaScript's built-in String.prototype.padStart may be enough for basic padding."
+    },
+    {
+      "assertion": "checks license/maintenance",
+      "status": "FAIL",
+      "evidence": "Response does not mention license compatibility, maintenance cadence, provenance, or package health checks."
+    },
+    {
+      "assertion": "records decision",
+      "status": "FAIL",
+      "evidence": "Response gives an implementation plan but does not say to record a dependency decision or deps artifact."
+    }
+  ]
+}

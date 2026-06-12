@@ -1,0 +1,78 @@
+{
+  "skill_name": "debug",
+  "iteration": 1,
+  "workspace": ".spec-to-ship/eval-runs/iteration-1/debug",
+  "generated_at": "2026-06-12T19:00:33.693Z",
+  "configurations": {
+    "without_skill": {
+      "passed_assertions": 4,
+      "total_assertions": 10,
+      "pass_rate": 0.4,
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "misleading-ci",
+          "passed_assertions": 2,
+          "total_assertions": 4,
+          "pass_rate": 0.5
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "flaky-test",
+          "passed_assertions": 0,
+          "total_assertions": 3,
+          "pass_rate": 0
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "known-cause-near-miss",
+          "passed_assertions": 2,
+          "total_assertions": 3,
+          "pass_rate": 0.6666666666666666
+        }
+      ]
+    },
+    "with_skill": {
+      "passed_assertions": 9,
+      "total_assertions": 10,
+      "pass_rate": 0.9,
+      "evals": [
+        {
+          "eval_id": 1,
+          "eval_name": "misleading-ci",
+          "passed_assertions": 3,
+          "total_assertions": 4,
+          "pass_rate": 0.75
+        },
+        {
+          "eval_id": 2,
+          "eval_name": "flaky-test",
+          "passed_assertions": 3,
+          "total_assertions": 3,
+          "pass_rate": 1
+        },
+        {
+          "eval_id": 3,
+          "eval_name": "known-cause-near-miss",
+          "passed_assertions": 3,
+          "total_assertions": 3,
+          "pass_rate": 1
+        }
+      ]
+    }
+  },
+  "delta": {
+    "pass_rate": 0.5,
+    "percentage_points": 50
+  },
+  "notes": [
+    "Baseline responses were generated before reading skills/core/debug/SKILL.md.",
+    "With-skill responses followed skills/core/debug/SKILL.md plus referenced template/reference files.",
+    "Eval 1 cannot fully satisfy root-cause proof without logs, code, or a fixture; with-skill output correctly refuses to invent evidence."
+  ],
+  "top_fixes": [
+    "Add concrete CI log/code fixtures for eval 1 so root-cause evidence can be objectively proven instead of planned.",
+    "Clarify in the debug skill how to respond when the prompt lacks enough artifacts: produce evidence thresholds and mark root cause unproven.",
+    "Consider adding a lightweight debug-report response skeleton for no-file troubleshooting prompts."
+  ]
+}
