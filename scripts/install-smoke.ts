@@ -7,25 +7,36 @@ import { approvedHarnesses, approvedSkills, repoRoot } from "./lib";
 const root = repoRoot();
 const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), "sts-install-smoke-"));
 const install = path.join(root, "scripts/install.sh");
+const packageBin = path.join(root, "bin/spec-to-ship.js");
 
 type RunOptions = { home?: string; expectFailure?: boolean };
 
-function run(label: string, args: string[], options: RunOptions = {}): childProcess.SpawnSyncReturns<string> {
-  const result = childProcess.spawnSync(install, args, {
-    cwd: root,
+type RunSpec = { executable: string; args: string[]; cwd?: string };
+
+function runProcess(label: string, spec: RunSpec, options: RunOptions = {}): childProcess.SpawnSyncReturns<string> {
+  const result = childProcess.spawnSync(spec.executable, spec.args, {
+    cwd: spec.cwd ?? root,
     env: { ...process.env, HOME: options.home ?? process.env.HOME ?? os.homedir() },
     encoding: "utf8",
   });
   const ok = options.expectFailure ? result.status !== 0 : result.status === 0;
   if (!ok) {
     console.error(`Install smoke failed: ${label}`);
-    console.error(`command: ${install} ${args.join(" ")}`);
+    console.error(`command: ${spec.executable} ${spec.args.join(" ")}`);
     console.error(`status: ${result.status}`);
     console.error(result.stdout);
     console.error(result.stderr);
     process.exit(1);
   }
   return result;
+}
+
+function run(label: string, args: string[], options: RunOptions = {}): childProcess.SpawnSyncReturns<string> {
+  return runProcess(label, { executable: install, args }, options);
+}
+
+function runBin(label: string, args: string[], options: RunOptions = {}): childProcess.SpawnSyncReturns<string> {
+  return runProcess(label, { executable: process.execPath, args: [packageBin, ...args] }, options);
 }
 
 function localSkillDir(target: string, harness: string): string {
@@ -165,6 +176,16 @@ if (!focusedCommands) throw new Error("Missing agents command directory mapping"
 assertCommandSet(focusedCommands, "agents");
 if (fs.existsSync(localSkillDir(focusedTarget, "pi"))) throw new Error("Focused harness install created pi skills unexpectedly.");
 if (localCommandDir(focusedTarget, "pi") && fs.existsSync(localCommandDir(focusedTarget, "pi")!)) throw new Error("Focused harness install created pi commands unexpectedly.");
+
+const binHelp = runBin("package bin help", ["--help"]);
+if (!binHelp.stdout.includes("Spec-to-Ship installer") || !binHelp.stdout.includes("bunx github:accolver/spec-to-ship")) {
+  throw new Error("Package bin help did not describe npx/bunx installer usage.");
+}
+const binTarget = path.join(runRoot, "bin-wrapper-agents");
+const binHome = path.join(runRoot, "home-bin-wrapper");
+runBin("package bin install subcommand", ["install", "--mode", "local", "--target", binTarget, "--harness", "agents", "--copy", "--skip-external-deps"], { home: binHome });
+assertSkillSet(localSkillDir(binTarget, "agents"));
+assertCommandSet(localCommandDir(binTarget, "agents")!, "agents");
 
 const bothTarget = path.join(runRoot, "both-agents");
 const bothHome = path.join(runRoot, "home-both");

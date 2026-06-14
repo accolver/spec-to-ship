@@ -6,13 +6,24 @@ STS is intentionally small. It ships only the core coding workflow and integrate
 
 ## Install
 
-Paste this into your AI coding agent:
+From the project you want to install into, run one of:
 
 ```bash
-git clone https://github.com/accolver/spec-to-ship ~/.spec-to-ship   && ~/.spec-to-ship/scripts/install.sh
+bunx github:accolver/spec-to-ship install --mode local --target . --harness all
 ```
 
-The installer asks whether to install locally, globally, both, or dry-run. It adds a small managed block to your existing `AGENTS.md` instead of replacing your instructions.
+```bash
+npx --yes github:accolver/spec-to-ship install --mode local --target . --harness all
+```
+
+For active STS development, clone and link instead:
+
+```bash
+git clone https://github.com/accolver/spec-to-ship ~/.spec-to-ship \
+  && ~/.spec-to-ship/scripts/install.sh --mode local --target . --harness all --link
+```
+
+The installer asks whether to install locally, globally, both, or dry-run when `--mode` is omitted. It adds a small managed block to your existing `AGENTS.md` instead of replacing your instructions. The installer delegates to the repository scripts and currently requires Bash and Bun.
 
 ## What gets installed
 
@@ -85,7 +96,7 @@ See `UNINSTALL.md` for rollback behavior and global uninstall notes.
 
 ## Releases
 
-Stable releases are tagged as `vX.Y.Z` and published as GitHub Releases. The npm package is intentionally private; install by cloning the repository or checking out a tag.
+Stable releases are tagged as `vX.Y.Z` and published as GitHub Releases. The npm package is intentionally private; install via `bunx`/`npx` from GitHub, by cloning the repository, or by checking out a tag.
 
 See `RELEASE.md` for the release checklist.
 

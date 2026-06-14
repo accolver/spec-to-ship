@@ -19,5 +19,9 @@
     "install:smoke": "bun run scripts/install-smoke.ts",
     "uninstall": "bun run scripts/uninstall.ts"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "bin": {
+    "spec-to-ship": "./bin/spec-to-ship.js",
+    "sts-install": "./bin/spec-to-ship.js"
+  }
 }
