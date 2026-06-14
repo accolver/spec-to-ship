@@ -4,7 +4,7 @@ Canonical source prompts for Spec-to-Ship slash commands. The build script rende
 
 Primary command:
 
-- `/sts` — full-lifecycle mode: frontload blocking requirements/questions, then drive the active feature through spec, planning, implementation/TDD, debug when needed, review, dependency governance when needed, release, and finish until shipped or blocked by a required human decision.
+- `/sts` — full-lifecycle mode: frontload blocking requirements/questions, then drive the active feature through spec, planning, implementation/TDD, debug when needed, adversarial review, dependency governance when needed, release, and finish until shipped or blocked by a required human decision. Review/release require evidence matrices, negative/boundary probes, task-checkbox proof, UI/demo proof when applicable, and explicit blocked/degraded handling for failed or unavailable required validation.
 
 Namespaced commands where the harness supports namespace paths:
 

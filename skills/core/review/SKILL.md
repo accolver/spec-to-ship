@@ -24,15 +24,20 @@ Perform evidence-backed pre-merge review for spec compliance, code quality, test
 - Do not make product decisions that belong in `spec`.
 - Do not ignore missing tests because the diff looks plausible.
 - Do not treat optional polish as a blocker.
+- Do not treat a timed-out/unavailable reviewer, browser, CI, or design tool as passing evidence.
 
 ## Process
 
-1. Read the spec, plan, tasks, and current diff.
-2. Pass 1: compare behavior against acceptance criteria and non-goals.
-3. Pass 2: inspect correctness, simplicity, maintainability, tests, security, observability, and dependency changes.
-4. For UI work, load `ui-ux-gate` and require Impeccable-informed critique or audit evidence.
-5. Classify findings as `block`, `should-fix`, or `follow-up` with evidence.
-6. Save `review.md`.
+1. Read the spec, plan, tasks, test report, dependency report when present, upstream specs/task checklists touched by the diff, and current diff/status.
+2. Build an acceptance evidence matrix: every acceptance criterion is `met`, `partial`, `missing`, `deferred`, or `not applicable`, with file/line/command proof.
+3. Audit task/checklist changes: every checked upstream task must have concrete evidence; otherwise mark it as a blocker or required correction.
+4. Pass 1: compare behavior against acceptance criteria, non-goals, product constraints, and upstream specs.
+5. Pass 2: inspect correctness, simplicity, maintainability, tests, security/auth, persistence/data safety, observability, dependency changes, generated artifacts, and dirty unrelated files.
+6. Pass 3: adversarial probes. Try to break the change with boundary, negative, conflict, runtime/demo, permission/security, and regression cases relevant to the feature. Run focused commands when cheap; otherwise record exact manual reasoning and residual risk.
+7. For UI/demo/user-facing work, load `ui-ux-gate` and require Impeccable-informed critique or documented degraded-mode acceptance. Verify demos prove generated/runtime behavior instead of only hard-coded marker strings.
+8. If a required reviewer/subagent/tool times out or is unavailable, record review as incomplete/degraded and block release unless the owner explicitly accepts the risk.
+9. Classify findings as `block`, `should-fix`, or `follow-up` with evidence.
+10. Save `review.md`.
 
 ## Outputs
 
@@ -59,4 +64,8 @@ Perform evidence-backed pre-merge review for spec compliance, code quality, test
 
 - [ ] Findings have evidence
 - [ ] Spec compliance is checked
-- [ ] UI changes include Impeccable-informed review
+- [ ] Acceptance evidence matrix is complete
+- [ ] Adversarial probes are recorded
+- [ ] Changed upstream checkboxes are audited
+- [ ] Dirty unrelated artifacts are identified
+- [ ] UI changes include Impeccable-informed review or accepted degraded mode

@@ -10,7 +10,7 @@ Use this when you want STS to own the work from goal to shipped outcome:
 /sts [goal or feature]
 ```
 
-`/sts` is full-lifecycle mode. It reads the STS workflow, inspects current feature artifacts when available, frontloads blocking requirements/questions, then continues through spec, planning, implementation/TDD, debug when needed, review, dependency governance when needed, release, and finish until the work is shipped or blocked by a required human decision.
+`/sts` is full-lifecycle mode. It reads the STS workflow, inspects current feature artifacts when available, frontloads blocking requirements/questions, then continues through spec, planning, implementation/TDD, debug when needed, adversarial review, dependency governance when needed, release, and finish until the work is shipped or blocked by a required human decision. Later gates require acceptance evidence, negative/boundary probes, task-checkbox proof, UI/demo proof where applicable, and explicit blocked/degraded status for failed or unavailable required validation.
 
 ## Step commands
 

@@ -24,6 +24,7 @@ Require failing-first evidence, minimal implementation, passing proof, and safe 
 - Do not implement first and test later unless impossible and documented.
 - Do not claim green without fresh command output.
 - Do not broaden scope during refactor.
+- Do not rely on happy-path assertions alone for compatibility, security, persistence, transport, generated artifact, or UI/runtime claims.
 
 ## Process
 
@@ -31,8 +32,9 @@ Require failing-first evidence, minimal implementation, passing proof, and safe 
 2. Add or update the smallest failing test or reproduction.
 3. Run the focused command and confirm it fails for the expected reason; if it passes unexpectedly, stop and revise the test or assumptions.
 4. Implement the smallest change that can pass.
-5. Run focused tests, then broader relevant checks.
-6. Record failing and passing evidence in `test-report.md`.
+5. Add or justify negative/boundary coverage for the changed behavior, especially conflict, invalid input, authorization/security, persistence, transport/protocol, generated artifact, and runtime/demo paths.
+6. Run focused tests, then broader relevant checks.
+7. Record failing, passing, negative/boundary, and no-test-exception evidence in `test-report.md`.
 
 ## Outputs
 
@@ -61,3 +63,4 @@ Require failing-first evidence, minimal implementation, passing proof, and safe 
 - [ ] Failing evidence exists before implementation
 - [ ] Passing evidence is fresh
 - [ ] No-test exception is justified
+- [ ] Negative/boundary coverage exists or is explicitly deferred as a risk

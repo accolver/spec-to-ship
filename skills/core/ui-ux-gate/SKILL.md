@@ -15,7 +15,7 @@ Route UI/UX work through external Impeccable during spec, planning, review, and 
 
 ## When to use
 
-- A feature touches UI, UX, frontend routes, components, forms, dashboards, onboarding, visual design, accessibility, responsive behavior, copy, or product experience.
+- A feature touches UI, UX, frontend routes, components, forms, dashboards, onboarding, visual design, accessibility, responsive behavior, copy, product experience, demos, embedded graphs, or user-facing generated documentation.
 
 ## Do not use when
 
@@ -35,8 +35,8 @@ Route UI/UX work through external Impeccable during spec, planning, review, and 
 2. Check whether an `impeccable` skill is available in installed skill locations.
 3. If missing, point to `npx impeccable skills install` and `/impeccable init`.
 4. During spec/planning, use Impeccable shape/init guidance to define design requirements.
-5. During review/release, require Impeccable-informed critique, audit, or polish evidence.
-6. Record the Impeccable touchpoints in the feature namespace.
+5. During review/release, require Impeccable-informed critique, audit, or polish evidence. If a demo claims generated/runtime behavior, verify the UI evidence is derived from that behavior and not only a hard-coded marker string.
+6. Record the Impeccable touchpoints, install state, degraded-mode approvals, screenshots/browser checks when available, and demo/runtime proof in the feature namespace.
 
 ## Outputs
 
@@ -67,3 +67,4 @@ Route UI/UX work through external Impeccable during spec, planning, review, and 
 - [ ] Impeccable install state is known
 - [ ] Design requirements are in the spec
 - [ ] Review includes design QA evidence
+- [ ] Demo/runtime claims are verified against generated or runtime sources when applicable

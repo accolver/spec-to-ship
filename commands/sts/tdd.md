@@ -16,7 +16,7 @@ Run only the STS `tdd` step. This is **single-step mode**: produce or update thi
 1. Read `SPEC-TO-SHIP.md` if it exists.
 2. Use the installed STS skill `tdd` when your harness exposes skills; otherwise follow the corresponding STS lifecycle guidance in `SPEC-TO-SHIP.md`.
 3. Reuse an active feature namespace when one is clear; otherwise create or propose `.spec-to-ship/features/<feature-id>/`.
-4. Produce or update the expected artifact: `test-report.md`.
-5. Respect STS stop rules: ask before destructive actions, do not skip required approval, and do not claim completion without fresh evidence.
+4. Produce or update the expected artifact: `test-report.md`. Include failing-first output, focused green output, broader relevant output, negative/boundary coverage for the changed behavior, and any no-test exception.
+5. Respect STS stop rules: ask before destructive actions, do not skip required approval, do not rely on happy-path tests alone for compatibility/security/runtime claims, and do not claim completion without fresh evidence.
 
 If prerequisites for this step are missing, stop and ask for the missing decision or route back to the correct earlier STS step.

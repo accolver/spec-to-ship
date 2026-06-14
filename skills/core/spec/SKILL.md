@@ -37,7 +37,7 @@ Turn unclear intent into a namespaced engineering spec that can drive planning, 
 2. Read relevant project instructions, existing docs, and code before inventing structure.
 3. Clarify only blocking ambiguity; otherwise record assumptions and risks.
 4. If UI/UX is involved, load `ui-ux-gate` and invoke external Impeccable so design requirements shape the spec.
-5. Write `spec.md` with problem, users, outcomes, scope, non-goals, constraints, interfaces, acceptance criteria, risks, assumptions, open questions, and approval status.
+5. Write `spec.md` with problem, users, outcomes, scope, non-goals, constraints, interfaces, acceptance criteria, negative/boundary verification expectations, runtime/demo proof requirements, risks, assumptions, open questions, and approval status.
 6. Stop before implementation until the spec is approved when scope is non-trivial.
 
 ## Outputs
@@ -64,5 +64,6 @@ Turn unclear intent into a namespaced engineering spec that can drive planning, 
 ## Verification checklist
 
 - [ ] Spec has explicit acceptance criteria
+- [ ] Negative/boundary verification expectations are documented
 - [ ] Non-goals and risks are documented
 - [ ] UI/UX work includes Impeccable routing evidence

@@ -29,7 +29,8 @@ Convert an approved spec into vertical slices, task order, subagent handoffs, va
 
 - If approval status is missing, `draft`, or `pending-user-approval`, stop and ask for approval or route back to `spec`.
 - Do not implement code; produce task plans and handoff prompts.
-- Every task must name owned files, artifact path, validation command, rollback note, stop condition, and next STS routing.
+- Every task must name owned files, artifact path, validation command, rollback note, stop condition, next STS routing, expected evidence, and any upstream task/checklist item it may update.
+- Plans must call out demo/runtime proof when a task adds user-facing examples, generated artifacts, CLI output, or runtime-visible metadata.
 
 ## Process
 
@@ -37,8 +38,9 @@ Convert an approved spec into vertical slices, task order, subagent handoffs, va
 2. Build a dependency graph and identify ordering constraints.
 3. Slice work vertically into independently testable increments.
 4. Mark which slices can run in parallel and assign file/artifact ownership.
-5. Write validation commands, rollback notes, and subagent prompts for each slice.
-6. Save `plan.md` and `tasks.md` in the feature namespace.
+5. Write validation commands, rollback notes, expected negative/boundary tests, and subagent prompts for each slice.
+6. Add an evidence mapping plan: which acceptance criteria and upstream task checkboxes each slice is allowed to satisfy, and what proof is required before checking them off.
+7. Save `plan.md` and `tasks.md` in the feature namespace.
 
 ## Outputs
 
@@ -69,3 +71,5 @@ Convert an approved spec into vertical slices, task order, subagent handoffs, va
 - [ ] Tasks are vertical and independently testable
 - [ ] Parallel slices have ownership boundaries
 - [ ] Every task names validation commands
+- [ ] Evidence mapping covers acceptance criteria and upstream checkboxes
+- [ ] Demo/runtime proof is planned for user-facing changes

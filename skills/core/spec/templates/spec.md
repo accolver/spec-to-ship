@@ -33,7 +33,9 @@ State `not applicable` for backend-only work. If applicable, include Impeccable 
 ## Verification plan
 
 - Focused checks:
+- Negative/boundary checks:
 - Broader checks:
+- Runtime/demo/generated-artifact proof:
 - Manual/design QA:
 
 ## Risks and assumptions
