@@ -78,6 +78,12 @@ const expectations: Expectation[] = [
     ],
   },
   {
+    file: "scripts/install.sh",
+    terms: [
+      "validate-process-hardening.ts",
+    ],
+  },
+  {
     file: "skills/core/release/templates/release-checklist.md",
     terms: [
       "Required validation that failed or could not run",

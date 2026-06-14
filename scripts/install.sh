@@ -41,6 +41,7 @@ run_validation_suite() {
   run_bun run scripts/validate-contracts.ts
   run_bun run scripts/validate-external-deps.ts
   run_bun run scripts/validate-commands.ts
+  run_bun run scripts/validate-process-hardening.ts
   run_bun run scripts/detect-overlap.ts
 }
 
