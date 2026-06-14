@@ -52,6 +52,13 @@ if (!fs.existsSync(script)) {
   process.exit(1);
 }
 
+const bunCheck = childProcess.spawnSync("bun", ["--version"], { stdio: "ignore" });
+if (bunCheck.error || bunCheck.status !== 0) {
+  console.error("Spec-to-Ship installer requires Bun because it validates and renders harness command files during install.");
+  console.error("Install Bun first: https://bun.sh/docs/installation");
+  process.exit(1);
+}
+
 const result = childProcess.spawnSync("bash", [script, ...commandArgs], {
   cwd: root,
   stdio: "inherit",
