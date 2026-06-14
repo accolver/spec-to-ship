@@ -42,7 +42,7 @@ The only command most users need is:
 /sts
 ```
 
-It continues the current STS workflow or asks what to work on. STS also ships step commands such as `/sts:spec`, `/sts:code`, `/sts:debug`, `/sts:review`, `/sts:release`, and `/sts:finish` for harnesses with namespaced slash command support. Harnesses without namespaces get dash aliases such as `/sts-spec`.
+It runs STS in full-lifecycle mode: frontload blocking requirements/questions, then continue through spec, planning, implementation/TDD, debug when needed, review, dependency governance when needed, release, and finish until the work is shipped or blocked by a required human decision. STS also ships single-step commands such as `/sts:spec`, `/sts:code`, `/sts:debug`, `/sts:review`, `/sts:release`, and `/sts:finish` for harnesses with namespaced slash command support. Harnesses without namespaces get dash aliases such as `/sts-spec`.
 
 See `SLASH_COMMANDS.md` for the compatibility matrix.
 

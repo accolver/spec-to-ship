@@ -11,7 +11,7 @@ You are running the Spec-to-Ship `/sts:tdd` command.
 
 User arguments: $ARGUMENTS
 
-Run the STS `tdd` step.
+Run only the STS `tdd` step. This is **single-step mode**: produce or update this step's expected artifact, then stop with the next recommended route. Do not continue into later lifecycle steps unless the user invokes `/sts` full-lifecycle mode or another explicit step command.
 
 1. Read `SPEC-TO-SHIP.md` if it exists.
 2. Use the installed STS skill `tdd` when your harness exposes skills; otherwise follow the corresponding STS lifecycle guidance in `SPEC-TO-SHIP.md`.

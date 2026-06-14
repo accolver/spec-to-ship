@@ -18,6 +18,13 @@ request
   -> finish for merge/PR/worktree cleanup
 ```
 
+## Invocation modes
+
+- `/sts` is **full-lifecycle mode**. It should drive the active feature through the whole lifecycle until the work is shipped, intentionally handed off, or blocked by a required human decision. Do not stop after merely choosing or completing one step.
+- Step commands such as `/sts:spec`, `/sts-spec`, `/sts:code`, or `/sts-code` are **single-step mode**. They run only the named lifecycle step, write that step's artifact, and stop with the next recommended route.
+- In full-lifecycle mode, frontload requirements before starting implementation: ask one consolidated set of blocking questions about scope, approval, validation commands, destructive permissions, dependency policy, release target, merge/PR preference, and cleanup expectations. Record assumptions for non-blocking unknowns.
+- Full-lifecycle mode still honors gates: stop for missing approval, destructive or irreversible actions, unsafe dependency decisions, failed validation needing user judgment, merge/PR decisions, or dirty/unmerged cleanup decisions. If a failure is diagnosable without user input, route through `debug` and then continue the lifecycle.
+
 ## Skill routing
 
 Routing collision rules:

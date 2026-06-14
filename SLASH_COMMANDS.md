@@ -4,13 +4,13 @@ STS ships reusable command/prompt files for harnesses that support custom slash 
 
 ## Primary command
 
-Use this first:
+Use this when you want STS to own the work from goal to shipped outcome:
 
 ```text
 /sts [goal or feature]
 ```
 
-`/sts` reads the STS workflow, inspects current feature artifacts when available, continues to the next lifecycle step, or asks what you want to work on if no active feature is clear.
+`/sts` is full-lifecycle mode. It reads the STS workflow, inspects current feature artifacts when available, frontloads blocking requirements/questions, then continues through spec, planning, implementation/TDD, debug when needed, review, dependency governance when needed, release, and finish until the work is shipped or blocked by a required human decision.
 
 ## Step commands
 
@@ -31,6 +31,8 @@ Where namespaced commands are supported:
 
 Harnesses without command namespaces get dash aliases such as `/sts-spec` and `/sts-code`.
 
+Step commands are single-step mode. They run only the named lifecycle step, write that step's artifact, and stop with the next recommended route. Use `/sts` instead of a step command when you want the full lifecycle to continue automatically.
+
 ## Harness support matrix
 
 | Harness | Installed command location | Expected invocation |
@@ -47,5 +49,5 @@ Harnesses without command namespaces get dash aliases such as `/sts-spec` and `/
 ## Notes
 
 - STS avoids colon filenames for Windows/git portability. Harnesses that support namespaces derive `:` from command subdirectories.
-- Commands are lightweight routers. They do not replace skills; they tell the agent which STS skill/lifecycle step to use.
+- Commands are lightweight routers. They do not replace skills; `/sts` drives the full lifecycle while step commands tell the agent which single STS skill/lifecycle step to use.
 - The installer adds command files alongside skills for the selected harnesses.

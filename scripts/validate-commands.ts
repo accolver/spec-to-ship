@@ -36,6 +36,12 @@ for (const command of expected) {
   if (!frontmatter.data["argument-hint"]) errors.push(`${command.file} missing argument-hint`);
   if (frontmatter.data.package !== "spec-to-ship") errors.push(`${command.file} package must be spec-to-ship`);
   if (!content.includes("SPEC-TO-SHIP.md")) errors.push(`${command.file} must reference SPEC-TO-SHIP.md`);
+  if (command.name === "sts") {
+    if (!content.includes("full-lifecycle mode")) errors.push("sts.md must define /sts as full-lifecycle mode");
+    if (!content.includes("Frontload requirements")) errors.push("sts.md must frontload blocking requirements/questions");
+  } else {
+    if (!content.includes("single-step mode")) errors.push(`${command.file} must define step commands as single-step mode`);
+  }
 }
 
 if (errors.length > 0) {
