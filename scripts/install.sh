@@ -10,6 +10,39 @@ DRY_RUN="false"
 SKIP_EXTERNAL="false"
 YES="false"
 HOME_OVERRIDE=""
+BUN_CMD=()
+
+resolve_bun_cmd() {
+  if command -v bun >/dev/null 2>&1; then
+    BUN_CMD=(bun)
+    return
+  fi
+  if command -v npx >/dev/null 2>&1; then
+    echo "Bun was not found; falling back to npx --yes bun." >&2
+    BUN_CMD=(npx --yes bun)
+    return
+  fi
+  if command -v npm >/dev/null 2>&1; then
+    echo "Bun was not found; falling back to npm exec --yes bun --." >&2
+    BUN_CMD=(npm exec --yes bun --)
+    return
+  fi
+  echo "Spec-to-Ship install requires Bun, or npm/npx so it can run Bun transiently." >&2
+  echo "Install Bun from https://bun.sh/docs/installation or install Node/npm and rerun with npx." >&2
+  exit 1
+}
+
+run_bun() {
+  "${BUN_CMD[@]}" "$@"
+}
+
+run_validation_suite() {
+  run_bun run scripts/validate-skills.ts
+  run_bun run scripts/validate-contracts.ts
+  run_bun run scripts/validate-external-deps.ts
+  run_bun run scripts/validate-commands.ts
+  run_bun run scripts/detect-overlap.ts
+}
 
 valid_mode() {
   case "$1" in local|global|both) return 0 ;; *) return 1 ;; esac
@@ -90,12 +123,13 @@ if [[ "$DRY_RUN" != "true" && "$YES" != "true" && ( "$MODE" == "global" || "$MOD
 fi
 
 cd "$ROOT"
-bun run validate
-bun run build:dist
+resolve_bun_cmd
+run_validation_suite
+run_bun run scripts/build-dist.ts
 
 if [[ "$DRY_RUN" != "true" && ( "$MODE" == "local" || "$MODE" == "both" ) ]]; then
   # Preflight AGENTS.md before installing skills so symlink/unbalanced-marker failures do not leave a partial local install.
-  bun run scripts/integrate-agents-md.ts --target "$TARGET" --sts-root "$ROOT" --dry-run >/dev/null
+  run_bun run scripts/integrate-agents-md.ts --target "$TARGET" --sts-root "$ROOT" --dry-run >/dev/null
 fi
 
 unique_backup_path() {
@@ -279,7 +313,7 @@ if [[ "$MODE" == "local" || "$MODE" == "both" ]]; then
   install_commands_scope local "$TARGET"
   integrate_args=("--target" "$TARGET" "--sts-root" "$ROOT")
   if [[ "$DRY_RUN" == "true" ]]; then integrate_args+=("--dry-run"); fi
-  bun run scripts/integrate-agents-md.ts "${integrate_args[@]}"
+  run_bun run scripts/integrate-agents-md.ts "${integrate_args[@]}"
 fi
 if [[ "$MODE" == "global" || "$MODE" == "both" ]]; then
   install_scope global "$HOME"
@@ -289,7 +323,7 @@ if [[ "$SKIP_EXTERNAL" != "true" ]]; then
   external_args=("--mode" "$MODE" "--target" "$TARGET" "--harness" "$HARNESS")
   if [[ "$DRY_RUN" == "true" ]]; then external_args+=("--dry-run"); fi
   if [[ "$YES" == "true" ]]; then external_args+=("--yes"); fi
-  bun run scripts/install-external-deps.ts "${external_args[@]}"
+  run_bun run scripts/install-external-deps.ts "${external_args[@]}"
 fi
 
 echo "Spec-to-Ship install complete."

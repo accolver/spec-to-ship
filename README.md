@@ -23,7 +23,7 @@ git clone https://github.com/accolver/spec-to-ship ~/.spec-to-ship \
   && ~/.spec-to-ship/scripts/install.sh --mode local --target . --harness all --link
 ```
 
-The installer asks whether to install locally, globally, both, or dry-run when `--mode` is omitted. It adds a small managed block to your existing `AGENTS.md` instead of replacing your instructions. The installer delegates to the repository scripts and currently requires Bash and Bun.
+The installer asks whether to install locally, globally, both, or dry-run when `--mode` is omitted. It adds a small managed block to your existing `AGENTS.md` instead of replacing your instructions. The installer delegates to the repository scripts, requires Bash, prefers a local `bun` executable, and falls back to `npx`/`npm` to run Bun transiently when Bun is not installed.
 
 ## What gets installed
 

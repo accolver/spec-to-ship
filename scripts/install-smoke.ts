@@ -9,14 +9,14 @@ const runRoot = fs.mkdtempSync(path.join(os.tmpdir(), "sts-install-smoke-"));
 const install = path.join(root, "scripts/install.sh");
 const packageBin = path.join(root, "bin/spec-to-ship.js");
 
-type RunOptions = { home?: string; expectFailure?: boolean };
+type RunOptions = { home?: string; expectFailure?: boolean; pathEnv?: string };
 
 type RunSpec = { executable: string; args: string[]; cwd?: string };
 
 function runProcess(label: string, spec: RunSpec, options: RunOptions = {}): childProcess.SpawnSyncReturns<string> {
   const result = childProcess.spawnSync(spec.executable, spec.args, {
     cwd: spec.cwd ?? root,
-    env: { ...process.env, HOME: options.home ?? process.env.HOME ?? os.homedir() },
+    env: { ...process.env, HOME: options.home ?? process.env.HOME ?? os.homedir(), PATH: options.pathEnv ?? process.env.PATH },
     encoding: "utf8",
   });
   const ok = options.expectFailure ? result.status !== 0 : result.status === 0;
@@ -135,6 +135,22 @@ function countInstallBackups(home: string): number {
   return countBackups(path.join(home, ".config", "spec-to-ship", "install-backups"));
 }
 
+function fallbackPathWithoutBun(label: string, includeNpx = true): string {
+  const nativeBun = childProcess.spawnSync("bash", ["-lc", "command -v bun"], { encoding: "utf8" }).stdout.trim();
+  if (!nativeBun) throw new Error("Install smoke requires a native bun executable to test npm/npx fallback shims.");
+  const dir = path.join(runRoot, `fallback-${label}`);
+  fs.mkdirSync(dir, { recursive: true });
+  const bunLiteral = JSON.stringify(nativeBun);
+  const shim = `#!/usr/bin/env bash\nset -euo pipefail\nif [[ \"\${1:-}\" == \"--version\" ]]; then\n  echo \"fallback-shim\"\n  exit 0\nfi\nif [[ \"$0\" == *npx && \"\${1:-}\" == \"--yes\" && \"\${2:-}\" == \"bun\" ]]; then\n  shift 2\n  exec ${bunLiteral} \"$@\"\nfi\nif [[ \"$0\" == *npm && \"\${1:-}\" == \"exec\" && \"\${2:-}\" == \"--yes\" && \"\${3:-}\" == \"bun\" && \"\${4:-}\" == \"--\" ]]; then\n  shift 4\n  exec ${bunLiteral} \"$@\"\nfi\necho \"unexpected fallback shim invocation: $0 $*\" >&2\nexit 1\n`;
+  if (includeNpx) {
+    fs.writeFileSync(path.join(dir, "npx"), shim);
+    fs.chmodSync(path.join(dir, "npx"), 0o755);
+  }
+  fs.writeFileSync(path.join(dir, "npm"), shim);
+  fs.chmodSync(path.join(dir, "npm"), 0o755);
+  return `${dir}:/usr/bin:/bin`;
+}
+
 const localTarget = path.join(runRoot, "local-all");
 fs.mkdirSync(localTarget, { recursive: true });
 fs.writeFileSync(path.join(localTarget, "AGENTS.md"), "# Existing instructions\n\nKeep me.\n");
@@ -186,6 +202,26 @@ const binHome = path.join(runRoot, "home-bin-wrapper");
 runBin("package bin install subcommand", ["install", "--mode", "local", "--target", binTarget, "--harness", "agents", "--copy", "--skip-external-deps"], { home: binHome });
 assertSkillSet(localSkillDir(binTarget, "agents"));
 assertCommandSet(localCommandDir(binTarget, "agents")!, "agents");
+
+const fallbackTarget = path.join(runRoot, "fallback-npx-agents");
+const fallbackHome = path.join(runRoot, "home-fallback-npx");
+const fallbackPath = fallbackPathWithoutBun("npx", true);
+const fallbackInstall = runBin("package bin falls back to npx when bun is unavailable", ["install", "--mode", "local", "--target", fallbackTarget, "--harness", "agents", "--copy", "--skip-external-deps"], { home: fallbackHome, pathEnv: fallbackPath });
+if (!fallbackInstall.stderr.includes("falling back to npx --yes bun")) {
+  throw new Error("Installer did not report npx fallback when bun was unavailable.");
+}
+assertSkillSet(localSkillDir(fallbackTarget, "agents"));
+assertCommandSet(localCommandDir(fallbackTarget, "agents")!, "agents");
+
+const npmFallbackTarget = path.join(runRoot, "fallback-npm-agents");
+const npmFallbackHome = path.join(runRoot, "home-fallback-npm");
+const npmFallbackPath = fallbackPathWithoutBun("npm", false);
+const npmFallbackInstall = runBin("package bin falls back to npm when bun and npx are unavailable", ["install", "--mode", "local", "--target", npmFallbackTarget, "--harness", "agents", "--copy", "--skip-external-deps"], { home: npmFallbackHome, pathEnv: npmFallbackPath });
+if (!npmFallbackInstall.stderr.includes("falling back to npm exec --yes bun --")) {
+  throw new Error("Installer did not report npm fallback when bun and npx were unavailable.");
+}
+assertSkillSet(localSkillDir(npmFallbackTarget, "agents"));
+assertCommandSet(localCommandDir(npmFallbackTarget, "agents")!, "agents");
 
 const bothTarget = path.join(runRoot, "both-agents");
 const bothHome = path.join(runRoot, "home-both");

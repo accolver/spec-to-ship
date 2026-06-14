@@ -30,7 +30,8 @@ Examples:
   npx --yes github:accolver/spec-to-ship install --mode local --target . --harness pi
 
 Notes:
-  - The installer delegates to scripts/install.sh and requires bash and Bun.
+  - The installer delegates to scripts/install.sh and requires bash.
+  - It prefers a local bun executable and falls back to npx/npm to run Bun transiently.
   - Use --skip-external-deps to skip optional external skill installation.
 `);
 }
@@ -52,10 +53,18 @@ if (!fs.existsSync(script)) {
   process.exit(1);
 }
 
-const bunCheck = childProcess.spawnSync("bun", ["--version"], { stdio: "ignore" });
-if (bunCheck.error || bunCheck.status !== 0) {
-  console.error("Spec-to-Ship installer requires Bun because it validates and renders harness command files during install.");
-  console.error("Install Bun first: https://bun.sh/docs/installation");
+const bashCheck = childProcess.spawnSync("bash", ["--version"], { stdio: "ignore" });
+if (bashCheck.error || bashCheck.status !== 0) {
+  console.error("Spec-to-Ship installer requires bash to run the existing install/uninstall scripts.");
+  process.exit(1);
+}
+
+const hasBun = childProcess.spawnSync("bun", ["--version"], { stdio: "ignore" }).status === 0;
+const hasNpx = childProcess.spawnSync("npx", ["--version"], { stdio: "ignore" }).status === 0;
+const hasNpm = childProcess.spawnSync("npm", ["--version"], { stdio: "ignore" }).status === 0;
+if (!hasBun && !hasNpx && !hasNpm) {
+  console.error("Spec-to-Ship prefers Bun, but can fall back to npx/npm to run Bun transiently.");
+  console.error("Install Bun from https://bun.sh/docs/installation or install Node/npm and rerun with npx.");
   process.exit(1);
 }
 
