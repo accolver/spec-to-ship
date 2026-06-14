@@ -51,6 +51,8 @@ Before removing anything, uninstall writes a backup under:
 - local: `<target>/.spec-to-ship/uninstall-backups/<timestamp>/`
 - global: `~/.config/spec-to-ship/uninstall-backups/<timestamp>/`
 
+Current installs write `AGENTS.md` installer backups outside the target repository under `~/.config/spec-to-ship/install-backups/` to avoid leaving untracked files in the project. Older installs may have adjacent installer backups (`*.bak-*`) beside installed files.
+
 By default, old adjacent installer backups (`*.bak-*`) are not restored automatically. To restore a single unambiguous adjacent backup after removing STS, use:
 
 ```bash

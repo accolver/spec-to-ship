@@ -120,6 +120,10 @@ function countBackups(target: string): number {
   return count;
 }
 
+function countInstallBackups(home: string): number {
+  return countBackups(path.join(home, ".config", "spec-to-ship", "install-backups"));
+}
+
 const localTarget = path.join(runRoot, "local-all");
 fs.mkdirSync(localTarget, { recursive: true });
 fs.writeFileSync(path.join(localTarget, "AGENTS.md"), "# Existing instructions\n\nKeep me.\n");
@@ -134,11 +138,22 @@ const agentsContent = fs.readFileSync(path.join(localTarget, "AGENTS.md"), "utf8
 if (!agentsContent.includes("Keep me.") || (agentsContent.match(/spec-to-ship:start/g) ?? []).length !== 1) {
   throw new Error("AGENTS.md managed block was not inserted idempotently while preserving existing content.");
 }
-const backupsAfterFirst = countBackups(localTarget);
+const targetBackupsAfterFirst = countBackups(localTarget);
+const installBackupsAfterFirst = countInstallBackups(localHome);
+if (targetBackupsAfterFirst !== 0) {
+  throw new Error(`Install polluted target with adjacent backups: found ${targetBackupsAfterFirst}`);
+}
+if (installBackupsAfterFirst < 1) {
+  throw new Error("Install did not preserve an external AGENTS.md backup.");
+}
 run("local all copy second run", ["--mode", "local", "--target", localTarget, "--harness", "all", "--copy", "--skip-external-deps"], { home: localHome });
-const backupsAfterSecond = countBackups(localTarget);
-if (backupsAfterSecond !== backupsAfterFirst) {
-  throw new Error(`Idempotency failed: backups changed from ${backupsAfterFirst} to ${backupsAfterSecond}`);
+const targetBackupsAfterSecond = countBackups(localTarget);
+const installBackupsAfterSecond = countInstallBackups(localHome);
+if (targetBackupsAfterSecond !== targetBackupsAfterFirst) {
+  throw new Error(`Idempotency failed: target backups changed from ${targetBackupsAfterFirst} to ${targetBackupsAfterSecond}`);
+}
+if (installBackupsAfterSecond !== installBackupsAfterFirst) {
+  throw new Error(`Idempotency failed: install backups changed from ${installBackupsAfterFirst} to ${installBackupsAfterSecond}`);
 }
 
 const focusedTarget = path.join(runRoot, "focused-agents");

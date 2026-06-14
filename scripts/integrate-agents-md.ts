@@ -1,4 +1,6 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { parseArgs, repoRoot } from "./lib";
 
@@ -10,6 +12,13 @@ const agentsPath = path.join(target, "AGENTS.md");
 const start = "<!-- spec-to-ship:start -->";
 const end = "<!-- spec-to-ship:end -->";
 const block = `${start}\nSpec-to-Ship (STS) is installed. For non-trivial coding work, read and follow:\n\`${path.join(stsRoot, "SPEC-TO-SHIP.md")}\`\n\nKeep project-specific instructions in this AGENTS.md. Do not duplicate STS lifecycle instructions here.\n${end}`;
+
+function backupPathForTarget(): string {
+  const targetHash = crypto.createHash("sha256").update(target).digest("hex").slice(0, 12);
+  const targetLabel = path.basename(target) || "target";
+  const backupDir = path.join(os.homedir(), ".config", "spec-to-ship", "install-backups", `${targetLabel}-${targetHash}`);
+  return path.join(backupDir, `AGENTS.md.bak-${Date.now()}`);
+}
 
 const existingStat = fs.lstatSync(agentsPath, { throwIfNoEntry: false });
 if (existingStat?.isSymbolicLink()) {
@@ -44,7 +53,8 @@ if (dryRun) {
 }
 fs.mkdirSync(target, { recursive: true });
 if (existed) {
-  const backup = `${agentsPath}.bak-${Date.now()}`;
+  const backup = backupPathForTarget();
+  fs.mkdirSync(path.dirname(backup), { recursive: true });
   fs.copyFileSync(agentsPath, backup);
   console.log(`Backup written: ${backup}`);
 }
