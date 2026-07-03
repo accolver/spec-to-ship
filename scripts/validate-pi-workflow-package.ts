@@ -81,6 +81,9 @@ if (packageJsonText) {
 const extensionExpectations = [
   "registerCommand(COMMAND_NAME",
   "ctx.ui.editor",
+  "ctx.ui.select",
+  "What are you trying to do?",
+  "How will you know it worked?",
   "new WorkflowManager",
   "manager.startInBackground",
   "export const meta =",
@@ -102,7 +105,7 @@ const readmeExpectations = [
   "pi install npm:@quintinshaw/pi-dynamic-workflows",
   "pi install git:github.com/accolver/spec-to-ship",
   "/sts-workflow",
-  "proof of success",
+  "proof-of-success",
   "`SPEC-TO-SHIP.md` remains canonical",
 ];
 

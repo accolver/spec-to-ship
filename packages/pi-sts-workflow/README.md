@@ -36,17 +36,20 @@ Reload Pi after installing:
 /sts-workflow Build the thing I want
 ```
 
-The command opens an intake editor before any workflow agents run. Fill in:
+The command asks one question at a time instead of showing a large intake form. It starts with:
 
-- goal / requested outcome
-- must-have requirements
-- constraints and non-goals
-- proof of success
-- verification commands, if known
-- approval mode: `stop-after-spec`, `plan-only`, or `approved-to-implement`
-- destructive-operation boundaries
+```text
+What are you trying to do?
+```
 
-The workflow stops early with clarifying questions if the packet is not sufficient for unattended work. It also stops before implementation unless approval mode and the generated STS plan allow continuing.
+You can answer with as little or as much detail as you want. If the answer is too vague or is missing proof-of-success, constraints, or approval intent, the command asks short follow-up questions such as:
+
+- What should be different when this is done?
+- How will you know it worked?
+- Any constraints or things to avoid?
+- How far should STS go?
+
+The workflow stops early with clarifying questions only when the conversational intake is still not sufficient for unattended work. It also stops before implementation unless approval mode and the generated STS plan allow continuing.
 
 ## Relationship to STS
 

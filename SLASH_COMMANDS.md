@@ -35,7 +35,7 @@ Step commands are single-step mode. They run only the named lifecycle step, writ
 
 ## Optional Pi workflow command
 
-Pi users may optionally install `packages/pi-sts-workflow` after installing `@quintinshaw/pi-dynamic-workflows`. It registers `/sts-workflow`, which gathers requirements and proof-of-success up front, then launches a dynamic workflow wrapper around the canonical STS lifecycle. This is additive; `/sts` remains the portable default.
+Pi users may optionally install `packages/pi-sts-workflow` after installing `@quintinshaw/pi-dynamic-workflows`. It registers `/sts-workflow`, which asks one natural question at a time, gathers proof-of-success before unattended work, then launches a dynamic workflow wrapper around the canonical STS lifecycle. This is additive; `/sts` remains the portable default.
 
 ## Harness support matrix
 

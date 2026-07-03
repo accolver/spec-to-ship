@@ -130,42 +130,71 @@ const final = await agent('Synthesize the Spec-to-Ship workflow outcome for the 
 
 return final || { ok: false, status: 'synthesis_failed', report: 'Workflow finished but final synthesis failed.', intake, plan, execution, verification, review }`;
 
-function intakeTemplate(args: string): string {
-  const goal = args.trim() || "Describe the feature, fix, or outcome you want STS to ship.";
+type ApprovalMode = "stop-after-spec" | "plan-only" | "approved-to-implement";
+
+type IntakeAnswers = {
+  goal: string;
+  success: string;
+  constraints: string;
+  approvalMode: ApprovalMode;
+};
+
+function hasUsefulText(value: string | undefined): value is string {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isVagueGoal(value: string): boolean {
+  const normalized = value.trim().toLowerCase();
+  if (normalized.length < 18) return true;
+  return /^(fix|build|change|update|improve|make|do this|help|ship it|work on it)[\s.?!]*$/i.test(normalized);
+}
+
+function mentionsProofOfSuccess(value: string): boolean {
+  return /\b(test|tests|passing|verify|verification|proof|done|success|acceptance|works?|artifact|command|demo|review)\b/i.test(value);
+}
+
+function mentionsConstraints(value: string): boolean {
+  return /\b(constraint|constraints|avoid|do not|don't|must not|non-goal|non-goals|out of scope|preserve|keep|compatibility|without|no destructive|ask before)\b/i.test(value);
+}
+
+function inferApprovalMode(value: string): ApprovalMode | null {
+  if (/\b(approved[- ]to[- ]implement|go ahead|implement it|ship it|do it|you may implement|approved to code)\b/i.test(value)) {
+    return "approved-to-implement";
+  }
+  if (/\b(plan only|planning only|do not code|don't code|no implementation)\b/i.test(value)) return "plan-only";
+  if (/\b(stop after spec|ask before coding|ask before implementation|spec only)\b/i.test(value)) return "stop-after-spec";
+  return null;
+}
+
+function modeFromChoice(choice: string | undefined): ApprovalMode | null {
+  if (choice === "Ask before coding") return "stop-after-spec";
+  if (choice === "Plan only") return "plan-only";
+  if (choice === "Approved to implement") return "approved-to-implement";
+  return null;
+}
+
+function buildIntakePacket(answers: IntakeAnswers): string {
+  const proof = answers.success.trim() || "User did not specify exact proof; infer conservative proof-of-success from the requested outcome and repository validation conventions.";
+  const constraints = answers.constraints.trim() || "No extra user constraints supplied beyond SPEC-TO-SHIP.md safety rules. Ask before destructive or irreversible operations.";
   return [
-    "# Spec-to-Ship Workflow Intake",
+    "# Spec-to-Ship Conversational Intake",
     "",
-    "Fill this in once so the workflow can run unattended until it hits an approval, safety, or missing-information gate.",
+    "The user answered one question at a time before this workflow started.",
     "",
     "## Goal / requested outcome",
-    goal,
-    "",
-    "## Must-have requirements",
-    "- ",
-    "",
-    "## Constraints / preferences",
-    "- Keep SPEC-TO-SHIP.md canonical and preserve existing STS delivery unless this request explicitly says otherwise.",
-    "- ",
-    "",
-    "## Non-goals",
-    "- ",
+    answers.goal.trim(),
     "",
     "## Proof of success",
-    "Describe what evidence should prove the work is done. Include tests, commands, artifacts, user-visible behavior, or review criteria.",
-    "- ",
+    proof,
     "",
-    "## Verification commands, if known",
-    "- ",
+    "## Constraints, boundaries, and non-goals",
+    constraints,
     "",
     "## Approval mode",
-    "Choose one and delete the others:",
-    "- stop-after-spec",
-    "- plan-only",
-    "- approved-to-implement",
+    answers.approvalMode,
     "",
-    "## Known risks / destructive boundaries",
-    "- Ask before deleting branches, worktrees, data, credentials, deployments, or production resources.",
-    "- "
+    "## Standing safety boundary",
+    "Ask before deleting branches, worktrees, data, credentials, deployments, or production resources."
   ].join("\n");
 }
 
@@ -208,12 +237,41 @@ export default function extension(pi: ExtensionAPI) {
         return;
       }
 
-      const intake = await ctx.ui.editor("Spec-to-Ship workflow intake", intakeTemplate(args));
-      if (!intake || !intake.trim()) {
-        ctx.ui.notify("/sts-workflow cancelled; no intake packet was provided.", "info");
+      const initialGoal = await ctx.ui.editor("What are you trying to do?", args.trim());
+      if (!hasUsefulText(initialGoal)) {
+        ctx.ui.notify("/sts-workflow cancelled; no goal was provided.", "info");
         return;
       }
 
+      let goal = initialGoal.trim();
+      if (isVagueGoal(goal)) {
+        const detail = await ctx.ui.editor("What should be different when this is done?", "");
+        if (hasUsefulText(detail)) goal = `${goal}\n\nAdditional detail:\n${detail.trim()}`;
+      }
+
+      let success = "";
+      if (!mentionsProofOfSuccess(goal)) {
+        const answer = await ctx.ui.editor("How will you know it worked?", "");
+        if (hasUsefulText(answer)) success = answer.trim();
+      }
+
+      let constraints = "";
+      if (!mentionsConstraints(`${goal}\n${success}`)) {
+        const answer = await ctx.ui.editor("Any constraints or things to avoid?", "");
+        if (hasUsefulText(answer)) constraints = answer.trim();
+      }
+
+      let approvalMode = inferApprovalMode(`${goal}\n${success}\n${constraints}`);
+      if (!approvalMode) {
+        const choice = await ctx.ui.select("How far should STS go?", ["Ask before coding", "Plan only", "Approved to implement"]);
+        approvalMode = modeFromChoice(choice);
+        if (!approvalMode) {
+          ctx.ui.notify("/sts-workflow cancelled; no approval mode was selected.", "info");
+          return;
+        }
+      }
+
+      const intake = buildIntakePacket({ goal, success, constraints, approvalMode });
       const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd), {
         concurrency: 4,
         agentRetries: 1,

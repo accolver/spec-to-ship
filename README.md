@@ -71,7 +71,7 @@ This GitHub install includes the dynamic workflow engine dependency. If you also
 pi install npm:@quintinshaw/pi-dynamic-workflows
 ```
 
-After `/reload`, run `/sts-workflow`. It opens an upfront intake editor for requirements, constraints, approval mode, and proof-of-success before launching a Pi dynamic workflow. This wrapper is Pi-specific and experimental; `SPEC-TO-SHIP.md` and the core skills remain canonical.
+After `/reload`, run `/sts-workflow`. It asks one question at a time, starting with what you want to build or change, then asks natural follow-ups only when more detail is needed before launching a Pi dynamic workflow. This wrapper is Pi-specific and experimental; `SPEC-TO-SHIP.md` and the core skills remain canonical.
 
 ## Supported harness targets
 
