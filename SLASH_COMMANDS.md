@@ -33,6 +33,10 @@ Harnesses without command namespaces get dash aliases such as `/sts-spec` and `/
 
 Step commands are single-step mode. They run only the named lifecycle step, write that step's artifact, and stop with the next recommended route. Use `/sts` instead of a step command when you want the full lifecycle to continue automatically.
 
+## Optional Pi workflow command
+
+Pi users may optionally install `packages/pi-sts-workflow` after installing `@quintinshaw/pi-dynamic-workflows`. It registers `/sts-workflow`, which gathers requirements and proof-of-success up front, then launches a dynamic workflow wrapper around the canonical STS lifecycle. This is additive; `/sts` remains the portable default.
+
 ## Harness support matrix
 
 | Harness | Installed command location | Expected invocation |
@@ -41,7 +45,7 @@ Step commands are single-step mode. They run only the named lifecycle step, writ
 | Claude Code | `.claude/commands/sts.md`, `.claude/commands/sts/spec.md` | Namespaced project/user command, commonly `/project:sts:spec` or `/user:sts:spec`; some clients also surface `/sts:spec`. |
 | Cursor | `.cursor/commands/sts.md`, `.cursor/commands/sts/spec.md` | Namespaced command where supported; dash aliases may vary by Cursor version. |
 | OpenCode | `.opencode/commands/sts.md`, `.opencode/commands/sts-spec.md` | `/sts`, `/sts-spec`, `/sts-code`, etc. |
-| Pi | `.pi/prompts/sts.md`, `.pi/prompts/sts-spec.md` | `/sts`, `/sts-spec`, `/sts-code`, etc. |
+| Pi | `.pi/prompts/sts.md`, `.pi/prompts/sts-spec.md`; optional `packages/pi-sts-workflow` package | `/sts`, `/sts-spec`, `/sts-code`, etc.; optional `/sts-workflow` |
 | GitHub Copilot / VS Code | `.github/prompts/sts.prompt.md`, `.github/prompts/sts-spec.prompt.md` | Prompt-file slash entries such as `/sts` or `/sts-spec` depending client version. |
 | Codex | Global `~/.codex/prompts/sts.md`, `~/.codex/prompts/sts-spec.md` | Codex custom prompts are global/deprecated; invoke as `/prompts:sts` or `/prompts:sts-spec`. Codex skills remain the primary shared mechanism. |
 | Generic Open Agent folders | `.agents/commands/sts.md`, `.agents/commands/sts-spec.md` | For harnesses that discover generic command folders: `/sts`, `/sts-spec`, etc. |

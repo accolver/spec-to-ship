@@ -1,0 +1,24 @@
+{
+  "name": "spec-to-ship-pi-workflow",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Optional Pi dynamic workflow wrapper for the Spec-to-Ship lifecycle.",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi",
+    "spec-to-ship",
+    "workflow",
+    "dynamic-workflows",
+    "orchestration"
+  ],
+  "pi": {
+    "extensions": [
+      "extensions/sts-workflow.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
