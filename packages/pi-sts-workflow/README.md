@@ -1,24 +1,24 @@
 # spec-to-ship-pi-workflow
 
-Optional Pi package for running Spec-to-Ship through the Pi dynamic workflows extension.
+Optional Pi package for running Spec-to-Ship through the Pi dynamic workflows engine.
 
-This package does **not** replace the portable STS skills/prompts. It adds one Pi command, `/sts-workflow`, that gathers an upfront requirements packet and then asks Pi to launch a dynamic workflow using `@quintinshaw/pi-dynamic-workflows`.
+This package does **not** replace the portable STS skills/prompts. It adds one Pi command, `/sts-workflow`, that gathers an upfront requirements packet and then starts a background dynamic workflow using `@quintinshaw/pi-dynamic-workflows`.
 
 ## Install
 
-Install the dynamic workflow engine first:
-
-```bash
-pi install npm:@quintinshaw/pi-dynamic-workflows
-```
-
-Then install the Spec-to-Ship repo as a Pi package from GitHub:
+Install the Spec-to-Ship repo as a Pi package from GitHub:
 
 ```bash
 pi install git:github.com/accolver/spec-to-ship
 ```
 
-For local development from a checkout, you can also install this package directory directly:
+The GitHub install declares `@quintinshaw/pi-dynamic-workflows` as a dependency, so the `/sts-workflow` command can start the run directly instead of dumping a generated script into the chat. If you also want QuintinShaw's standalone `/workflows` commands, install that package explicitly:
+
+```bash
+pi install npm:@quintinshaw/pi-dynamic-workflows
+```
+
+For local development from a checkout, run `npm install` or `bun install` at the repository root, then install this package directory directly:
 
 ```bash
 pi install ./packages/pi-sts-workflow

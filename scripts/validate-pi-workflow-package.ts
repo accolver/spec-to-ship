@@ -30,6 +30,10 @@ if (rootPackageJsonText) {
     if (!isRecord(parsed)) {
       errors.push("root package.json must be a JSON object");
     } else {
+      const dependencies = isRecord(parsed.dependencies) ? parsed.dependencies : {};
+      if (dependencies["@quintinshaw/pi-dynamic-workflows"] !== "^2.10.0") {
+        errors.push("root package.json must depend on @quintinshaw/pi-dynamic-workflows ^2.10.0 for GitHub installs");
+      }
       const pi = parsed.pi;
       if (!isRecord(pi)) {
         errors.push("root package.json must expose the optional Pi workflow package through a pi manifest");
@@ -53,6 +57,10 @@ if (packageJsonText) {
     } else {
       if (parsed.name !== "spec-to-ship-pi-workflow") errors.push("Pi workflow package name must be spec-to-ship-pi-workflow");
       if (parsed.private !== true) errors.push("Pi workflow package should remain private until an explicit publish decision");
+      const dependencies = isRecord(parsed.dependencies) ? parsed.dependencies : {};
+      if (dependencies["@quintinshaw/pi-dynamic-workflows"] !== "^2.10.0") {
+        errors.push("Pi workflow package must depend on @quintinshaw/pi-dynamic-workflows ^2.10.0");
+      }
       const keywords = Array.isArray(parsed.keywords) ? parsed.keywords : [];
       if (!keywords.includes("pi-package")) errors.push("Pi workflow package keywords must include pi-package");
       const pi = parsed.pi;
@@ -73,8 +81,8 @@ if (packageJsonText) {
 const extensionExpectations = [
   "registerCommand(COMMAND_NAME",
   "ctx.ui.editor",
-  "workflowToolActive",
-  "pi.sendUserMessage",
+  "new WorkflowManager",
+  "manager.startInBackground",
   "export const meta =",
   "agent('",
   "parallel([",

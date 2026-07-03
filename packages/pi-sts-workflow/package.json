@@ -18,6 +18,9 @@
       "extensions/sts-workflow.ts"
     ]
   },
+  "dependencies": {
+    "@quintinshaw/pi-dynamic-workflows": "^2.10.0"
+  },
   "peerDependencies": {
     "@earendil-works/pi-coding-agent": "*"
   }

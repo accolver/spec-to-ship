@@ -1,4 +1,10 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
+import {
+  createWorkflowStorage,
+  installResultDelivery,
+  loadWorkflowSettings,
+  WorkflowManager,
+} from "@quintinshaw/pi-dynamic-workflows";
 
 const COMMAND_NAME = "sts-workflow";
 
@@ -116,14 +122,6 @@ const final = await agent('Synthesize the Spec-to-Ship workflow outcome for the 
 
 return final || { ok: false, status: 'synthesis_failed', report: 'Workflow finished but final synthesis failed.', intake, plan, execution, verification, review }`;
 
-function workflowToolActive(pi: ExtensionAPI): boolean {
-  try {
-    return pi.getActiveTools().includes("workflow");
-  } catch {
-    return false;
-  }
-}
-
 function intakeTemplate(args: string): string {
   const goal = args.trim() || "Describe the feature, fix, or outcome you want STS to ship.";
   return [
@@ -163,42 +161,42 @@ function intakeTemplate(args: string): string {
   ].join("\n");
 }
 
-function kickoffPrompt(intakePacket: string, cwd: string): string {
-  const argsObject = {
+function workflowArgs(intakePacket: string, cwd: string): Record<string, unknown> {
+  return {
     intakePacket,
     launchCwd: cwd,
     source: "spec-to-ship-pi-workflow/sts-workflow"
   };
-
-  return [
-    "Launch the Spec-to-Ship dynamic workflow wrapper now.",
-    "",
-    "You MUST call the `workflow` tool as the next action. Do not answer in prose first.",
-    "Use `background: true`, `concurrency: 4`, and `agentRetries: 1`.",
-    "",
-    "Workflow args JSON:",
-    "```json",
-    JSON.stringify(argsObject, null, 2),
-    "```",
-    "",
-    "Workflow script:",
-    "```javascript",
-    STS_WORKFLOW_SCRIPT,
-    "```"
-  ].join("\n");
 }
 
 export default function extension(pi: ExtensionAPI) {
+  const cwd = process.cwd();
+  const storage = createWorkflowStorage(cwd);
+  const settings = loadWorkflowSettings({ cwd });
+  const manager = new WorkflowManager({
+    cwd,
+    loadSavedWorkflow: (name) => storage.load(name)?.script,
+    defaultAgentTimeoutMs: settings.defaultAgentTimeoutMs ?? null,
+    concurrency: settings.defaultConcurrency,
+    defaultAgentRetries: settings.defaultAgentRetries,
+  });
+
+  pi.on("session_start", (_event: unknown, ctx: ExtensionContext) => {
+    manager.setMainModel(ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
+    manager.setModelRegistry(ctx.modelRegistry);
+    try {
+      manager.setSessionId(ctx.sessionManager?.getSessionId());
+    } catch {
+      manager.setSessionId(undefined);
+    }
+    installResultDelivery(pi, manager);
+  });
+
   pi.registerCommand(COMMAND_NAME, {
     description: "Run the optional Spec-to-Ship dynamic workflow wrapper",
     handler: async (args, ctx) => {
       if (!ctx.isIdle()) {
         ctx.ui.notify("Wait for the current agent turn to finish before starting /sts-workflow.", "warning");
-        return;
-      }
-
-      if (!workflowToolActive(pi)) {
-        ctx.ui.notify("The `workflow` tool is not active. Install @quintinshaw/pi-dynamic-workflows, run /reload, then retry /sts-workflow.", "warning");
         return;
       }
 
@@ -208,7 +206,20 @@ export default function extension(pi: ExtensionAPI) {
         return;
       }
 
-      pi.sendUserMessage(kickoffPrompt(intake, ctx.cwd));
+      const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd), {
+        concurrency: 4,
+        agentRetries: 1,
+      });
+
+      ctx.ui.notify(`Started /sts-workflow (${runId}). The result will return to this conversation when it finishes.`, "info");
+      ctx.ui.setStatus(`sts-workflow:${runId}`, `STS workflow running (${runId})`);
+      void promise
+        .finally(() => {
+          ctx.ui.setStatus(`sts-workflow:${runId}`, undefined);
+        })
+        .catch(() => {
+          // installResultDelivery reports background workflow failures.
+        });
     }
   });
 }

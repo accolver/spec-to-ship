@@ -24,6 +24,9 @@
     "install:smoke": "bun run scripts/install-smoke.ts",
     "uninstall": "bun run scripts/uninstall.ts"
   },
+  "dependencies": {
+    "@quintinshaw/pi-dynamic-workflows": "^2.10.0"
+  },
   "devDependencies": {},
   "bin": {
     "spec-to-ship": "./bin/spec-to-ship.js",

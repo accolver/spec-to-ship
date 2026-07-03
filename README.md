@@ -59,11 +59,16 @@ See `SLASH_COMMANDS.md` for the compatibility matrix.
 
 ## Optional Pi dynamic workflow wrapper
 
-For Pi users who want a more guided, phase-visible orchestration layer, STS also includes an optional local Pi package:
+For Pi users who want a more guided, phase-visible orchestration layer, STS also includes an optional installable Pi package:
+
+```bash
+pi install git:github.com/accolver/spec-to-ship
+```
+
+This GitHub install includes the dynamic workflow engine dependency. If you also want QuintinShaw's standalone `/workflows` commands, install them separately:
 
 ```bash
 pi install npm:@quintinshaw/pi-dynamic-workflows
-pi install git:github.com/accolver/spec-to-ship
 ```
 
 After `/reload`, run `/sts-workflow`. It opens an upfront intake editor for requirements, constraints, approval mode, and proof-of-success before launching a Pi dynamic workflow. This wrapper is Pi-specific and experimental; `SPEC-TO-SHIP.md` and the core skills remain canonical.
