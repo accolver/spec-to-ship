@@ -12,7 +12,13 @@ Install the dynamic workflow engine first:
 pi install npm:@quintinshaw/pi-dynamic-workflows
 ```
 
-Then install this optional package from a checkout of Spec-to-Ship:
+Then install the Spec-to-Ship repo as a Pi package from GitHub:
+
+```bash
+pi install git:github.com/accolver/spec-to-ship
+```
+
+For local development from a checkout, you can also install this package directory directly:
 
 ```bash
 pi install ./packages/pi-sts-workflow

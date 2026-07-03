@@ -4,6 +4,7 @@ import { isRecord, repoRoot } from "./lib";
 
 const root = repoRoot();
 const packageRoot = path.join(root, "packages", "pi-sts-workflow");
+const rootPackageJsonPath = path.join(root, "package.json");
 const packageJsonPath = path.join(packageRoot, "package.json");
 const extensionPath = path.join(packageRoot, "extensions", "sts-workflow.ts");
 const readmePath = path.join(packageRoot, "README.md");
@@ -18,9 +19,31 @@ function readRequired(file: string): string {
   return fs.readFileSync(file, "utf8");
 }
 
+const rootPackageJsonText = readRequired(rootPackageJsonPath);
 const packageJsonText = readRequired(packageJsonPath);
 const extensionText = readRequired(extensionPath);
 const readmeText = readRequired(readmePath);
+
+if (rootPackageJsonText) {
+  try {
+    const parsed: unknown = JSON.parse(rootPackageJsonText);
+    if (!isRecord(parsed)) {
+      errors.push("root package.json must be a JSON object");
+    } else {
+      const pi = parsed.pi;
+      if (!isRecord(pi)) {
+        errors.push("root package.json must expose the optional Pi workflow package through a pi manifest");
+      } else {
+        const extensions = Array.isArray(pi.extensions) ? pi.extensions : [];
+        if (!extensions.includes("packages/pi-sts-workflow/extensions/sts-workflow.ts")) {
+          errors.push("root pi manifest must expose packages/pi-sts-workflow/extensions/sts-workflow.ts for GitHub installs");
+        }
+      }
+    }
+  } catch (error) {
+    errors.push(`Invalid root package JSON: ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
 
 if (packageJsonText) {
   try {
@@ -69,7 +92,7 @@ for (const expected of extensionExpectations) {
 
 const readmeExpectations = [
   "pi install npm:@quintinshaw/pi-dynamic-workflows",
-  "pi install ./packages/pi-sts-workflow",
+  "pi install git:github.com/accolver/spec-to-ship",
   "/sts-workflow",
   "proof of success",
   "`SPEC-TO-SHIP.md` remains canonical",

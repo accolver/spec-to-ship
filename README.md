@@ -63,7 +63,7 @@ For Pi users who want a more guided, phase-visible orchestration layer, STS also
 
 ```bash
 pi install npm:@quintinshaw/pi-dynamic-workflows
-pi install ./packages/pi-sts-workflow
+pi install git:github.com/accolver/spec-to-ship
 ```
 
 After `/reload`, run `/sts-workflow`. It opens an upfront intake editor for requirements, constraints, approval mode, and proof-of-success before launching a Pi dynamic workflow. This wrapper is Pi-specific and experimental; `SPEC-TO-SHIP.md` and the core skills remain canonical.
