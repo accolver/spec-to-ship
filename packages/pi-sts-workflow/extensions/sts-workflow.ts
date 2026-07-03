@@ -44,7 +44,15 @@ const intake = await agent('You are the Spec-to-Ship intake gate. Read SPEC-TO-S
 })
 
 if (!intake || !intake.canProceed || intake.status !== 'ready') {
-  return { ok: false, status: intake ? intake.status : 'needs_clarification', message: 'Spec-to-Ship stopped at intake so missing requirements can be answered before unattended work begins.', clarifyingQuestions: intake ? intake.clarifyingQuestions : ['Restate the goal, constraints, proof-of-success, and whether implementation is approved.'], intake }
+  const questions = intake ? intake.clarifyingQuestions : ['Restate the goal, constraints, proof-of-success, and whether implementation is approved.']
+  return {
+    ok: false,
+    status: intake ? intake.status : 'needs_clarification',
+    message: 'Spec-to-Ship stopped at intake so missing requirements can be answered before unattended work begins.',
+    report: 'Spec-to-Ship needs clarification before unattended work can begin.\n\nPlease rerun /sts-workflow and answer these in the intake packet:\n' + questions.map((question, index) => (index + 1) + '. ' + question).join('\n'),
+    clarifyingQuestions: questions,
+    intake
+  }
 }
 
 phase('Context')
