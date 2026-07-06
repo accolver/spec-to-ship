@@ -89,11 +89,36 @@ const plan = await agent('Create the STS feature plan. Use the context below and
 })
 
 if (!plan) {
-  return { ok: false, status: 'planning_failed', message: 'The workflow could not produce a valid STS plan.', intake, contextResults }
+  return {
+    ok: false,
+    status: 'planning_failed',
+    message: 'The workflow could not produce a valid STS plan.',
+    report: 'Spec-to-Ship could not produce a valid plan. Review the intake and rerun /sts-workflow with clearer scope, proof-of-success, and approval mode.',
+    intake
+  }
 }
 
 if (intake.executionMode === 'stop-after-spec' || intake.executionMode === 'plan-only' || plan.requiresHumanApproval || plan.stopAfterPlanning) {
-  return { ok: true, status: plan.requiresHumanApproval ? 'approval_required' : 'planned', message: 'Spec-to-Ship stopped before implementation. Review the plan, answer questions, and rerun with execution mode approved-to-implement when ready.', intake, plan, contextResults }
+  const stopStatus = plan.requiresHumanApproval ? 'approval_required' : 'planned'
+  const report = [
+    'Spec-to-Ship stopped before implementation.',
+    '',
+    'Status: ' + stopStatus,
+    'Feature ID: ' + plan.featureId,
+    'Reason: ' + (plan.approvalReason || 'The current approval mode or plan requires a human checkpoint before coding.'),
+    '',
+    'Planned artifacts:',
+    ...plan.artifactPaths.map((item) => '- ' + item),
+    '',
+    'Implementation slices:',
+    ...plan.implementationSlices.map((item) => '- ' + item),
+    '',
+    'Verification checks:',
+    ...plan.verificationChecks.map((item) => '- ' + item),
+    '',
+    'Next step: review this plan. If you want STS to implement it, rerun /sts-workflow and choose Approved to implement, or state what should change first.'
+  ].join('\n')
+  return { ok: true, status: stopStatus, message: 'Spec-to-Ship stopped before implementation. Review the plan, answer questions, and rerun with execution mode approved-to-implement when ready.', report, intake, plan }
 }
 
 phase('Execution')
