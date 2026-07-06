@@ -12,7 +12,7 @@ Install the Spec-to-Ship repo as a Pi package from GitHub:
 pi install git:github.com/accolver/spec-to-ship
 ```
 
-The GitHub install declares `@quintinshaw/pi-dynamic-workflows` as a dependency, so the `/sts-workflow` command can start the run directly instead of dumping a generated script into the chat. If you also want QuintinShaw's standalone `/workflows` commands, install that package explicitly:
+The GitHub install declares `@quintinshaw/pi-dynamic-workflows` as a dependency, so the `/sts-workflow` command can start the run directly instead of dumping a generated script into the chat. It also registers the generic `workflow` tool without the custom compact progress renderer so Pi can show the normal tool result text. If you also want QuintinShaw's standalone `/workflows` commands, install that package explicitly:
 
 ```bash
 pi install npm:@quintinshaw/pi-dynamic-workflows

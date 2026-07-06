@@ -1,6 +1,7 @@
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import {
   createWorkflowStorage,
+  createWorkflowTool,
   installResultDelivery,
   loadWorkflowSettings,
   WorkflowManager,
@@ -13,9 +14,12 @@ const STS_WORKFLOW_SCRIPT = String.raw`export const meta = { name: 'spec_to_ship
 const input = args && typeof args === 'object' ? args : {};
 const intakePacket = typeof input.intakePacket === 'string' ? input.intakePacket : '';
 const launchCwd = typeof input.launchCwd === 'string' ? input.launchCwd : cwd;
+const prevalidatedIntake = input.prevalidatedIntake && typeof input.prevalidatedIntake === 'object' ? input.prevalidatedIntake : null;
 
 phase('Intake')
-const intake = await agent('You are the Spec-to-Ship intake gate. Read SPEC-TO-SHIP.md in the repo if present. Analyze this upfront intake packet and decide whether the run can continue unattended. Require clear requirements, constraints, non-goals, proof-of-success, and approval mode before implementation. If anything material is missing, return clarifying questions immediately and do not invent answers. Intake packet:\n\n' + intakePacket, {
+let intake = prevalidatedIntake;
+if (!intake) {
+  intake = await agent('You are the Spec-to-Ship intake gate. Read SPEC-TO-SHIP.md in the repo if present. Analyze this upfront intake packet and decide whether the run can continue unattended. Require clear requirements, constraints, non-goals, proof-of-success, and approval mode before implementation. If anything material is missing, return clarifying questions immediately and do not invent answers. Intake packet:\n\n' + intakePacket, {
   label: 'intake gate',
   tier: 'medium',
   schema: {
@@ -41,7 +45,8 @@ const intake = await agent('You are the Spec-to-Ship intake gate. Read SPEC-TO-S
     },
     required: ['canProceed', 'status', 'summary', 'featureSlug', 'requirements', 'constraints', 'nonGoals', 'proofOfSuccess', 'verificationCommands', 'risks', 'uiUxInvolved', 'dependenciesLikely', 'destructiveLikely', 'parallelismLikely', 'executionMode', 'clarifyingQuestions']
   }
-})
+  })
+}
 
 if (!intake || !intake.canProceed || intake.status !== 'ready') {
   const questions = intake ? intake.clarifyingQuestions : ['Restate the goal, constraints, proof-of-success, and whether implementation is approved.']
@@ -130,6 +135,42 @@ const final = await agent('Synthesize the Spec-to-Ship workflow outcome for the 
 
 return final || { ok: false, status: 'synthesis_failed', report: 'Workflow finished but final synthesis failed.', intake, plan, execution, verification, review }`;
 
+const STRICT_INTAKE_GATE_SCRIPT = String.raw`export const meta = { name: 'sts_strict_intake_gate', description: 'Apply the strict Spec-to-Ship intake gate before launching the main workflow.', phases: [{ title: 'Gate' }] }
+
+const input = args && typeof args === 'object' ? args : {};
+const intakePacket = typeof input.intakePacket === 'string' ? input.intakePacket : '';
+
+phase('Gate')
+const intake = await agent('You are the strict Spec-to-Ship intake gate. Read SPEC-TO-SHIP.md in the repo if present. Analyze this upfront intake packet and decide whether the run can continue unattended. Require clear enough requirements, constraints, non-goals, proof-of-success, and approval mode before implementation. For specialized optimization work, require the benchmark/data, metric/threshold, permission boundaries, protected areas, and target output needed to avoid wasting an unattended run. If anything material is missing, return clarifying questions immediately and do not invent answers. Intake packet:\n\n' + intakePacket, {
+  label: 'strict gate',
+  tier: 'medium',
+  schema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      canProceed: { type: 'boolean' },
+      status: { type: 'string', enum: ['ready', 'needs_clarification', 'approval_required'] },
+      summary: { type: 'string' },
+      featureSlug: { type: 'string' },
+      requirements: { type: 'array', items: { type: 'string' } },
+      constraints: { type: 'array', items: { type: 'string' } },
+      nonGoals: { type: 'array', items: { type: 'string' } },
+      proofOfSuccess: { type: 'array', items: { type: 'string' } },
+      verificationCommands: { type: 'array', items: { type: 'string' } },
+      risks: { type: 'array', items: { type: 'string' } },
+      uiUxInvolved: { type: 'boolean' },
+      dependenciesLikely: { type: 'boolean' },
+      destructiveLikely: { type: 'boolean' },
+      parallelismLikely: { type: 'boolean' },
+      executionMode: { type: 'string', enum: ['stop-after-spec', 'plan-only', 'approved-to-implement'] },
+      clarifyingQuestions: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['canProceed', 'status', 'summary', 'featureSlug', 'requirements', 'constraints', 'nonGoals', 'proofOfSuccess', 'verificationCommands', 'risks', 'uiUxInvolved', 'dependenciesLikely', 'destructiveLikely', 'parallelismLikely', 'executionMode', 'clarifyingQuestions']
+  }
+})
+
+return intake`;
+
 const INTAKE_ASSESSMENT_SCRIPT = String.raw`export const meta = { name: 'sts_intake_assessment', description: 'Assess STS conversational intake and choose the next best question.', phases: [{ title: 'Assess' }] }
 
 const input = args && typeof args === 'object' ? args : {};
@@ -174,6 +215,25 @@ type IntakeAssessment = {
   rationale: string;
 };
 
+type StrictIntake = {
+  canProceed: boolean;
+  status: "ready" | "needs_clarification" | "approval_required";
+  summary: string;
+  featureSlug: string;
+  requirements: string[];
+  constraints: string[];
+  nonGoals: string[];
+  proofOfSuccess: string[];
+  verificationCommands: string[];
+  risks: string[];
+  uiUxInvolved: boolean;
+  dependenciesLikely: boolean;
+  destructiveLikely: boolean;
+  parallelismLikely: boolean;
+  executionMode: ApprovalMode;
+  clarifyingQuestions: string[];
+};
+
 function hasUsefulText(value: string | undefined): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -201,6 +261,29 @@ function isIntakeAssessment(value: unknown): value is IntakeAssessment {
   );
 }
 
+function isStrictIntake(value: unknown): value is StrictIntake {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return (
+    typeof record.canProceed === "boolean" &&
+    ["ready", "needs_clarification", "approval_required"].includes(String(record.status)) &&
+    typeof record.summary === "string" &&
+    typeof record.featureSlug === "string" &&
+    Array.isArray(record.requirements) &&
+    Array.isArray(record.constraints) &&
+    Array.isArray(record.nonGoals) &&
+    Array.isArray(record.proofOfSuccess) &&
+    Array.isArray(record.verificationCommands) &&
+    Array.isArray(record.risks) &&
+    typeof record.uiUxInvolved === "boolean" &&
+    typeof record.dependenciesLikely === "boolean" &&
+    typeof record.destructiveLikely === "boolean" &&
+    typeof record.parallelismLikely === "boolean" &&
+    ["stop-after-spec", "plan-only", "approved-to-implement"].includes(String(record.executionMode)) &&
+    Array.isArray(record.clarifyingQuestions)
+  );
+}
+
 function fallbackAssessment(): IntakeAssessment {
   return {
     ready: false,
@@ -222,6 +305,43 @@ async function assessIntake(manager: WorkflowManager, transcript: string): Promi
     maxAgents: 1,
   });
   return isIntakeAssessment(result.result) ? result.result : fallbackAssessment();
+}
+
+function fallbackStrictIntake(question: string): StrictIntake {
+  return {
+    canProceed: false,
+    status: "needs_clarification",
+    summary: "Need more information before starting STS.",
+    featureSlug: "needs-clarification",
+    requirements: [],
+    constraints: [],
+    nonGoals: [],
+    proofOfSuccess: [],
+    verificationCommands: [],
+    risks: [],
+    uiUxInvolved: false,
+    dependenciesLikely: false,
+    destructiveLikely: false,
+    parallelismLikely: false,
+    executionMode: "stop-after-spec",
+    clarifyingQuestions: [question]
+  };
+}
+
+async function runStrictGate(manager: WorkflowManager, intakePacket: string): Promise<StrictIntake> {
+  const result = await manager.runSync(STRICT_INTAKE_GATE_SCRIPT, { intakePacket }, {
+    concurrency: 1,
+    agentRetries: 1,
+    maxAgents: 1,
+  });
+  return isStrictIntake(result.result) ? result.result : fallbackStrictIntake("What else should STS know before it starts?");
+}
+
+function nextStrictQuestion(strictIntake: StrictIntake, assessment: IntakeAssessment): string {
+  const firstStrictQuestion = strictIntake.clarifyingQuestions.find((question) => question.trim().length > 0);
+  if (firstStrictQuestion) return firstStrictQuestion.trim();
+  if (assessment.nextQuestion.trim()) return assessment.nextQuestion.trim();
+  return "What else should STS know before it starts?";
 }
 
 function buildIntakePacket(transcript: string, assessment: IntakeAssessment): string {
@@ -256,10 +376,11 @@ function buildIntakePacket(transcript: string, assessment: IntakeAssessment): st
   ].join("\n");
 }
 
-function workflowArgs(intakePacket: string, cwd: string): Record<string, unknown> {
+function workflowArgs(intakePacket: string, cwd: string, prevalidatedIntake: StrictIntake): Record<string, unknown> {
   return {
     intakePacket,
     launchCwd: cwd,
+    prevalidatedIntake,
     source: "spec-to-ship-pi-workflow/sts-workflow"
   };
 }
@@ -275,6 +396,18 @@ export default function extension(pi: ExtensionAPI) {
     concurrency: settings.defaultConcurrency,
     defaultAgentRetries: settings.defaultAgentRetries,
   });
+  const workflowTool = createWorkflowTool({
+    cwd,
+    manager,
+    storage,
+    defaultAgentTimeoutMs: settings.defaultAgentTimeoutMs ?? null,
+    defaultConcurrency: settings.defaultConcurrency,
+    defaultAgentRetries: settings.defaultAgentRetries,
+  });
+  const defaultRenderedWorkflowTool = { ...workflowTool };
+  delete (defaultRenderedWorkflowTool as { renderCall?: unknown }).renderCall;
+  delete (defaultRenderedWorkflowTool as { renderResult?: unknown }).renderResult;
+  pi.registerTool(defaultRenderedWorkflowTool);
 
   pi.on("session_start", (_event: unknown, ctx: ExtensionContext) => {
     manager.setMainModel(ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
@@ -285,6 +418,10 @@ export default function extension(pi: ExtensionAPI) {
       manager.setSessionId(undefined);
     }
     installResultDelivery(pi, manager);
+    const active = pi.getActiveTools();
+    if (!active.includes(workflowTool.name)) {
+      pi.setActiveTools([...active, workflowTool.name]);
+    }
   });
 
   pi.registerCommand(COMMAND_NAME, {
@@ -304,18 +441,23 @@ export default function extension(pi: ExtensionAPI) {
       transcript.push(`Q: What are you trying to do?\nA: ${initialGoal.trim()}`);
 
       let assessment: IntakeAssessment = fallbackAssessment();
-      for (let turn = 0; turn < 6; turn += 1) {
+      let strictIntake: StrictIntake = fallbackStrictIntake("What else should STS know before it starts?");
+      let intake = "";
+      for (let turn = 0; turn < 8; turn += 1) {
         ctx.ui.setStatus("sts-workflow:intake", "Assessing STS intake…");
         try {
           assessment = await assessIntake(manager, transcript.join("\n\n"));
+          intake = buildIntakePacket(transcript.join("\n\n"), assessment);
+          strictIntake = await runStrictGate(manager, intake);
         } finally {
           ctx.ui.setStatus("sts-workflow:intake", undefined);
         }
 
-        if (assessment.ready) break;
+        if (strictIntake.canProceed && strictIntake.status === "ready") break;
 
-        const question = assessment.nextQuestion.trim() || "What else should STS know before it starts?";
-        if (assessment.nextQuestionKind === "approval") {
+        const question = nextStrictQuestion(strictIntake, assessment);
+        const asksForApproval = assessment.nextQuestionKind === "approval" || /\b(approval|approve|coding|implementation|how far)\b/i.test(question);
+        if (asksForApproval) {
           const choice = await ctx.ui.select(question, ["Ask before coding", "Plan only", "Approved to implement"]);
           const mode = modeFromChoice(choice);
           if (!mode) {
@@ -333,13 +475,12 @@ export default function extension(pi: ExtensionAPI) {
         }
       }
 
-      if (!assessment.ready) {
-        ctx.ui.notify(`STS still needs one more detail: ${assessment.nextQuestion || "please clarify the goal or proof of success."}`, "warning");
+      if (!strictIntake.canProceed || strictIntake.status !== "ready") {
+        ctx.ui.notify(`STS still needs one more detail: ${nextStrictQuestion(strictIntake, assessment)}`, "warning");
         return;
       }
 
-      const intake = buildIntakePacket(transcript.join("\n\n"), assessment);
-      const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd), {
+      const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd, strictIntake), {
         concurrency: 4,
         agentRetries: 1,
       });
