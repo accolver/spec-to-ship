@@ -83,7 +83,7 @@ const extensionExpectations = [
   "ctx.ui.editor",
   "ctx.ui.select",
   "What are you trying to do?",
-  "How will you know it worked?",
+  "How will we know it worked?",
   "new WorkflowManager",
   "manager.startInBackground",
   "export const meta =",

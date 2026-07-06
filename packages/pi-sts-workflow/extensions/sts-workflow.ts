@@ -130,40 +130,52 @@ const final = await agent('Synthesize the Spec-to-Ship workflow outcome for the 
 
 return final || { ok: false, status: 'synthesis_failed', report: 'Workflow finished but final synthesis failed.', intake, plan, execution, verification, review }`;
 
-type ApprovalMode = "stop-after-spec" | "plan-only" | "approved-to-implement";
+const INTAKE_ASSESSMENT_SCRIPT = String.raw`export const meta = { name: 'sts_intake_assessment', description: 'Assess STS conversational intake and choose the next best question.', phases: [{ title: 'Assess' }] }
 
-type IntakeAnswers = {
+const input = args && typeof args === 'object' ? args : {};
+const transcript = typeof input.transcript === 'string' ? input.transcript : '';
+
+phase('Assess')
+const assessment = await agent('You are the conversational intake brain for Spec-to-Ship. Read this Q/A transcript and decide if there is enough information to start the STS workflow unattended until the next approval/safety gate. Be practical: do not demand exhaustive requirements if the goal is clear enough to spec/plan safely. If more is needed, ask exactly ONE natural next question, the highest leverage question a human would ask next. Prefer questions like "What should be different when this is done?", "How will we know it worked?", or "How far should I take this?". Ask about dependencies, external credits, benchmarks, protected areas, or release targets only when the task specifically makes those material. Ready requires a useful goal, enough proof-of-success or an obvious way to derive it, and an approval mode.\n\nTranscript:\n' + transcript, {
+  label: 'intake assess',
+  tier: 'medium',
+  schema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      ready: { type: 'boolean' },
+      summary: { type: 'string' },
+      goal: { type: 'string' },
+      proofOfSuccess: { type: 'string' },
+      constraints: { type: 'string' },
+      approvalMode: { type: 'string', enum: ['stop-after-spec', 'plan-only', 'approved-to-implement', 'unknown'] },
+      nextQuestion: { type: 'string' },
+      nextQuestionKind: { type: 'string', enum: ['text', 'approval', 'none'] },
+      rationale: { type: 'string' }
+    },
+    required: ['ready', 'summary', 'goal', 'proofOfSuccess', 'constraints', 'approvalMode', 'nextQuestion', 'nextQuestionKind', 'rationale']
+  }
+})
+
+return assessment`;
+
+type ApprovalMode = "stop-after-spec" | "plan-only" | "approved-to-implement";
+type NextQuestionKind = "text" | "approval" | "none";
+
+type IntakeAssessment = {
+  ready: boolean;
+  summary: string;
   goal: string;
-  success: string;
+  proofOfSuccess: string;
   constraints: string;
-  approvalMode: ApprovalMode;
+  approvalMode: ApprovalMode | "unknown";
+  nextQuestion: string;
+  nextQuestionKind: NextQuestionKind;
+  rationale: string;
 };
 
 function hasUsefulText(value: string | undefined): value is string {
   return typeof value === "string" && value.trim().length > 0;
-}
-
-function isVagueGoal(value: string): boolean {
-  const normalized = value.trim().toLowerCase();
-  if (normalized.length < 18) return true;
-  return /^(fix|build|change|update|improve|make|do this|help|ship it|work on it)[\s.?!]*$/i.test(normalized);
-}
-
-function mentionsProofOfSuccess(value: string): boolean {
-  return /\b(test|tests|passing|verify|verification|proof|done|success|acceptance|works?|artifact|command|demo|review)\b/i.test(value);
-}
-
-function mentionsConstraints(value: string): boolean {
-  return /\b(constraint|constraints|avoid|do not|don't|must not|non-goal|non-goals|out of scope|preserve|keep|compatibility|without|no destructive|ask before)\b/i.test(value);
-}
-
-function inferApprovalMode(value: string): ApprovalMode | null {
-  if (/\b(approved[- ]to[- ]implement|go ahead|implement it|ship it|do it|you may implement|approved to code)\b/i.test(value)) {
-    return "approved-to-implement";
-  }
-  if (/\b(plan only|planning only|do not code|don't code|no implementation)\b/i.test(value)) return "plan-only";
-  if (/\b(stop after spec|ask before coding|ask before implementation|spec only)\b/i.test(value)) return "stop-after-spec";
-  return null;
 }
 
 function modeFromChoice(choice: string | undefined): ApprovalMode | null {
@@ -173,16 +185,59 @@ function modeFromChoice(choice: string | undefined): ApprovalMode | null {
   return null;
 }
 
-function buildIntakePacket(answers: IntakeAnswers): string {
-  const proof = answers.success.trim() || "User did not specify exact proof; infer conservative proof-of-success from the requested outcome and repository validation conventions.";
-  const constraints = answers.constraints.trim() || "No extra user constraints supplied beyond SPEC-TO-SHIP.md safety rules. Ask before destructive or irreversible operations.";
+function isIntakeAssessment(value: unknown): value is IntakeAssessment {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return (
+    typeof record.ready === "boolean" &&
+    typeof record.summary === "string" &&
+    typeof record.goal === "string" &&
+    typeof record.proofOfSuccess === "string" &&
+    typeof record.constraints === "string" &&
+    typeof record.nextQuestion === "string" &&
+    typeof record.rationale === "string" &&
+    ["stop-after-spec", "plan-only", "approved-to-implement", "unknown"].includes(String(record.approvalMode)) &&
+    ["text", "approval", "none"].includes(String(record.nextQuestionKind))
+  );
+}
+
+function fallbackAssessment(): IntakeAssessment {
+  return {
+    ready: false,
+    summary: "Need more information before starting STS.",
+    goal: "",
+    proofOfSuccess: "",
+    constraints: "",
+    approvalMode: "unknown",
+    nextQuestion: "How will we know this worked?",
+    nextQuestionKind: "text",
+    rationale: "The intake assessor did not return a usable result."
+  };
+}
+
+async function assessIntake(manager: WorkflowManager, transcript: string): Promise<IntakeAssessment> {
+  const result = await manager.runSync(INTAKE_ASSESSMENT_SCRIPT, { transcript }, {
+    concurrency: 1,
+    agentRetries: 1,
+    maxAgents: 1,
+  });
+  return isIntakeAssessment(result.result) ? result.result : fallbackAssessment();
+}
+
+function buildIntakePacket(transcript: string, assessment: IntakeAssessment): string {
+  const approvalMode = assessment.approvalMode === "unknown" ? "stop-after-spec" : assessment.approvalMode;
+  const proof = assessment.proofOfSuccess.trim() || "Infer conservative proof-of-success from the requested outcome and repository validation conventions.";
+  const constraints = assessment.constraints.trim() || "No extra user constraints supplied beyond SPEC-TO-SHIP.md safety rules. Ask before destructive or irreversible operations.";
   return [
     "# Spec-to-Ship Conversational Intake",
     "",
-    "The user answered one question at a time before this workflow started.",
+    "The user answered one natural question at a time before this workflow started.",
+    "",
+    "## Intake summary",
+    assessment.summary.trim(),
     "",
     "## Goal / requested outcome",
-    answers.goal.trim(),
+    assessment.goal.trim(),
     "",
     "## Proof of success",
     proof,
@@ -191,10 +246,13 @@ function buildIntakePacket(answers: IntakeAnswers): string {
     constraints,
     "",
     "## Approval mode",
-    answers.approvalMode,
+    approvalMode,
     "",
     "## Standing safety boundary",
-    "Ask before deleting branches, worktrees, data, credentials, deployments, or production resources."
+    "Ask before deleting branches, worktrees, data, credentials, deployments, or production resources.",
+    "",
+    "## Full conversational transcript",
+    transcript.trim()
   ].join("\n");
 }
 
@@ -237,41 +295,50 @@ export default function extension(pi: ExtensionAPI) {
         return;
       }
 
+      const transcript: string[] = [];
       const initialGoal = await ctx.ui.editor("What are you trying to do?", args.trim());
       if (!hasUsefulText(initialGoal)) {
         ctx.ui.notify("/sts-workflow cancelled; no goal was provided.", "info");
         return;
       }
+      transcript.push(`Q: What are you trying to do?\nA: ${initialGoal.trim()}`);
 
-      let goal = initialGoal.trim();
-      if (isVagueGoal(goal)) {
-        const detail = await ctx.ui.editor("What should be different when this is done?", "");
-        if (hasUsefulText(detail)) goal = `${goal}\n\nAdditional detail:\n${detail.trim()}`;
-      }
+      let assessment: IntakeAssessment = fallbackAssessment();
+      for (let turn = 0; turn < 6; turn += 1) {
+        ctx.ui.setStatus("sts-workflow:intake", "Assessing STS intake…");
+        try {
+          assessment = await assessIntake(manager, transcript.join("\n\n"));
+        } finally {
+          ctx.ui.setStatus("sts-workflow:intake", undefined);
+        }
 
-      let success = "";
-      if (!mentionsProofOfSuccess(goal)) {
-        const answer = await ctx.ui.editor("How will you know it worked?", "");
-        if (hasUsefulText(answer)) success = answer.trim();
-      }
+        if (assessment.ready) break;
 
-      let constraints = "";
-      if (!mentionsConstraints(`${goal}\n${success}`)) {
-        const answer = await ctx.ui.editor("Any constraints or things to avoid?", "");
-        if (hasUsefulText(answer)) constraints = answer.trim();
-      }
-
-      let approvalMode = inferApprovalMode(`${goal}\n${success}\n${constraints}`);
-      if (!approvalMode) {
-        const choice = await ctx.ui.select("How far should STS go?", ["Ask before coding", "Plan only", "Approved to implement"]);
-        approvalMode = modeFromChoice(choice);
-        if (!approvalMode) {
-          ctx.ui.notify("/sts-workflow cancelled; no approval mode was selected.", "info");
-          return;
+        const question = assessment.nextQuestion.trim() || "What else should STS know before it starts?";
+        if (assessment.nextQuestionKind === "approval") {
+          const choice = await ctx.ui.select(question, ["Ask before coding", "Plan only", "Approved to implement"]);
+          const mode = modeFromChoice(choice);
+          if (!mode) {
+            ctx.ui.notify("/sts-workflow cancelled; no approval mode was selected.", "info");
+            return;
+          }
+          transcript.push(`Q: ${question}\nA: ${choice} (${mode})`);
+        } else {
+          const answer = await ctx.ui.editor(question, "");
+          if (!hasUsefulText(answer)) {
+            ctx.ui.notify("/sts-workflow cancelled; no answer was provided.", "info");
+            return;
+          }
+          transcript.push(`Q: ${question}\nA: ${answer.trim()}`);
         }
       }
 
-      const intake = buildIntakePacket({ goal, success, constraints, approvalMode });
+      if (!assessment.ready) {
+        ctx.ui.notify(`STS still needs one more detail: ${assessment.nextQuestion || "please clarify the goal or proof of success."}`, "warning");
+        return;
+      }
+
+      const intake = buildIntakePacket(transcript.join("\n\n"), assessment);
       const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd), {
         concurrency: 4,
         agentRetries: 1,
