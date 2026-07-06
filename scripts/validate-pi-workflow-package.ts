@@ -89,7 +89,7 @@ const extensionExpectations = [
   "defaultRenderedWorkflowTool",
   "STRICT_INTAKE_GATE_SCRIPT",
   "prevalidatedIntake",
-  "manager.startInBackground",
+  "stsManager.startInBackground",
   "export const meta =",
   "agent('",
   "parallel([",

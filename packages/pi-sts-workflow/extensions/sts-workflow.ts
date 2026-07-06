@@ -410,20 +410,66 @@ function workflowArgs(intakePacket: string, cwd: string, prevalidatedIntake: Str
   };
 }
 
-export default function extension(pi: ExtensionAPI) {
-  const cwd = process.cwd();
-  const storage = createWorkflowStorage(cwd);
-  const settings = loadWorkflowSettings({ cwd });
-  const manager = new WorkflowManager({
+function makeManager(cwd: string, storage: ReturnType<typeof createWorkflowStorage>, settings: ReturnType<typeof loadWorkflowSettings>): WorkflowManager {
+  return new WorkflowManager({
     cwd,
     loadSavedWorkflow: (name) => storage.load(name)?.script,
     defaultAgentTimeoutMs: settings.defaultAgentTimeoutMs ?? null,
     concurrency: settings.defaultConcurrency,
     defaultAgentRetries: settings.defaultAgentRetries,
   });
+}
+
+function asStringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string" && item.trim().length > 0) : [];
+}
+
+function formatObjectResult(record: Record<string, unknown>): string {
+  const lines: string[] = [];
+  const status = typeof record.status === "string" ? record.status : "completed";
+  lines.push(`Status: ${status}`);
+  if (typeof record.message === "string" && record.message.trim()) lines.push("", record.message.trim());
+  if (typeof record.featureId === "string" && record.featureId.trim()) lines.push("", `Feature ID: ${record.featureId.trim()}`);
+
+  const plan = record.plan && typeof record.plan === "object" ? record.plan as Record<string, unknown> : undefined;
+  if (plan) {
+    if (typeof plan.featureId === "string" && plan.featureId.trim()) lines.push("", `Plan feature ID: ${plan.featureId.trim()}`);
+    if (typeof plan.approvalReason === "string" && plan.approvalReason.trim()) lines.push("", `Reason: ${plan.approvalReason.trim()}`);
+    const artifacts = asStringArray(plan.artifactPaths);
+    if (artifacts.length > 0) lines.push("", "Planned artifacts:", ...artifacts.map((item) => `- ${item}`));
+    const slices = asStringArray(plan.implementationSlices);
+    if (slices.length > 0) lines.push("", "Implementation slices:", ...slices.map((item) => `- ${item}`));
+    const checks = asStringArray(plan.verificationChecks);
+    if (checks.length > 0) lines.push("", "Verification checks:", ...checks.map((item) => `- ${item}`));
+  }
+
+  const blockers = asStringArray(record.blockers);
+  if (blockers.length > 0) lines.push("", "Blockers:", ...blockers.map((item) => `- ${item}`));
+  const nextSteps = asStringArray(record.nextSteps);
+  if (nextSteps.length > 0) lines.push("", "Next steps:", ...nextSteps.map((item) => `- ${item}`));
+
+  return lines.join("\n");
+}
+
+function formatStsWorkflowResult(runId: string, result: unknown): string {
+  if (typeof result === "string") return `Spec-to-Ship workflow ${runId} finished.\n\n${result}`;
+  if (!result || typeof result !== "object") return `Spec-to-Ship workflow ${runId} finished.\n\n${String(result)}`;
+  const record = result as Record<string, unknown>;
+  if (typeof record.report === "string" && record.report.trim()) {
+    return `Spec-to-Ship workflow ${runId} finished.\n\n${record.report.trim()}`;
+  }
+  return `Spec-to-Ship workflow ${runId} finished.\n\n${formatObjectResult(record)}`;
+}
+
+export default function extension(pi: ExtensionAPI) {
+  const cwd = process.cwd();
+  const storage = createWorkflowStorage(cwd);
+  const settings = loadWorkflowSettings({ cwd });
+  const workflowManager = makeManager(cwd, storage, settings);
+  const stsManager = makeManager(cwd, storage, settings);
   const workflowTool = createWorkflowTool({
     cwd,
-    manager,
+    manager: workflowManager,
     storage,
     defaultAgentTimeoutMs: settings.defaultAgentTimeoutMs ?? null,
     defaultConcurrency: settings.defaultConcurrency,
@@ -435,14 +481,16 @@ export default function extension(pi: ExtensionAPI) {
   pi.registerTool(defaultRenderedWorkflowTool);
 
   pi.on("session_start", (_event: unknown, ctx: ExtensionContext) => {
-    manager.setMainModel(ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
-    manager.setModelRegistry(ctx.modelRegistry);
-    try {
-      manager.setSessionId(ctx.sessionManager?.getSessionId());
-    } catch {
-      manager.setSessionId(undefined);
+    for (const manager of [workflowManager, stsManager]) {
+      manager.setMainModel(ctx.model ? `${ctx.model.provider}/${ctx.model.id}` : undefined);
+      manager.setModelRegistry(ctx.modelRegistry);
+      try {
+        manager.setSessionId(ctx.sessionManager?.getSessionId());
+      } catch {
+        manager.setSessionId(undefined);
+      }
     }
-    installResultDelivery(pi, manager);
+    installResultDelivery(pi, workflowManager);
     const active = pi.getActiveTools();
     if (!active.includes(workflowTool.name)) {
       pi.setActiveTools([...active, workflowTool.name]);
@@ -471,9 +519,9 @@ export default function extension(pi: ExtensionAPI) {
       for (let turn = 0; turn < 8; turn += 1) {
         ctx.ui.setStatus("sts-workflow:intake", "Assessing STS intake…");
         try {
-          assessment = await assessIntake(manager, transcript.join("\n\n"));
+          assessment = await assessIntake(stsManager, transcript.join("\n\n"));
           intake = buildIntakePacket(transcript.join("\n\n"), assessment);
-          strictIntake = await runStrictGate(manager, intake);
+          strictIntake = await runStrictGate(stsManager, intake);
         } finally {
           ctx.ui.setStatus("sts-workflow:intake", undefined);
         }
@@ -505,7 +553,7 @@ export default function extension(pi: ExtensionAPI) {
         return;
       }
 
-      const { runId, promise } = manager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd, strictIntake), {
+      const { runId, promise } = stsManager.startInBackground(STS_WORKFLOW_SCRIPT, workflowArgs(intake, ctx.cwd, strictIntake), {
         concurrency: 4,
         agentRetries: 1,
       });
@@ -513,11 +561,24 @@ export default function extension(pi: ExtensionAPI) {
       ctx.ui.notify(`Started /sts-workflow (${runId}). The result will return to this conversation when it finishes.`, "info");
       ctx.ui.setStatus(`sts-workflow:${runId}`, `STS workflow running (${runId})`);
       void promise
-        .finally(() => {
+        .then((result) => {
           ctx.ui.setStatus(`sts-workflow:${runId}`, undefined);
+          return pi.sendMessage({
+            customType: "sts-workflow-result",
+            content: formatStsWorkflowResult(runId, result.result),
+            display: true,
+            details: { runId, workflow: "spec_to_ship" },
+          });
         })
-        .catch(() => {
-          // installResultDelivery reports background workflow failures.
+        .catch((error: unknown) => {
+          ctx.ui.setStatus(`sts-workflow:${runId}`, undefined);
+          const message = error instanceof Error ? error.message : String(error);
+          return pi.sendMessage({
+            customType: "sts-workflow-result",
+            content: `Spec-to-Ship workflow ${runId} failed.\n\n${message}`,
+            display: true,
+            details: { runId, workflow: "spec_to_ship", error: true },
+          });
         });
     }
   });
